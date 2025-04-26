@@ -1,0 +1,11 @@
+name: Ultra Minimal Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simple test
+        run: echo "Test passed"

@@ -183,11 +183,33 @@ ELEVENLABS_API_KEY=your_elevenlabs_api_key
 
 1. Haz un fork del repositorio
 2. Crea una rama para tu funcionalidad (`git checkout -b feature/amazing-feature`)
-3. Haz commit de tus cambios (`git commit -m 'Add some amazing feature'`)
-4. Haz push a la rama (`git push origin feature/amazing-feature`)
-5. Abre un Pull Request
+3. Configura pre-commit para verificar tu código:
+   ```bash
+   pip install pre-commit
+   pre-commit install
+   ```
+4. Haz commit de tus cambios (`git commit -m 'Add some amazing feature'`)
+5. Haz push a la rama (`git push origin feature/amazing-feature`)
+6. Abre un Pull Request
 
 Por favor, asegúrate de seguir nuestras [guías de contribución](./CONTRIBUTING.md) y el [código de conducta](./CODE_OF_CONDUCT.md).
+
+### Verificación de código con pre-commit
+
+Este proyecto utiliza pre-commit para verificar el código antes de hacer commits. Para configurarlo:
+
+```bash
+# Instalar pre-commit
+pip install pre-commit
+
+# Instalar los hooks de pre-commit
+pre-commit install
+
+# Ejecutar pre-commit en todos los archivos (opcional)
+pre-commit run --all-files
+```
+
+Los hooks de pre-commit verificarán automáticamente tu código cada vez que hagas un commit, asegurando que cumpla con los estándares del proyecto.
 
 ## 📚 Documentación
 
