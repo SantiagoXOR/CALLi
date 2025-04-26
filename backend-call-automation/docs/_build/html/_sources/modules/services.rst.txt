@@ -1,0 +1,35 @@
+Servicios
+=========
+
+.. toctree::
+   :maxdepth: 2
+
+   services/call_service
+   services/contact_service
+   services/campaign_scheduler
+
+Esta sección documenta los servicios principales del sistema.
+
+CallService
+----------
+
+.. automodule:: app.services.call_service
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ContactService
+------------
+
+.. automodule:: app.services.contact_service
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+CampaignScheduler
+---------------
+
+.. automodule:: app.services.campaign_scheduler
+   :members:
+   :undoc-members:
+   :show-inheritance:

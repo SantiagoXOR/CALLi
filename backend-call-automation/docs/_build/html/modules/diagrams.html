@@ -1,0 +1,540 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagramas del Sistema &mdash; documentación de Sistema de Automatización de Llamadas - 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=9c0a6a3f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=36c4ab74"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=f85f4cfb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="prev" title="Configuración" href="config.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sistema de Automatización de Llamadas
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenido:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="services.html">Servicios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="services.html#callservice">CallService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#contactservice">ContactService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#campaignscheduler">CampaignScheduler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Modelos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/campaign.html">Modelo Campaign</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign"><code class="docutils literal notranslate"><span class="pre">Campaign</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.calling_hours_end"><code class="docutils literal notranslate"><span class="pre">Campaign.calling_hours_end</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.calling_hours_start"><code class="docutils literal notranslate"><span class="pre">Campaign.calling_hours_start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.contact_list_ids"><code class="docutils literal notranslate"><span class="pre">Campaign.contact_list_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.created_at"><code class="docutils literal notranslate"><span class="pre">Campaign.created_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.description"><code class="docutils literal notranslate"><span class="pre">Campaign.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.failed_calls"><code class="docutils literal notranslate"><span class="pre">Campaign.failed_calls</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.id"><code class="docutils literal notranslate"><span class="pre">Campaign.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.max_retries"><code class="docutils literal notranslate"><span class="pre">Campaign.max_retries</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.model_config"><code class="docutils literal notranslate"><span class="pre">Campaign.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.name"><code class="docutils literal notranslate"><span class="pre">Campaign.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.pending_calls"><code class="docutils literal notranslate"><span class="pre">Campaign.pending_calls</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.retry_delay_minutes"><code class="docutils literal notranslate"><span class="pre">Campaign.retry_delay_minutes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.schedule_end"><code class="docutils literal notranslate"><span class="pre">Campaign.schedule_end</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.schedule_start"><code class="docutils literal notranslate"><span class="pre">Campaign.schedule_start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.script_template"><code class="docutils literal notranslate"><span class="pre">Campaign.script_template</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.status"><code class="docutils literal notranslate"><span class="pre">Campaign.status</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.successful_calls"><code class="docutils literal notranslate"><span class="pre">Campaign.successful_calls</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.total_calls"><code class="docutils literal notranslate"><span class="pre">Campaign.total_calls</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.Campaign.updated_at"><code class="docutils literal notranslate"><span class="pre">Campaign.updated_at</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase"><code class="docutils literal notranslate"><span class="pre">CampaignBase</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.calling_hours_end"><code class="docutils literal notranslate"><span class="pre">CampaignBase.calling_hours_end</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.calling_hours_start"><code class="docutils literal notranslate"><span class="pre">CampaignBase.calling_hours_start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.contact_list_ids"><code class="docutils literal notranslate"><span class="pre">CampaignBase.contact_list_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.description"><code class="docutils literal notranslate"><span class="pre">CampaignBase.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.end_must_be_after_start"><code class="docutils literal notranslate"><span class="pre">CampaignBase.end_must_be_after_start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.max_retries"><code class="docutils literal notranslate"><span class="pre">CampaignBase.max_retries</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.model_config"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.name"><code class="docutils literal notranslate"><span class="pre">CampaignBase.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.pending_calls"><code class="docutils literal notranslate"><span class="pre">CampaignBase.pending_calls</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.retry_delay_minutes"><code class="docutils literal notranslate"><span class="pre">CampaignBase.retry_delay_minutes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.schedule_end"><code class="docutils literal notranslate"><span class="pre">CampaignBase.schedule_end</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.schedule_start"><code class="docutils literal notranslate"><span class="pre">CampaignBase.schedule_start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.script_template"><code class="docutils literal notranslate"><span class="pre">CampaignBase.script_template</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.status"><code class="docutils literal notranslate"><span class="pre">CampaignBase.status</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignBase.validate_calling_hours"><code class="docutils literal notranslate"><span class="pre">CampaignBase.validate_calling_hours()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate"><code class="docutils literal notranslate"><span class="pre">CampaignCreate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate.calling_hours_end"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.calling_hours_end</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate.calling_hours_start"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.calling_hours_start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate.contact_list_ids"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.contact_list_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate.description"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate.max_retries"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.max_retries</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate.model_config"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate.name"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate.pending_calls"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.pending_calls</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate.retry_delay_minutes"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.retry_delay_minutes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate.schedule_end"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.schedule_end</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate.schedule_start"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.schedule_start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate.script_template"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.script_template</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignCreate.status"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.status</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignStatus"><code class="docutils literal notranslate"><span class="pre">CampaignStatus</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignStatus.ACTIVE"><code class="docutils literal notranslate"><span class="pre">CampaignStatus.ACTIVE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignStatus.CANCELLED"><code class="docutils literal notranslate"><span class="pre">CampaignStatus.CANCELLED</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignStatus.COMPLETED"><code class="docutils literal notranslate"><span class="pre">CampaignStatus.COMPLETED</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignStatus.DRAFT"><code class="docutils literal notranslate"><span class="pre">CampaignStatus.DRAFT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignStatus.PAUSED"><code class="docutils literal notranslate"><span class="pre">CampaignStatus.PAUSED</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignStatus.__format__"><code class="docutils literal notranslate"><span class="pre">CampaignStatus.__format__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate.calling_hours_end"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.calling_hours_end</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate.calling_hours_start"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.calling_hours_start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate.contact_list_ids"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.contact_list_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate.description"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate.max_retries"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.max_retries</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate.model_config"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate.name"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate.pending_calls"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.pending_calls</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate.retry_delay_minutes"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.retry_delay_minutes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate.schedule_end"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.schedule_end</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate.schedule_start"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.schedule_start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate.script_template"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.script_template</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#app.models.campaign.CampaignUpdate.status"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.status</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models/campaign.html#descripcion">Descripción</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/campaign.html#estructura">Estructura</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#id0"><code class="docutils literal notranslate"><span class="pre">CampaignBase</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#id2"><code class="docutils literal notranslate"><span class="pre">CampaignCreate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#id4"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#id6"><code class="docutils literal notranslate"><span class="pre">Campaign</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models/campaign.html#estados">Estados</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models/campaign.html#id8"><code class="docutils literal notranslate"><span class="pre">CampaignStatus</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models/campaign.html#validaciones">Validaciones</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/campaign.html#ejemplo">Ejemplo</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#module-app.models.call">Call</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.call.Call"><code class="docutils literal notranslate"><span class="pre">Call</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.Call.campaign_id"><code class="docutils literal notranslate"><span class="pre">Call.campaign_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.Call.created_at"><code class="docutils literal notranslate"><span class="pre">Call.created_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.Call.id"><code class="docutils literal notranslate"><span class="pre">Call.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.Call.interaction_history"><code class="docutils literal notranslate"><span class="pre">Call.interaction_history</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.Call.model_config"><code class="docutils literal notranslate"><span class="pre">Call.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.Call.updated_at"><code class="docutils literal notranslate"><span class="pre">Call.updated_at</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.call.CallBase"><code class="docutils literal notranslate"><span class="pre">CallBase</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.contact_id"><code class="docutils literal notranslate"><span class="pre">CallBase.contact_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.duration"><code class="docutils literal notranslate"><span class="pre">CallBase.duration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.error_message"><code class="docutils literal notranslate"><span class="pre">CallBase.error_message</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.from_number"><code class="docutils literal notranslate"><span class="pre">CallBase.from_number</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.max_retries"><code class="docutils literal notranslate"><span class="pre">CallBase.max_retries</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.model_config"><code class="docutils literal notranslate"><span class="pre">CallBase.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.notes"><code class="docutils literal notranslate"><span class="pre">CallBase.notes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.phone_number"><code class="docutils literal notranslate"><span class="pre">CallBase.phone_number</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.recording_url"><code class="docutils literal notranslate"><span class="pre">CallBase.recording_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.retry_attempts"><code class="docutils literal notranslate"><span class="pre">CallBase.retry_attempts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.scheduled_time"><code class="docutils literal notranslate"><span class="pre">CallBase.scheduled_time</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.script_template"><code class="docutils literal notranslate"><span class="pre">CallBase.script_template</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.status"><code class="docutils literal notranslate"><span class="pre">CallBase.status</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.status_callback_url"><code class="docutils literal notranslate"><span class="pre">CallBase.status_callback_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.twilio_sid"><code class="docutils literal notranslate"><span class="pre">CallBase.twilio_sid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallBase.webhook_url"><code class="docutils literal notranslate"><span class="pre">CallBase.webhook_url</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.call.CallCreate"><code class="docutils literal notranslate"><span class="pre">CallCreate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallCreate.campaign_id"><code class="docutils literal notranslate"><span class="pre">CallCreate.campaign_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallCreate.from_number"><code class="docutils literal notranslate"><span class="pre">CallCreate.from_number</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallCreate.max_retries"><code class="docutils literal notranslate"><span class="pre">CallCreate.max_retries</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallCreate.model_config"><code class="docutils literal notranslate"><span class="pre">CallCreate.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallCreate.phone_number"><code class="docutils literal notranslate"><span class="pre">CallCreate.phone_number</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallCreate.status_callback_url"><code class="docutils literal notranslate"><span class="pre">CallCreate.status_callback_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallCreate.timeout"><code class="docutils literal notranslate"><span class="pre">CallCreate.timeout</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallCreate.webhook_url"><code class="docutils literal notranslate"><span class="pre">CallCreate.webhook_url</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.call.CallStatus"><code class="docutils literal notranslate"><span class="pre">CallStatus</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallStatus.BUSY"><code class="docutils literal notranslate"><span class="pre">CallStatus.BUSY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallStatus.CANCELLED"><code class="docutils literal notranslate"><span class="pre">CallStatus.CANCELLED</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallStatus.COMPLETED"><code class="docutils literal notranslate"><span class="pre">CallStatus.COMPLETED</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallStatus.ERROR"><code class="docutils literal notranslate"><span class="pre">CallStatus.ERROR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallStatus.FAILED"><code class="docutils literal notranslate"><span class="pre">CallStatus.FAILED</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallStatus.IN_PROGRESS"><code class="docutils literal notranslate"><span class="pre">CallStatus.IN_PROGRESS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallStatus.NO_ANSWER"><code class="docutils literal notranslate"><span class="pre">CallStatus.NO_ANSWER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallStatus.PENDING"><code class="docutils literal notranslate"><span class="pre">CallStatus.PENDING</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallStatus.SCHEDULED"><code class="docutils literal notranslate"><span class="pre">CallStatus.SCHEDULED</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallStatus.__format__"><code class="docutils literal notranslate"><span class="pre">CallStatus.__format__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.call.CallUpdate"><code class="docutils literal notranslate"><span class="pre">CallUpdate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallUpdate.duration"><code class="docutils literal notranslate"><span class="pre">CallUpdate.duration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallUpdate.error_message"><code class="docutils literal notranslate"><span class="pre">CallUpdate.error_message</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallUpdate.model_config"><code class="docutils literal notranslate"><span class="pre">CallUpdate.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallUpdate.recording_url"><code class="docutils literal notranslate"><span class="pre">CallUpdate.recording_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallUpdate.retry_attempts"><code class="docutils literal notranslate"><span class="pre">CallUpdate.retry_attempts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.call.CallUpdate.status"><code class="docutils literal notranslate"><span class="pre">CallUpdate.status</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#contact">Contact</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#campaign">Campaign</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models.html#module-app.models.campaign">Modelo Campaign</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="models.html#app.models.campaign.Campaign"><code class="docutils literal notranslate"><span class="pre">Campaign</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.Campaign.created_at"><code class="docutils literal notranslate"><span class="pre">Campaign.created_at</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.Campaign.failed_calls"><code class="docutils literal notranslate"><span class="pre">Campaign.failed_calls</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.Campaign.id"><code class="docutils literal notranslate"><span class="pre">Campaign.id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_config"><code class="docutils literal notranslate"><span class="pre">Campaign.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.Campaign.successful_calls"><code class="docutils literal notranslate"><span class="pre">Campaign.successful_calls</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.Campaign.total_calls"><code class="docutils literal notranslate"><span class="pre">Campaign.total_calls</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.Campaign.updated_at"><code class="docutils literal notranslate"><span class="pre">Campaign.updated_at</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase"><code class="docutils literal notranslate"><span class="pre">CampaignBase</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.calling_hours_end"><code class="docutils literal notranslate"><span class="pre">CampaignBase.calling_hours_end</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.calling_hours_start"><code class="docutils literal notranslate"><span class="pre">CampaignBase.calling_hours_start</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.contact_list_ids"><code class="docutils literal notranslate"><span class="pre">CampaignBase.contact_list_ids</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.description"><code class="docutils literal notranslate"><span class="pre">CampaignBase.description</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.end_must_be_after_start"><code class="docutils literal notranslate"><span class="pre">CampaignBase.end_must_be_after_start()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.max_retries"><code class="docutils literal notranslate"><span class="pre">CampaignBase.max_retries</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_config"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.name"><code class="docutils literal notranslate"><span class="pre">CampaignBase.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.pending_calls"><code class="docutils literal notranslate"><span class="pre">CampaignBase.pending_calls</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.retry_delay_minutes"><code class="docutils literal notranslate"><span class="pre">CampaignBase.retry_delay_minutes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.schedule_end"><code class="docutils literal notranslate"><span class="pre">CampaignBase.schedule_end</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.schedule_start"><code class="docutils literal notranslate"><span class="pre">CampaignBase.schedule_start</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.script_template"><code class="docutils literal notranslate"><span class="pre">CampaignBase.script_template</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.status"><code class="docutils literal notranslate"><span class="pre">CampaignBase.status</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.validate_calling_hours"><code class="docutils literal notranslate"><span class="pre">CampaignBase.validate_calling_hours()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate"><code class="docutils literal notranslate"><span class="pre">CampaignCreate</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_config"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#app.models.campaign.CampaignStatus"><code class="docutils literal notranslate"><span class="pre">CampaignStatus</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignStatus.ACTIVE"><code class="docutils literal notranslate"><span class="pre">CampaignStatus.ACTIVE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignStatus.CANCELLED"><code class="docutils literal notranslate"><span class="pre">CampaignStatus.CANCELLED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignStatus.COMPLETED"><code class="docutils literal notranslate"><span class="pre">CampaignStatus.COMPLETED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignStatus.DRAFT"><code class="docutils literal notranslate"><span class="pre">CampaignStatus.DRAFT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignStatus.PAUSED"><code class="docutils literal notranslate"><span class="pre">CampaignStatus.PAUSED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignStatus.__format__"><code class="docutils literal notranslate"><span class="pre">CampaignStatus.__format__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.calling_hours_end"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.calling_hours_end</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.calling_hours_start"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.calling_hours_start</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.contact_list_ids"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.contact_list_ids</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.description"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.description</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.max_retries"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.max_retries</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_config"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.name"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.pending_calls"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.pending_calls</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.retry_delay_minutes"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.retry_delay_minutes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.schedule_end"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.schedule_end</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.schedule_start"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.schedule_start</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.script_template"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.script_template</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.status"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.status</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#descripcion">Descripción</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#estructura">Estructura</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#id0"><code class="docutils literal notranslate"><span class="pre">CampaignBase</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.__copy__"><code class="docutils literal notranslate"><span class="pre">CampaignBase.__copy__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.__deepcopy__"><code class="docutils literal notranslate"><span class="pre">CampaignBase.__deepcopy__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.__get_pydantic_core_schema__"><code class="docutils literal notranslate"><span class="pre">CampaignBase.__get_pydantic_core_schema__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.__get_pydantic_json_schema__"><code class="docutils literal notranslate"><span class="pre">CampaignBase.__get_pydantic_json_schema__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.__init__"><code class="docutils literal notranslate"><span class="pre">CampaignBase.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.__iter__"><code class="docutils literal notranslate"><span class="pre">CampaignBase.__iter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.__pretty__"><code class="docutils literal notranslate"><span class="pre">CampaignBase.__pretty__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.__pydantic_init_subclass__"><code class="docutils literal notranslate"><span class="pre">CampaignBase.__pydantic_init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.__repr_name__"><code class="docutils literal notranslate"><span class="pre">CampaignBase.__repr_name__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.__repr_recursion__"><code class="docutils literal notranslate"><span class="pre">CampaignBase.__repr_recursion__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.__rich_repr__"><code class="docutils literal notranslate"><span class="pre">CampaignBase.__rich_repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.copy"><code class="docutils literal notranslate"><span class="pre">CampaignBase.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#id1"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_construct"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_construct()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_copy"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_dump"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_dump()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_dump_json"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_dump_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_extra"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_fields_set"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_fields_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_json_schema"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_json_schema()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_parametrized_name"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_parametrized_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_post_init"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_post_init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_rebuild"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_rebuild()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_validate"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_validate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_validate_json"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_validate_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignBase.model_validate_strings"><code class="docutils literal notranslate"><span class="pre">CampaignBase.model_validate_strings()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#id2"><code class="docutils literal notranslate"><span class="pre">CampaignCreate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.__copy__"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.__copy__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.__deepcopy__"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.__deepcopy__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.__get_pydantic_core_schema__"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.__get_pydantic_core_schema__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.__get_pydantic_json_schema__"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.__get_pydantic_json_schema__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.__init__"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.__iter__"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.__iter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.__pretty__"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.__pretty__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.__pydantic_init_subclass__"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.__pydantic_init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.__repr_name__"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.__repr_name__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.__repr_recursion__"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.__repr_recursion__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.__rich_repr__"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.__rich_repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.copy"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#id3"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_construct"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_construct()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_copy"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_dump"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_dump()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_dump_json"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_dump_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_extra"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_fields_set"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_fields_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_json_schema"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_json_schema()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_parametrized_name"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_parametrized_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_post_init"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_post_init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_rebuild"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_rebuild()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_validate"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_validate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_validate_json"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_validate_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignCreate.model_validate_strings"><code class="docutils literal notranslate"><span class="pre">CampaignCreate.model_validate_strings()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#id4"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.__copy__"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.__copy__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.__deepcopy__"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.__deepcopy__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.__get_pydantic_core_schema__"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.__get_pydantic_core_schema__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.__get_pydantic_json_schema__"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.__get_pydantic_json_schema__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.__init__"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.__iter__"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.__iter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.__pretty__"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.__pretty__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.__pydantic_init_subclass__"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.__pydantic_init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.__repr_name__"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.__repr_name__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.__repr_recursion__"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.__repr_recursion__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.__rich_repr__"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.__rich_repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.copy"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#id5"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_construct"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_construct()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_copy"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_dump"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_dump()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_dump_json"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_dump_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_extra"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_fields_set"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_fields_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_json_schema"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_json_schema()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_parametrized_name"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_parametrized_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_post_init"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_post_init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_rebuild"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_rebuild()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_validate"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_validate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_validate_json"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_validate_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.CampaignUpdate.model_validate_strings"><code class="docutils literal notranslate"><span class="pre">CampaignUpdate.model_validate_strings()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#id6"><code class="docutils literal notranslate"><span class="pre">Campaign</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.__copy__"><code class="docutils literal notranslate"><span class="pre">Campaign.__copy__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.__deepcopy__"><code class="docutils literal notranslate"><span class="pre">Campaign.__deepcopy__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.__get_pydantic_core_schema__"><code class="docutils literal notranslate"><span class="pre">Campaign.__get_pydantic_core_schema__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.__get_pydantic_json_schema__"><code class="docutils literal notranslate"><span class="pre">Campaign.__get_pydantic_json_schema__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.__init__"><code class="docutils literal notranslate"><span class="pre">Campaign.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.__iter__"><code class="docutils literal notranslate"><span class="pre">Campaign.__iter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.__pretty__"><code class="docutils literal notranslate"><span class="pre">Campaign.__pretty__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.__pydantic_init_subclass__"><code class="docutils literal notranslate"><span class="pre">Campaign.__pydantic_init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.__repr_name__"><code class="docutils literal notranslate"><span class="pre">Campaign.__repr_name__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.__repr_recursion__"><code class="docutils literal notranslate"><span class="pre">Campaign.__repr_recursion__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.__rich_repr__"><code class="docutils literal notranslate"><span class="pre">Campaign.__rich_repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.copy"><code class="docutils literal notranslate"><span class="pre">Campaign.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#id7"><code class="docutils literal notranslate"><span class="pre">Campaign.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_construct"><code class="docutils literal notranslate"><span class="pre">Campaign.model_construct()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_copy"><code class="docutils literal notranslate"><span class="pre">Campaign.model_copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_dump"><code class="docutils literal notranslate"><span class="pre">Campaign.model_dump()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_dump_json"><code class="docutils literal notranslate"><span class="pre">Campaign.model_dump_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_extra"><code class="docutils literal notranslate"><span class="pre">Campaign.model_extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_fields_set"><code class="docutils literal notranslate"><span class="pre">Campaign.model_fields_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_json_schema"><code class="docutils literal notranslate"><span class="pre">Campaign.model_json_schema()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_parametrized_name"><code class="docutils literal notranslate"><span class="pre">Campaign.model_parametrized_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_post_init"><code class="docutils literal notranslate"><span class="pre">Campaign.model_post_init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_rebuild"><code class="docutils literal notranslate"><span class="pre">Campaign.model_rebuild()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_validate"><code class="docutils literal notranslate"><span class="pre">Campaign.model_validate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_validate_json"><code class="docutils literal notranslate"><span class="pre">Campaign.model_validate_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#app.models.campaign.Campaign.model_validate_strings"><code class="docutils literal notranslate"><span class="pre">Campaign.model_validate_strings()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#estados">Estados</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#id8"><code class="docutils literal notranslate"><span class="pre">CampaignStatus</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#id9"><code class="docutils literal notranslate"><span class="pre">CampaignStatus.__format__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#validaciones">Validaciones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#ejemplo">Ejemplo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuración</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#module-app.config.supabase">Supabase</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Diagramas del Sistema</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#diagrama-de-arquitectura">Diagrama de Arquitectura</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#diagrama-de-flujo-de-llamadas">Diagrama de Flujo de Llamadas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#diagrama-de-base-de-datos">Diagrama de Base de Datos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#diagrama-de-flujo-de-ia">Diagrama de Flujo de IA</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sistema de Automatización de Llamadas</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Diagramas del Sistema</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/diagrams.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="diagramas-del-sistema">
+<h1>Diagramas del Sistema<a class="headerlink" href="#diagramas-del-sistema" title="Link to this heading"></a></h1>
+<p>Esta sección presenta los diagramas técnicos que documentan la arquitectura y flujos del sistema.</p>
+<section id="diagrama-de-arquitectura">
+<h2>Diagrama de Arquitectura<a class="headerlink" href="#diagrama-de-arquitectura" title="Link to this heading"></a></h2>
+<p>Muestra la estructura completa del sistema, incluyendo:</p>
+<ul class="simple">
+<li><p>Frontend en Next.js</p></li>
+<li><p>Backend en FastAPI</p></li>
+<li><p>Servicios externos (Twilio, Supabase, ElevenLabs)</p></li>
+<li><p>Componentes internos y sus relaciones</p></li>
+</ul>
+<figure class="align-default" id="id1">
+<figcaption>
+<p><span class="caption-text">Arquitectura del Sistema</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="diagrama-de-flujo-de-llamadas">
+<h2>Diagrama de Flujo de Llamadas<a class="headerlink" href="#diagrama-de-flujo-de-llamadas" title="Link to this heading"></a></h2>
+<p>Ilustra el proceso completo de ejecución de llamadas:</p>
+<ul class="simple">
+<li><p>Programación y ejecución de campañas</p></li>
+<li><p>Manejo de estados y reintentos</p></li>
+<li><p>Integración con servicios externos</p></li>
+<li><p>Actualización de estadísticas</p></li>
+</ul>
+<figure class="align-default" id="id2">
+<figcaption>
+<p><span class="caption-text">Flujo de Llamadas</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="diagrama-de-base-de-datos">
+<h2>Diagrama de Base de Datos<a class="headerlink" href="#diagrama-de-base-de-datos" title="Link to this heading"></a></h2>
+<p>Describe el esquema completo de la base de datos:</p>
+<ul class="simple">
+<li><p>Tablas principales y relaciones</p></li>
+<li><p>Tipos de datos y restricciones</p></li>
+<li><p>Índices y claves</p></li>
+</ul>
+<figure class="align-default" id="id3">
+<figcaption>
+<p><span class="caption-text">Esquema de Base de Datos</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="diagrama-de-flujo-de-ia">
+<h2>Diagrama de Flujo de IA<a class="headerlink" href="#diagrama-de-flujo-de-ia" title="Link to this heading"></a></h2>
+<p>Detalla la integración con servicios de IA:</p>
+<ul class="simple">
+<li><p>Procesamiento de conversaciones</p></li>
+<li><p>Generación de respuestas</p></li>
+<li><p>Manejo de contextos</p></li>
+</ul>
+<figure class="align-default" id="id4">
+<figcaption>
+<p><span class="caption-text">Integración con IA</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pie de página">
+        <a href="config.html" class="btn btn-neutral float-left" title="Configuración" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2025, Santiago Martinez.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

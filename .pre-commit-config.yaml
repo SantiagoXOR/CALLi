@@ -1,0 +1,62 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v1.5.1
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.5.1
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-all]
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.3
+    hooks:
+      - id: prettier
+        types_or: [javascript, typescript, json]
+
+  - repo: local
+    hooks:
+      - id: validate-docs
+        name: Validate Documentation
+        entry: bash -c 'cd backend-call-automation/docs && make validate'
+        language: system
+        files: "^backend-call-automation/docs/"
+        pass_filenames: false
+
+      - id: check-rst
+        name: Check RST files
+        entry: rst-lint
+        language: python
+        files: \.rst$
+        additional_dependencies: [docutils]
+
+      - id: check-python-docstrings
+        name: Check Python docstrings
+        entry: python scripts/check_docstrings.py
+        language: python
+        types: [python]
+
+      - id: check-typescript-jsdoc
+        name: Check TypeScript JSDoc
+        entry: node scripts/check_jsdoc.js
+        language: node
+        types: [ts, tsx]
+
+      - id: check-docs-updated
+        name: Check if documentation is updated with code
+        entry: bash scripts/check_docs_updated.sh
+        language: system
+        pass_filenames: false
+        stages: [commit]

@@ -1,0 +1,74 @@
+groups:
+  - name: call_automation_alerts
+    rules:
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Alta tasa de errores HTTP"
+          description: "La tasa de errores HTTP 5xx es superior al 5% durante los últimos 5 minutos"
+
+      - alert: APIHighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le)) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Alta latencia en la API"
+          description: "El percentil 95 de la latencia de la API es superior a 500ms durante los últimos 5 minutos"
+
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Alto uso de CPU"
+          description: "El uso de CPU es superior al 80% durante los últimos 5 minutos"
+
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Alto uso de memoria"
+          description: "El uso de memoria es superior al 85% durante los últimos 5 minutos"
+
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Redis no disponible"
+          description: "El servicio Redis no está disponible"
+
+      - alert: TwilioHighErrorRate
+        expr: rate(twilio_errors_total[5m]) / rate(twilio_requests_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Alta tasa de errores en Twilio"
+          description: "La tasa de errores en las solicitudes a Twilio es superior al 10% durante los últimos 5 minutos"
+
+      - alert: ElevenLabsHighErrorRate
+        expr: rate(elevenlabs_errors_total[5m]) / rate(elevenlabs_requests_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Alta tasa de errores en ElevenLabs"
+          description: "La tasa de errores en las solicitudes a ElevenLabs es superior al 10% durante los últimos 5 minutos"
+
+      - alert: LowAudioQuality
+        expr: avg_over_time(elevenlabs_audio_quality_score[15m]) < 0.7
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Baja calidad de audio"
+          description: "La calidad promedio del audio generado es inferior a 0.7 durante los últimos 15 minutos"

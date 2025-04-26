@@ -1,0 +1,41 @@
+# API y Servidor Web
+fastapi>=0.89.1  # Framework web rápido y moderno
+uvicorn[standard]>=0.20.0  # Servidor ASGI con extras estándar
+pydantic>=2.0  # Validación de datos para FastAPI
+pydantic-settings>=2.0  # Gestión de configuración con Pydantic v2
+email-validator>=2.0.0  # Validación de emails para Pydantic
+
+# Clientes HTTP y Servicios Externos
+httpx>=0.23.3  # Cliente HTTP asíncrono
+supabase>=1.0.3  # Cliente de Supabase
+twilio>=8.10.0  # SDK de Twilio para llamadas
+elevenlabs>=0.2.27  # Servicio de síntesis de voz
+
+# Inteligencia Artificial y Procesamiento
+langchain>=0.0.300  # Framework para aplicaciones AI
+langchain-google-genai>=0.0.5  # Integración de Google Generative AI con LangChain
+openai>=0.28.0  # Cliente de OpenAI
+librosa>=0.9.0  # Análisis de audio
+numpy>=1.21.0  # Dependencia para librosa
+
+# Gestión de Configuración y Seguridad
+python-dotenv>=1.0.0  # Carga de variables de entorno
+python-decouple>=3.8  # Configuración flexible
+passlib[bcrypt]>=1.7.4  # Manejo seguro de contraseñas
+hvac>=1.0.0  # Cliente de Vault
+
+# Caché y Almacenamiento
+redis>=4.0.0  # Cliente de Redis para caché
+
+# Monitoreo y Resiliencia
+prometheus-client>=0.14.0  # Métricas y monitoreo
+tenacity>=8.0.0  # Lógica de reintentos
+anyio>=4.0.0  # Soporte asíncrono mejorado
+
+# Testing y Desarrollo
+pytest>=7.0.0  # Framework de testing
+pytest-asyncio>=0.21.0  # Soporte para testing asíncrono
+pytest-cov>=4.0.0  # Cobertura de código
+pytest-mock>=3.0.0  # Utilidades de mock para testing
+pre-commit>=2.15.0  # Hooks de pre-commit
+ruff>=0.1.0  # Linter y formateador de código

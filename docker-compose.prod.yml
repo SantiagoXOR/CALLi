@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend-call-automation
+      dockerfile: Dockerfile
+      args:
+        - APP_ENV=production
+    volumes: []
+    restart: always
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - DEBUG=false
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  frontend:
+    build:
+      context: ./frontend-call-automation
+      dockerfile: Dockerfile.prod
+      args:
+        - NODE_ENV=production
+    volumes: []
+    restart: always
+    environment:
+      - NODE_ENV=production
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  redis:
+    restart: always
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./nginx/www:/var/www/html
+    depends_on:
+      - backend
+      - frontend
+    restart: always

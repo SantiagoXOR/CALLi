@@ -1,0 +1,56 @@
+@startuml Call Flow
+
+start
+
+:Campaign Scheduler;
+note right
+  Ejecuta cada X segundos
+  para procesar campañas activas
+end note
+
+if (¿Hay campañas activas?) then (sí)
+    :Obtener contactos pendientes;
+    
+    while (¿Hay contactos disponibles?) is (sí)
+        if (¿Dentro de horario permitido?) then (sí)
+            if (¿Dentro del límite de llamadas?) then (sí)
+                :Crear llamada programada;
+                fork
+                    :Iniciar llamada Twilio;
+                    if (¿Llamada exitosa?) then (sí)
+                        :Actualizar estado a COMPLETED;
+                        :Incrementar successful_calls;
+                    else (no)
+                        :Marcar para reintento;
+                        :Incrementar failed_calls;
+                    endif
+                fork again
+                    :Actualizar estadísticas de campaña;
+                    :Decrementar pending_calls;
+                end fork
+            else (no)
+                :Esperar siguiente ciclo;
+                stop
+            endif
+        else (no)
+            :Esperar horario permitido;
+            stop
+        endif
+    endwhile (no)
+    
+    :Verificar llamadas fallidas;
+    if (¿Hay llamadas para reintentar?) then (sí)
+        :Procesar reintentos;
+        note right
+          Solo si no exceden
+          max_retries configurado
+        end note
+    endif
+    
+else (no)
+    :Esperar siguiente ciclo;
+endif
+
+stop
+
+@enduml

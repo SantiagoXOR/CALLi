@@ -1,0 +1,65 @@
+groups:
+  - name: elevenlabs_alerts
+    rules:
+      # Alert for high rate of errors (e.g., > 10% errors in 5 mins)
+      - alert: ElevenLabsHighErrorRate
+        # Calculate the rate of errors (status='error') vs total requests over 5 minutes
+        # This expression might need adjustment based on exact metric names and labels
+        expr: (sum(rate(elevenlabs_requests_total{status='error'}[5m])) by (method)) / (sum(rate(elevenlabs_requests_total[5m])) by (method)) > 0.1
+        # Fire if the condition holds for 2 minutes
+        for: 2m
+        labels:
+          severity: warning # Or critical depending on threshold
+          service: elevenlabs
+        annotations:
+          summary: "High error rate detected for ElevenLabs API method {{ $labels.method }}"
+          description: 'The error rate for {{ $labels.method }} has exceeded 10% over the last 5 minutes. Current rate: {{ $value | printf "%.2f" }}.'
+
+      # Alert for high request latency (e.g., 95th percentile > 5 seconds)
+      - alert: ElevenLabsHighLatency
+        # Calculate the 95th percentile latency over 5 minutes
+        expr: histogram_quantile(0.95, sum(rate(elevenlabs_request_duration_seconds_bucket[5m])) by (le, method)) > 5
+        # Fire if the condition holds for 2 minutes
+        for: 2m
+        labels:
+          severity: warning
+          service: elevenlabs
+        annotations:
+          summary: "High P95 latency detected for ElevenLabs API method {{ $labels.method }}"
+          description: 'The 95th percentile latency for {{ $labels.method }} has exceeded 5 seconds over the last 5 minutes. Current P95 latency: {{ $value | printf "%.2f" }}s.'
+
+      # Alert for connection pool nearing exhaustion (e.g., > 90% usage)
+      - alert: ElevenLabsPoolNearExhaustion
+        # Calculate pool usage percentage
+        # Assumes elevenlabs_pool_size gauge is set correctly
+        expr: elevenlabs_pool_connections_active / elevenlabs_pool_size > 0.9
+        # Fire if the condition holds for 1 minute
+        for: 1m
+        labels:
+          severity: warning # Could be critical if it leads to failures
+          service: elevenlabs
+        annotations:
+          summary: "ElevenLabs connection pool is nearing capacity"
+          description: 'More than 90% of the configured connection pool ({{ $value | printf "%.1f" }}%) is currently in use.'
+
+      # Alert if connection pool is completely exhausted (optional, might overlap with errors/latency)
+      # - alert: ElevenLabsPoolExhausted
+      #   expr: elevenlabs_pool_connections_active >= elevenlabs_pool_size
+      #   for: 30s
+      #   labels:
+      #     severity: critical
+      #     service: elevenlabs
+      #   annotations:
+      #     summary: "ElevenLabs connection pool is fully exhausted"
+      #     description: "The connection pool has reached its maximum size ({{ $value }} connections)."
+
+      # Alert for specific critical errors (e.g., Authentication errors)
+      - alert: ElevenLabsCriticalErrorRate
+        expr: sum(rate(elevenlabs_errors_total{error_type=~"APIError|AuthenticationError"}[5m])) by (error_type) > 0
+        for: 1m # Alert quickly on critical errors
+        labels:
+          severity: critical
+          service: elevenlabs
+        annotations:
+          summary: "Critical errors detected from ElevenLabs API ({{ $labels.error_type }})"
+          description: "Critical errors of type {{ $labels.error_type }} are occurring. Check API keys and service status."

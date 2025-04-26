@@ -1,0 +1,16 @@
+@startuml AI Flow
+participant "Call Service" as CS
+participant "AI Service" as AI
+participant "ElevenLabs" as EL
+database "Memory Cache" as MC
+
+CS -> AI: process_message(text, context)
+activate AI
+AI -> MC: get_conversation_memory()
+AI -> AI: enrich_message()
+AI -> AI: analyze_sentiment()
+AI -> AI: suggest_next_actions()
+AI --> CS: response
+CS -> EL: generate_audio(response)
+EL --> CS: audio_data
+@enduml

@@ -1,0 +1,70 @@
+Diagramas del Sistema
+====================
+
+Esta sección presenta los diagramas técnicos que documentan la arquitectura y flujos del sistema.
+
+Diagrama de Arquitectura
+------------------------
+
+Muestra la estructura completa del sistema, incluyendo:
+
+* Frontend en Next.js
+* Backend en FastAPI
+* Servicios externos (Twilio, Supabase, ElevenLabs)
+* Componentes internos y sus relaciones
+
+.. plantuml::
+   :caption: Arquitectura del Sistema
+
+   @startuml
+   !include ../diagrams/architecture.puml
+   @enduml
+
+Diagrama de Flujo de Llamadas
+----------------------------
+
+Ilustra el proceso completo de ejecución de llamadas:
+
+* Programación y ejecución de campañas
+* Manejo de estados y reintentos
+* Integración con servicios externos
+* Actualización de estadísticas
+
+.. plantuml::
+   :caption: Flujo de Llamadas
+
+   @startuml
+   !include ../diagrams/call_flow.puml
+   @enduml   
+
+Diagrama de Base de Datos
+------------------------
+
+Describe el esquema completo de la base de datos:
+
+* Tablas principales y relaciones
+* Tipos de datos y restricciones
+* Índices y claves
+
+.. plantuml::
+   :caption: Esquema de Base de Datos
+
+   @startuml
+   !include ../diagrams/database.puml
+   @enduml
+
+Diagrama de Flujo de IA
+-----------------------
+
+Detalla la integración con servicios de IA:
+
+* Procesamiento de conversaciones
+* Generación de respuestas
+* Manejo de contextos
+
+.. plantuml::
+   :caption: Integración con IA
+
+   @startuml
+   !include ../diagrams/ai_flow.puml
+   @enduml

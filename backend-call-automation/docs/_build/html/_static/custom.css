@@ -1,0 +1,43 @@
+/* Mejoras visuales para diagramas */
+.plantuml {
+    margin: 20px 0;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+/* Mejoras para títulos */
+h1,
+h2,
+h3,
+h4 {
+    color: #2980B9;
+    margin-top: 24px;
+}
+
+/* Estilo para notas */
+.note {
+    background: #e7f2fa;
+    padding: 12px;
+    margin: 15px 0;
+    border-left: 4px solid #2980B9;
+}
+
+/* Mejoras para código */
+.highlight {
+    background: #f8f9fa;
+    border-radius: 4px;
+    margin: 15px 0;
+}
+
+/* Mejoras para tablas */
+table.docutils {
+    margin: 15px 0;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table.docutils th {
+    background: #2980B9;
+    color: white;
+}

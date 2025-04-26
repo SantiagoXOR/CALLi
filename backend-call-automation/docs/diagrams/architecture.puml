@@ -1,0 +1,32 @@
+@startuml
+package "Backend (FastAPI)" {
+    [API Routes] as routes
+    
+    package "Services" {
+        [CallService] as call_service
+        [ContactService] as contact_service
+        [CampaignService] as campaign_service
+        [CampaignScheduler] as scheduler
+        [AIConversationService] as ai_service
+        [ElevenLabsService] as tts_service
+        [CacheService] as cache_service
+    }
+    
+    package "Models" {
+        [Call] as call_model
+        [Contact] as contact_model
+        [Campaign] as campaign_model
+    }
+    
+    package "Config" {
+        [Supabase Client] as supabase_config
+        [Twilio Client] as twilio_config
+        [ElevenLabs Client] as elevenlabs_config
+        [Cache Config] as cache_config
+    }
+}
+
+cache_service --> [Redis]
+cache_service --> [Memory Cache]
+cache_service --> [Supabase Cache]
+@enduml

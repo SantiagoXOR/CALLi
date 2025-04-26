@@ -1,0 +1,86 @@
+version: 2
+updates:
+  # Configuración para el frontend (npm)
+  - package-ecosystem: "npm"
+    directory: "/frontend-call-automation"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Argentina/Buenos_Aires"
+    open-pull-requests-limit: 10
+    target-branch: "master"
+    labels:
+      - "dependencies"
+      - "frontend"
+    commit-message:
+      prefix: "npm"
+      include: "scope"
+    ignore:
+      # Ignorar actualizaciones mayores que podrían romper la compatibilidad
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      # Agrupar dependencias relacionadas para reducir el número de PRs
+      next-js:
+        patterns:
+          - "next"
+          - "eslint-config-next"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      testing:
+        patterns:
+          - "jest"
+          - "@testing-library/*"
+          - "cypress"
+
+  # Configuración para el backend (pip)
+  - package-ecosystem: "pip"
+    directory: "/backend-call-automation"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Argentina/Buenos_Aires"
+    open-pull-requests-limit: 10
+    target-branch: "master"
+    labels:
+      - "dependencies"
+      - "backend"
+    commit-message:
+      prefix: "pip"
+      include: "scope"
+    ignore:
+      # Ignorar actualizaciones mayores que podrían romper la compatibilidad
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      # Agrupar dependencias relacionadas para reducir el número de PRs
+      fastapi:
+        patterns:
+          - "fastapi"
+          - "uvicorn"
+          - "starlette"
+      database:
+        patterns:
+          - "sqlalchemy"
+          - "alembic"
+          - "asyncpg"
+      testing:
+        patterns:
+          - "pytest"
+          - "pytest-*"
+
+  # Configuración para GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"

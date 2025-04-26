@@ -1,0 +1,46 @@
+Sistema de Automatización de Llamadas
+===================================
+
+Bienvenido a la documentación del Sistema de Automatización de Llamadas, una solución integral que utiliza FastAPI, Supabase y Twilio para la gestión automatizada de campañas telefónicas.
+
+Características Principales
+-------------------------
+
+* Gestión de campañas de llamadas
+* Integración con servicios de IA  
+* Análisis y seguimiento de resultados
+* Automatización de flujos de llamada
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contenido:
+
+   modules/services
+   modules/models  
+   modules/config
+   modules/diagrams
+
+Guía Rápida
+-----------
+
+Para comenzar a utilizar el sistema:
+
+1. :doc:`modules/config` - Configuración inicial
+2. :doc:`modules/models` - Estructura de datos
+3. :doc:`modules/services` - Servicios disponibles
+4. :doc:`modules/diagrams` - Diagramas técnicos
+
+Diagramas del Sistema
+-------------------
+
+* :ref:`diagrams-database` - Estructura de la base de datos
+* :ref:`diagrams-calls` - Flujo de llamadas  
+* :ref:`diagrams-architecture` - Arquitectura del sistema
+* :ref:`diagrams-ai` - Integración con IA
+
+Índices y Tablas
+---------------
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

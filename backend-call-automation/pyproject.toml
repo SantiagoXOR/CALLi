@@ -1,0 +1,31 @@
+[tool.ruff]
+# Añadiendo reglas adicionales específicas para el proyecto
+select = [
+    "E", "F", "B", "I", "S", "W", "N", "UP", "ANN", 
+    "C4", "DTZ", "T10", "PIE", "PT", "RET", "SIM", "ARG",
+    "ERA", "PL", "TRY", "RUF"  # Nuevas reglas
+]
+ignore = ["B008", "ANN101", "ANN102"]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["migrations", "tests/fixtures"]
+
+[tool.ruff.per-file-ignores]
+"tests/*" = ["S101", "S105", "S106"]
+"app/models/__init__.py" = ["F401"]
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.coverage.run]
+source = ["app"]
+omit = ["tests/*", "migrations/*"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:"
+]

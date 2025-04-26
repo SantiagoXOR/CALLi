@@ -1,0 +1,30 @@
+{
+  "data": [
+    {"id": "1", "name": "Juan Pérez", "phone": "+5491123456789", "email": "juan@example.com", "tags": ["cliente", "activo"]},
+    {"id": "2", "name": "María López", "phone": "+5491123456790", "email": "maria@example.com", "tags": ["cliente", "inactivo"]},
+    {"id": "3", "name": "Carlos Rodríguez", "phone": "+5491123456791", "email": "carlos@example.com", "tags": ["prospecto"]},
+    {"id": "4", "name": "Ana Martínez", "phone": "+5491123456792", "email": "ana@example.com", "tags": ["cliente", "activo"]},
+    {"id": "5", "name": "Pedro González", "phone": "+5491123456793", "email": "pedro@example.com", "tags": ["cliente", "activo"]},
+    {"id": "6", "name": "Laura Sánchez", "phone": "+5491123456794", "email": "laura@example.com", "tags": ["prospecto"]},
+    {"id": "7", "name": "Miguel Fernández", "phone": "+5491123456795", "email": "miguel@example.com", "tags": ["cliente", "inactivo"]},
+    {"id": "8", "name": "Sofía Díaz", "phone": "+5491123456796", "email": "sofia@example.com", "tags": ["cliente", "activo"]},
+    {"id": "9", "name": "Javier Ruiz", "phone": "+5491123456797", "email": "javier@example.com", "tags": ["prospecto"]},
+    {"id": "10", "name": "Lucía Torres", "phone": "+5491123456798", "email": "lucia@example.com", "tags": ["cliente", "activo"]},
+    {"id": "11", "name": "Martín Herrera", "phone": "+5491123456799", "email": "martin@example.com", "tags": ["cliente", "inactivo"]},
+    {"id": "12", "name": "Valentina Moreno", "phone": "+5491123456800", "email": "valentina@example.com", "tags": ["prospecto"]},
+    {"id": "13", "name": "Alejandro Peralta", "phone": "+5491123456801", "email": "alejandro@example.com", "tags": ["cliente", "activo"]},
+    {"id": "14", "name": "Camila Flores", "phone": "+5491123456802", "email": "camila@example.com", "tags": ["cliente", "activo"]},
+    {"id": "15", "name": "Mateo Acosta", "phone": "+5491123456803", "email": "mateo@example.com", "tags": ["prospecto"]},
+    {"id": "16", "name": "Isabella Rojas", "phone": "+5491123456804", "email": "isabella@example.com", "tags": ["cliente", "inactivo"]},
+    {"id": "17", "name": "Santiago Medina", "phone": "+5491123456805", "email": "santiago@example.com", "tags": ["cliente", "activo"]},
+    {"id": "18", "name": "Renata Vargas", "phone": "+5491123456806", "email": "renata@example.com", "tags": ["prospecto"]},
+    {"id": "19", "name": "Tomás Castro", "phone": "+5491123456807", "email": "tomas@example.com", "tags": ["cliente", "activo"]},
+    {"id": "20", "name": "Emma Ortega", "phone": "+5491123456808", "email": "emma@example.com", "tags": ["cliente", "inactivo"]}
+  ],
+  "pagination": {
+    "total": 50,
+    "page": 1,
+    "limit": 20,
+    "totalPages": 3
+  }
+}
