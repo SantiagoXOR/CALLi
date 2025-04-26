@@ -3,8 +3,24 @@ name: "License Compliance"
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'frontend-call-automation/package.json'
+      - 'frontend-call-automation/package-lock.json'
+      - 'backend-call-automation/requirements.txt'
+      - 'backend-call-automation/pyproject.toml'
+      - '.github/workflows/license-scan.yml'
   pull_request:
     branches: [ "master" ]
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'frontend-call-automation/package.json'
+      - 'frontend-call-automation/package-lock.json'
+      - 'backend-call-automation/requirements.txt'
+      - 'backend-call-automation/pyproject.toml'
+      - '.github/workflows/license-scan.yml'
   schedule:
     - cron: '0 0 1 * *'  # Ejecutar el primer día de cada mes a medianoche
 
@@ -31,17 +47,59 @@ jobs:
         run: |
           if [ -f frontend-call-automation/package.json ]; then
             cd frontend-call-automation
+            echo "Analizando licencias de dependencias JavaScript..."
             license-checker --json --out ../js-licenses.json
+
+            # Verificar licencias problemáticas
+            echo "Verificando licencias potencialmente problemáticas..."
+            PROHIBITED_LICENSES=("GPL" "AGPL" "LGPL" "EUPL" "CDDL" "EPL" "MPL" "UNKNOWN")
+            FOUND_PROHIBITED=false
+
+            for license in "${PROHIBITED_LICENSES[@]}"; do
+              if grep -q "$license" ../js-licenses.json; then
+                echo "⚠️ Encontrada licencia potencialmente problemática: $license"
+                FOUND_PROHIBITED=true
+              fi
+            done
+
+            if [ "$FOUND_PROHIBITED" = false ]; then
+              echo "✅ No se encontraron licencias prohibidas en dependencias JavaScript."
+            fi
+
             cd ..
+          else
+            echo "No se encontró package.json en frontend-call-automation"
           fi
 
       - name: Check Python licenses
         run: |
           if [ -f backend-call-automation/requirements.txt ]; then
             cd backend-call-automation
+            echo "Instalando dependencias Python..."
             pip install -r requirements.txt
+
+            echo "Analizando licencias de dependencias Python..."
             pip-licenses --format=json --output-file=../py-licenses.json
+
+            # Verificar licencias problemáticas
+            echo "Verificando licencias potencialmente problemáticas..."
+            PROHIBITED_LICENSES=("GPL" "AGPL" "LGPL" "EUPL" "CDDL" "EPL" "MPL" "UNKNOWN")
+            FOUND_PROHIBITED=false
+
+            for license in "${PROHIBITED_LICENSES[@]}"; do
+              if grep -q "$license" ../py-licenses.json; then
+                echo "⚠️ Encontrada licencia potencialmente problemática: $license"
+                FOUND_PROHIBITED=true
+              fi
+            done
+
+            if [ "$FOUND_PROHIBITED" = false ]; then
+              echo "✅ No se encontraron licencias prohibidas en dependencias Python."
+            fi
+
             cd ..
+          else
+            echo "No se encontró requirements.txt en backend-call-automation"
           fi
 
       - name: Upload license scan results

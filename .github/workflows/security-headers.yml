@@ -61,11 +61,11 @@ jobs:
 
           def check_headers(url):
               print(f"Verificando encabezados de seguridad para: {url}")
-              
+
               try:
                   response = requests.get(url, timeout=10)
                   headers = response.headers
-                  
+
                   results = {
                       'url': url,
                       'status_code': response.status_code,
@@ -73,7 +73,7 @@ jobs:
                       'headers_missing': {},
                       'timestamp': datetime.now().isoformat()
                   }
-                  
+
                   for header, description in SECURITY_HEADERS.items():
                       if header in headers:
                           results['headers_present'][header] = {
@@ -84,9 +84,9 @@ jobs:
                           results['headers_missing'][header] = {
                               'description': description
                           }
-                  
+
                   return results
-                  
+
               except Exception as e:
                   print(f"Error al verificar {url}: {str(e)}")
                   return {
@@ -98,16 +98,16 @@ jobs:
           def generate_markdown_report(results):
               md = "# Informe de Encabezados de Seguridad\n\n"
               md += f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
-              
+
               for url_result in results:
                   md += f"## URL: {url_result['url']}\n\n"
-                  
+
                   if 'error' in url_result:
                       md += f"**Error:** {url_result['error']}\n\n"
                       continue
-                  
+
                   md += f"**Código de estado:** {url_result['status_code']}\n\n"
-                  
+
                   md += "### Encabezados Presentes\n\n"
                   if url_result['headers_present']:
                       md += "| Encabezado | Valor | Descripción |\n"
@@ -116,7 +116,7 @@ jobs:
                           md += f"| {header} | `{info['value']}` | {info['description']} |\n"
                   else:
                       md += "*No se encontraron encabezados de seguridad.*\n\n"
-                  
+
                   md += "\n### Encabezados Faltantes\n\n"
                   if url_result['headers_missing']:
                       md += "| Encabezado | Descripción |\n"
@@ -125,13 +125,13 @@ jobs:
                           md += f"| {header} | {info['description']} |\n"
                   else:
                       md += "*Todos los encabezados de seguridad están presentes. ¡Excelente!*\n\n"
-                  
+
                   md += "\n---\n\n"
-              
+
               md += "## Recomendaciones\n\n"
               md += "Para mejorar la seguridad de la aplicación, considere implementar los encabezados faltantes. "
               md += "Consulte [OWASP Secure Headers Project](https://owasp.org/www-project-secure-headers/) para más información.\n\n"
-              
+
               return md
 
           if __name__ == "__main__":
@@ -141,29 +141,92 @@ jobs:
                   "https://example.com",
                   "https://securityheaders.com"
               ]
-              
+
               # En un entorno CI, podrías obtener las URLs de variables de entorno
               if 'CHECK_URLS' in os.environ:
                   urls_to_check = os.environ['CHECK_URLS'].split(',')
-              
+
               results = []
               for url in urls_to_check:
                   results.append(check_headers(url))
-              
+
               # Guardar resultados en formato JSON
               with open('security_headers_results.json', 'w') as f:
                   json.dump(results, f, indent=2)
-              
+
               # Generar informe en Markdown
               markdown_report = generate_markdown_report(results)
               with open('security_headers_report.md', 'w') as f:
                   f.write(markdown_report)
-              
+
               print("Verificación completada. Resultados guardados en security_headers_results.json y security_headers_report.md")
           EOF
 
       - name: Run security headers check
-        run: python check_security_headers.py
+        run: |
+          # Verificar si estamos en un entorno de CI o en una ejecución local
+          if [ "$GITHUB_ACTIONS" == "true" ]; then
+            # En CI, usamos URLs de ejemplo para la verificación
+            python check_security_headers.py
+          else
+            # En local, verificamos los archivos de configuración de Nginx
+            echo "Verificando archivos de configuración de Nginx localmente..."
+
+            # Verificar si existe el directorio nginx/conf.d
+            if [ -d "nginx/conf.d" ]; then
+              echo "Verificando configuración de Nginx..."
+
+              # Verificar si existe el archivo default.conf
+              if [ -f "nginx/conf.d/default.conf" ]; then
+                echo "Archivo de configuración Nginx encontrado, verificando encabezados de seguridad..."
+
+                # Verificar encabezados de seguridad
+                HEADERS_MISSING=0
+
+                if ! grep -q "X-Content-Type-Options" nginx/conf.d/default.conf; then
+                  echo "Advertencia: Falta encabezado X-Content-Type-Options"
+                  HEADERS_MISSING=$((HEADERS_MISSING+1))
+                fi
+
+                if ! grep -q "X-Frame-Options" nginx/conf.d/default.conf; then
+                  echo "Advertencia: Falta encabezado X-Frame-Options"
+                  HEADERS_MISSING=$((HEADERS_MISSING+1))
+                fi
+
+                if ! grep -q "X-XSS-Protection" nginx/conf.d/default.conf; then
+                  echo "Advertencia: Falta encabezado X-XSS-Protection"
+                  HEADERS_MISSING=$((HEADERS_MISSING+1))
+                fi
+
+                if ! grep -q "Content-Security-Policy" nginx/conf.d/default.conf; then
+                  echo "Advertencia: Falta encabezado Content-Security-Policy"
+                  HEADERS_MISSING=$((HEADERS_MISSING+1))
+                fi
+
+                if ! grep -q "Strict-Transport-Security" nginx/conf.d/default.conf; then
+                  echo "Advertencia: Falta encabezado Strict-Transport-Security"
+                  HEADERS_MISSING=$((HEADERS_MISSING+1))
+                fi
+
+                if ! grep -q "Referrer-Policy" nginx/conf.d/default.conf; then
+                  echo "Advertencia: Falta encabezado Referrer-Policy"
+                  HEADERS_MISSING=$((HEADERS_MISSING+1))
+                fi
+
+                if [ $HEADERS_MISSING -eq 0 ]; then
+                  echo "✓ Todos los encabezados de seguridad requeridos están presentes"
+                else
+                  echo "⚠️ Faltan $HEADERS_MISSING encabezados de seguridad"
+                fi
+              else
+                echo "No se encontró el archivo de configuración Nginx"
+              fi
+            else
+              echo "No se encontró el directorio nginx/conf.d"
+            fi
+
+            python check_security_headers.py
+          fi
         env:
           CHECK_URLS: "https://example.com,https://securityheaders.com"
 
