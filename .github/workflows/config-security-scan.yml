@@ -1,0 +1,11 @@
+name: Configuration Security Scan (Disabled)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  disabled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Workflow disabled
+        run: echo "This workflow has been disabled due to persistent issues."

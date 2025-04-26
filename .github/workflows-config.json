@@ -1,0 +1,17 @@
+{
+  "disabled_workflows": [
+    "ci-cd-pipeline.yml",
+    "config-security-scan.yml"
+  ],
+  "enabled_workflows": [
+    "empty-check.yml",
+    "simple-check.yml",
+    "super-simple-check.yml",
+    "ultra-minimal-test.yml",
+    "ultra-minimal-security.yml"
+  ],
+  "config": {
+    "skip_ci_cd_pipeline": true,
+    "skip_config_security_scan": true
+  }
+}

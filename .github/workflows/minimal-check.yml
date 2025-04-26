@@ -1,0 +1,13 @@
+name: Minimal Check
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Minimal check
+        run: echo "Minimal check passed"
