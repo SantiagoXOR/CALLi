@@ -1,20 +1,58 @@
-# Sistema de Automatización de Llamadas
+# CALLi - Sistema Avanzado de Automatización de Llamadas
 
-Este proyecto implementa un sistema de automatización de llamadas utilizando Next.js para el frontend y FastAPI para el backend, con integraciones de Supabase, Twilio y ElevenLabs.
+<div align="center">
+  <img src="docs/assets/calli-logo.png" alt="CALLi Logo" width="200"/>
+  <p><strong>Transformando la comunicación telefónica con inteligencia artificial</strong></p>
+</div>
 
-## Estructura del Proyecto
+## 🌟 Descripción
 
-```
+CALLi es una plataforma integral de automatización de llamadas que combina tecnologías de vanguardia para transformar la manera en que las empresas se comunican con sus clientes. Utilizando inteligencia artificial, síntesis de voz natural y análisis avanzado, CALLi permite crear, gestionar y analizar campañas telefónicas con una eficiencia sin precedentes.
+
+### ¿Por qué CALLi?
+
+- **Comunicación Natural**: Voces generadas por IA indistinguibles de humanos gracias a ElevenLabs
+- **Flexibilidad Total**: Personalización completa de flujos de llamadas y respuestas
+- **Análisis en Tiempo Real**: Métricas detalladas y insights accionables
+- **Escalabilidad**: Desde pequeñas campañas hasta operaciones a gran escala
+- **Integración Sencilla**: Conecta con tus sistemas existentes a través de APIs
+
+Construido con Next.js para el frontend y FastAPI para el backend, con integraciones de Supabase, Twilio y ElevenLabs.
+
+## 🏗️ Estructura del Proyecto
+
+```bash
 call-automation-project/
 ├── frontend-call-automation/    # Frontend en Next.js (App Router) + Shadcn/ui
-└── backend-call-automation/     # Backend en Python/FastAPI
+├── backend-call-automation/     # Backend en Python/FastAPI
+├── docs/                        # Documentación general del proyecto
+├── scripts/                     # Scripts de utilidad y despliegue
+└── .github/                     # Configuración de CI/CD y GitHub Actions
 ```
 
-## Requisitos del Sistema
+## 🛠️ Requisitos del Sistema
 
-- Bun (https://bun.sh/) - Para el frontend
-- Python 3.9+ - Para el backend
-- Docker (opcional, para facilitar despliegue/dependencias como Redis)
+- **Frontend**:
+  - [Bun](https://bun.sh/) (v1.0.0+) - Gestor de paquetes y entorno de ejecución
+  - Node.js (v18+) - Alternativa a Bun si es necesario
+
+- **Backend**:
+  - Python 3.9+ - Lenguaje principal
+  - FastAPI - Framework web
+  - PostgreSQL - Base de datos (vía Supabase)
+
+- **Opcional**:
+  - Docker - Para contenedores y despliegue
+  - Redis - Para caché y gestión de colas
+
+## ✨ Características Destacadas
+
+- **Campañas Inteligentes**: Crea campañas de llamadas con flujos de conversación dinámicos
+- **Voces Naturales**: Integración con ElevenLabs para síntesis de voz de alta calidad
+- **Análisis Detallado**: Métricas completas de rendimiento de campañas y llamadas
+- **Interfaz Intuitiva**: Panel de control moderno y fácil de usar
+- **Escalabilidad**: Arquitectura diseñada para manejar desde decenas hasta miles de llamadas
+- **Seguridad**: Protección de datos y cumplimiento de normativas
 
 ## Tecnologías Principales
 
@@ -113,53 +151,101 @@ ELEVENLABS_API_KEY=your_elevenlabs_api_key
 # DATABASE_URL=postgresql+psycopg2://user:password@host:port/dbname # Alternativa a Supabase Key si se conecta directamente
 ```
 
-## Características Implementadas
+## 🚀 Características Implementadas
 
-*   **Backend:**
-    *   API REST con FastAPI.
-    *   Modelos de datos (Campaign, Call, Contact, etc.) con SQLAlchemy.
-    *   Integración con Supabase para persistencia.
-    *   Servicios para lógica de negocio (Campañas, Llamadas, Contactos, IA, TTS con ElevenLabs, Telefonía con Twilio).
-    *   Endpoints CRUD para Campañas.
-    *   Sistema básico de caché con Redis (opcional).
-    *   Configuración de CORS, dependencias, etc.
-*   **Frontend:**
-    *   Interfaz con Next.js (App Router) y TypeScript.
-    *   Estilos con Tailwind CSS y componentes Shadcn/ui.
-    *   Servicio API (`axios`) para comunicarse con el backend.
-    *   Gestión completa (CRUD) de Campañas:
-        *   Listado de campañas.
-        *   Formulario de creación con validación (`react-hook-form`).
-        *   Página de detalles de campaña.
-        *   Formulario de edición reutilizando el componente de creación.
-        *   Funcionalidad de eliminación con confirmación.
-    *   Notificaciones de feedback (`sonner`).
+- **Backend:**
+  - API REST con FastAPI y documentación automática con Swagger/OpenAPI
+  - Modelos de datos (Campaign, Call, Contact, etc.) con SQLAlchemy
+  - Integración con Supabase para persistencia de datos
+  - Servicios para lógica de negocio (Campañas, Llamadas, Contactos)
+  - Integración con ElevenLabs para síntesis de voz natural
+  - Integración con Twilio para gestión de llamadas telefónicas
+  - Endpoints CRUD completos para gestión de campañas
+  - Sistema de caché con Redis para optimización de rendimiento
+  - Configuración de CORS, middleware y dependencias
 
-## Documentación
+- **Frontend:**
+  - Interfaz moderna con Next.js (App Router) y TypeScript
+  - Diseño responsive con Tailwind CSS y componentes Shadcn/ui
+  - Servicio API centralizado con Axios para comunicación con backend
+  - Gestión completa (CRUD) de campañas:
+    - Listado de campañas con filtros y búsqueda
+    - Formulario de creación con validación avanzada
+    - Página de detalles con métricas y estadísticas
+    - Edición y actualización de campañas existentes
+    - Eliminación con confirmación para prevenir errores
+  - Sistema de notificaciones con Sonner para feedback al usuario
+  - Autenticación y gestión de sesiones con NextAuth
+
+## 👥 Contribución
+
+¿Quieres contribuir al proyecto? ¡Genial! Sigue estos pasos:
+
+1. Haz un fork del repositorio
+2. Crea una rama para tu funcionalidad (`git checkout -b feature/amazing-feature`)
+3. Haz commit de tus cambios (`git commit -m 'Add some amazing feature'`)
+4. Haz push a la rama (`git push origin feature/amazing-feature`)
+5. Abre un Pull Request
+
+Por favor, asegúrate de seguir nuestras [guías de contribución](./CONTRIBUTING.md) y el [código de conducta](./CODE_OF_CONDUCT.md).
+
+## 📚 Documentación
 
 La documentación es una parte integral del proceso de desarrollo en este proyecto. Seguimos un enfoque de "documentación como código" donde la documentación se desarrolla y mantiene junto con el código.
 
-### Índice de Documentación
+### 📑 Índice de Documentación
 
 Toda la documentación del proyecto está centralizada en el [Índice de Documentación](./docs/DOCUMENTATION_INDEX.md).
 
-### Documentación para Desarrolladores
+### 👨‍💻 Documentación para Desarrolladores
 
-- **Estándares de Documentación:** [DOCUMENTATION_STANDARDS.md](./docs/DOCUMENTATION_STANDARDS.md)
-- **Flujo de Trabajo de Documentación:** [DOCUMENTATION_WORKFLOW.md](./docs/DOCUMENTATION_WORKFLOW.md)
-- **Documentación como Código:** [DOCUMENTATION_AS_CODE.md](./docs/DOCUMENTATION_AS_CODE.md)
-- **Integración CI/CD:** [CI_CD_DOCUMENTATION.md](./docs/CI_CD_DOCUMENTATION.md)
+- **Guía de Inicio Rápido:** [QUICKSTART.md](./docs/QUICKSTART.md)
+- **Estándares de Código:** [CODE_STANDARDS.md](./docs/CODE_STANDARDS.md)
+- **Flujo de Trabajo de Desarrollo:** [DEVELOPMENT_WORKFLOW.md](./docs/DEVELOPMENT_WORKFLOW.md)
+- **Integración CI/CD:** [CI_CD.md](./docs/CI_CD.md)
 
-### Documentación de Componentes
+### 🧩 Documentación de Componentes
 
-- **Plan de Desarrollo Frontend:** [`frontend-call-automation/docs/frontend-development-plan.md`](./frontend-call-automation/docs/frontend-development-plan.md)
-- **Documentación Backend/API:** Ver la documentación interactiva generada por FastAPI en `/docs` cuando el backend está corriendo, o los archivos dentro de [`backend-call-automation/docs/`](./backend-call-automation/docs/).
+- **API Backend:** Documentación interactiva generada por FastAPI en `http://localhost:8000/docs` cuando el backend está corriendo
+- **Arquitectura Frontend:** [frontend-call-automation/docs/ARCHITECTURE.md](./frontend-call-automation/docs/ARCHITECTURE.md)
+- **Integración con Twilio:** [docs/integrations/TWILIO.md](./docs/integrations/TWILIO.md)
+- **Integración con ElevenLabs:** [docs/integrations/ELEVENLABS.md](./docs/integrations/ELEVENLABS.md)
 
-### Contribución y Calidad
+### 🔄 Flujos de Trabajo
 
-- **Contribución:** [`CONTRIBUTING.md`](./CONTRIBUTING.md)
-- **Calidad del Código:** [`QUALITY.md`](./QUALITY.md) (Si existe)
+- **Gestión de Campañas:** [docs/workflows/CAMPAIGN_MANAGEMENT.md](./docs/workflows/CAMPAIGN_MANAGEMENT.md)
+- **Procesamiento de Llamadas:** [docs/workflows/CALL_PROCESSING.md](./docs/workflows/CALL_PROCESSING.md)
+- **Análisis de Datos:** [docs/workflows/DATA_ANALYSIS.md](./docs/workflows/DATA_ANALYSIS.md)
 
-## Licencia
+## 🛡️ Seguridad
 
-MIT
+CALLi toma muy en serio la seguridad de los datos. Implementamos:
+
+- Cifrado de datos sensibles en reposo y en tránsito
+- Autenticación multifactor para acceso administrativo
+- Auditoría completa de acciones de usuario
+- Cumplimiento con regulaciones de protección de datos
+
+Para reportar vulnerabilidades de seguridad, por favor contacta a [security@example.com](mailto:security@example.com).
+
+## 📊 Estado del Proyecto
+
+CALLi está actualmente en fase beta. Estamos trabajando activamente en nuevas características y mejoras.
+
+- ✅ API Core y funcionalidades básicas
+- ✅ Integración con Twilio y ElevenLabs
+- ✅ Panel de administración frontend
+- 🔄 Análisis avanzado de llamadas (en progreso)
+- 🔄 Integración con CRM (en progreso)
+- 📅 Aplicación móvil (planificada)
+
+## 📄 Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+
+---
+
+<div align="center">
+  <p>Desarrollado con ❤️ por el equipo de CALLi</p>
+  <p>© 2023-2024 CALLi - Todos los derechos reservados</p>
+</div>
