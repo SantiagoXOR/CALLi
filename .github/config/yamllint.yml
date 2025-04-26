@@ -1,0 +1,35 @@
+---
+extends: default
+
+rules:
+  line-length:
+    max: 120
+    level: warning
+  document-start:
+    level: warning
+  truthy:
+    allowed-values: ['true', 'false', 'yes', 'no']
+    level: warning
+  comments:
+    min-spaces-from-content: 1
+    level: warning
+  indentation:
+    spaces: 2
+    indent-sequences: consistent
+    level: warning
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+    level: warning
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+    level: warning
+
+ignore: |
+  node_modules/
+  .git/
+  venv/
+  .venv/
+  __pycache__/
+  .github/workflows/
