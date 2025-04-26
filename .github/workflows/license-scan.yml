@@ -1,0 +1,53 @@
+name: "License Compliance"
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  schedule:
+    - cron: '0 0 1 * *'  # Ejecutar el primer día de cada mes a medianoche
+
+jobs:
+  license-scan:
+    name: License Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install license-checker for JavaScript
+        run: npm install -g license-checker
+
+      - name: Install pip-licenses for Python
+        run: pip install pip-licenses
+
+      - name: Check JavaScript licenses
+        run: |
+          if [ -f frontend-call-automation/package.json ]; then
+            cd frontend-call-automation
+            license-checker --json --out ../js-licenses.json
+            cd ..
+          fi
+
+      - name: Check Python licenses
+        run: |
+          if [ -f backend-call-automation/requirements.txt ]; then
+            cd backend-call-automation
+            pip install -r requirements.txt
+            pip-licenses --format=json --output-file=../py-licenses.json
+            cd ..
+          fi
+
+      - name: Upload license scan results
+        uses: actions/upload-artifact@v3
+        with:
+          name: license-scan-results
+          path: |
+            js-licenses.json
+            py-licenses.json

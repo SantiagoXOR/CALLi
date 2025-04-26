@@ -1,0 +1,111 @@
+name: "Auditoría de Seguridad"
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Ejecutar cada domingo a medianoche
+  workflow_dispatch:  # Permitir ejecución manual
+
+jobs:
+  security-audit:
+    name: Auditoría de Seguridad Completa
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Generar informe de seguridad
+        run: |
+          mkdir -p security-reports
+          echo "# Informe de Auditoría de Seguridad" > security-reports/audit-report.md
+          echo "Fecha: $(date)" >> security-reports/audit-report.md
+          echo "Commit: $(git rev-parse HEAD)" >> security-reports/audit-report.md
+          echo "" >> security-reports/audit-report.md
+
+      # Análisis de dependencias
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar herramientas de análisis
+        run: |
+          pip install safety bandit
+          npm install -g npm-audit-html snyk
+
+      - name: Analizar dependencias Python
+        run: |
+          if [ -f backend-call-automation/requirements.txt ]; then
+            cd backend-call-automation
+            pip install -r requirements.txt
+            safety check --json > ../security-reports/python-deps.json || true
+            bandit -r . -f json -o ../security-reports/python-code.json || true
+            cd ..
+          fi
+          echo "## Dependencias Python" >> security-reports/audit-report.md
+          echo "Ver archivos adjuntos para detalles." >> security-reports/audit-report.md
+          echo "" >> security-reports/audit-report.md
+
+      - name: Analizar dependencias JavaScript
+        run: |
+          if [ -f frontend-call-automation/package.json ]; then
+            cd frontend-call-automation
+            npm ci
+            npm audit --json > ../security-reports/js-deps.json || true
+            cd ..
+          fi
+          echo "## Dependencias JavaScript" >> security-reports/audit-report.md
+          echo "Ver archivos adjuntos para detalles." >> security-reports/audit-report.md
+          echo "" >> security-reports/audit-report.md
+
+      # Análisis de secretos
+      - name: Detectar secretos
+        uses: trufflesecurity/trufflehog@v3.42.0
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified
+          output: security-reports/secrets.json
+
+      - name: Añadir resultados de secretos al informe
+        run: |
+          echo "## Análisis de Secretos" >> security-reports/audit-report.md
+          echo "Ver archivo adjunto para detalles." >> security-reports/audit-report.md
+          echo "" >> security-reports/audit-report.md
+
+      # Análisis de configuración
+      - name: Analizar archivos de configuración
+        run: |
+          echo "## Análisis de Configuración" >> security-reports/audit-report.md
+          echo "Verificación de archivos de configuración sensibles:" >> security-reports/audit-report.md
+          echo "" >> security-reports/audit-report.md
+          echo "- Archivos .env: $(find . -name '.env*' | wc -l)" >> security-reports/audit-report.md
+          echo "- Archivos de configuración: $(find . -name '*.config.*' -o -name '*.conf' -o -name '*.ini' | wc -l)" >> security-reports/audit-report.md
+          echo "- Archivos de certificados: $(find . -name '*.pem' -o -name '*.key' -o -name '*.crt' | wc -l)" >> security-reports/audit-report.md
+          echo "" >> security-reports/audit-report.md
+
+      # Resumen y recomendaciones
+      - name: Generar resumen y recomendaciones
+        run: |
+          echo "## Resumen y Recomendaciones" >> security-reports/audit-report.md
+          echo "" >> security-reports/audit-report.md
+          echo "### Acciones Recomendadas" >> security-reports/audit-report.md
+          echo "" >> security-reports/audit-report.md
+          echo "1. Revisar todas las vulnerabilidades detectadas en las dependencias" >> security-reports/audit-report.md
+          echo "2. Verificar y corregir cualquier secreto expuesto" >> security-reports/audit-report.md
+          echo "3. Actualizar las dependencias con vulnerabilidades conocidas" >> security-reports/audit-report.md
+          echo "4. Revisar la configuración de seguridad de la aplicación" >> security-reports/audit-report.md
+          echo "" >> security-reports/audit-report.md
+
+      - name: Subir informe de auditoría
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-audit-report
+          path: security-reports/

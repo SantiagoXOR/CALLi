@@ -1,0 +1,68 @@
+[1mdiff --git a/SECURITY.md b/SECURITY.md[m
+[1mindex 034e848..e054503 100644[m
+[1m--- a/SECURITY.md[m
+[1m+++ b/SECURITY.md[m
+[36m@@ -1,21 +1,49 @@[m
+[31m-# Security Policy[m
+[32m+[m[32m# Política de Seguridad[m
+ [m
+[31m-## Supported Versions[m
+[32m+[m[32m## Versiones Soportadas[m
+ [m
+[31m-Use this section to tell people about which versions of your project are[m
+[31m-currently being supported with security updates.[m
+[32m+[m[32mActualmente estamos proporcionando actualizaciones de seguridad para las siguientes versiones:[m
+ [m
+[31m-| Version | Supported          |[m
+[32m+[m[32m| Versión | Soportada          |[m
+ | ------- | ------------------ |[m
+[31m-| 5.1.x   | :white_check_mark: |[m
+[31m-| 5.0.x   | :x:                |[m
+[31m-| 4.0.x   | :white_check_mark: |[m
+[31m-| < 4.0   | :x:                |[m
+[32m+[m[32m| 0.1.x   | :white_check_mark: |[m
+ [m
+[31m-## Reporting a Vulnerability[m
+[32m+[m[32m## Reportar una Vulnerabilidad[m
+ [m
+[31m-Use this section to tell people how to report a vulnerability.[m
+[32m+[m[32mAgradecemos los informes de seguridad responsables. Si descubres una vulnerabilidad en CALLi, por favor:[m
+ [m
+[31m-Tell them where to go, how often they can expect to get an update on a[m
+[31m-reported vulnerability, what to expect if the vulnerability is accepted or[m
+[31m-declined, etc.[m
+[32m+[m[32m1. **No divulgues públicamente la vulnerabilidad** - No abras un issue público en GitHub.[m
+[32m+[m[32m2. **Envía un correo electrónico** a [santiago@xor.com.ar](mailto:santiago@xor.com.ar) con los detalles de la vulnerabilidad.[m
+[32m+[m[32m3. **Incluye la siguiente información**:[m
+[32m+[m[32m   - Tipo de vulnerabilidad[m
+[32m+[m[32m   - Ruta completa de los archivos afectados[m
+[32m+[m[32m   - Ubicación del código fuente relacionado[m
+[32m+[m[32m   - Cualquier solución potencial que hayas identificado[m
+[32m+[m
+[32m+[m[32m## Proceso de Respuesta[m
+[32m+[m
+[32m+[m[32mCuando recibamos un informe de vulnerabilidad, seguiremos estos pasos:[m
+[32m+[m
+[32m+[m[32m1. Confirmaremos la recepción del informe dentro de las 48 horas.[m
+[32m+[m[32m2. Proporcionaremos una estimación de cuándo podemos esperar tener una resolución.[m
+[32m+[m[32m3. Verificaremos la vulnerabilidad y determinaremos su impacto.[m
+[32m+[m[32m4. Desarrollaremos y probaremos una solución.[m
+[32m+[m[32m5. Lanzaremos una actualización que aborde la vulnerabilidad.[m
+[32m+[m[32m6. Reconoceremos públicamente tu contribución (si lo deseas) después de resolver el problema.[m
+[32m+[m
+[32m+[m[32m## Prácticas de Seguridad[m
+[32m+[m
+[32m+[m[32mEl proyecto CALLi implementa las siguientes prácticas de seguridad:[m
+[32m+[m
+[32m+[m[32m- Análisis regular de dependencias para detectar vulnerabilidades[m
+[32m+[m[32m- Escaneo de código para identificar problemas de seguridad[m
+[32m+[m[32m- Revisión de código por pares para todas las contribuciones[m
+[32m+[m[32m- Pruebas automatizadas para prevenir regresiones de seguridad[m
+[32m+[m[32m- Cifrado de datos sensibles en reposo y en tránsito[m
+[32m+[m[32m- Autenticación y autorización adecuadas para todos los endpoints[m
+[32m+[m
+[32m+[m[32m## Reconocimientos[m
+[32m+[m
+[32m+[m[32mQueremos agradecer a las siguientes personas que han contribuido a mejorar la seguridad de CALLi:[m
+[32m+[m
+[32m+[m[32m- Lista de contribuyentes (se actualizará cuando corresponda)[m

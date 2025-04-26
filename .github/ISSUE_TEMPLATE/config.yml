@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Reporte de Vulnerabilidad de Seguridad
+    url: https://github.com/SantiagoXOR/CALLi/security/policy
+    about: Por favor, reporta las vulnerabilidades de seguridad siguiendo nuestra política de divulgación responsable
+  - name: Preguntas y Soporte
+    url: https://github.com/SantiagoXOR/CALLi/discussions
+    about: Por favor, haz preguntas y busca soporte en nuestra sección de discusiones
+  - name: Documentación
+    url: https://github.com/SantiagoXOR/CALLi/wiki
+    about: Consulta nuestra documentación para obtener más información sobre el proyecto

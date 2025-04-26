@@ -1,0 +1,66 @@
+name: "Container Security Scan"
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - '**/Dockerfile'
+      - '**/docker-compose.yml'
+  pull_request:
+    branches: [ "master" ]
+    paths:
+      - '**/Dockerfile'
+      - '**/docker-compose.yml'
+  schedule:
+    - cron: '0 0 * * 5'  # Ejecutar cada viernes a medianoche
+
+jobs:
+  scan-frontend:
+    name: Scan Frontend Container
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build frontend image
+        run: |
+          docker build -t calli-frontend:${{ github.sha }} ./frontend-call-automation
+
+      - name: Scan frontend image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'calli-frontend:${{ github.sha }}'
+          format: 'sarif'
+          output: 'trivy-frontend-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-frontend-results.sarif'
+          category: 'trivy-frontend'
+
+  scan-backend:
+    name: Scan Backend Container
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build backend image
+        run: |
+          docker build -t calli-backend:${{ github.sha }} ./backend-call-automation
+
+      - name: Scan backend image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'calli-backend:${{ github.sha }}'
+          format: 'sarif'
+          output: 'trivy-backend-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-backend-results.sarif'
+          category: 'trivy-backend'

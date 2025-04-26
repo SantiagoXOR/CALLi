@@ -1,0 +1,176 @@
+name: "Verificación de Encabezados de Seguridad"
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - 'frontend-call-automation/**'
+      - 'backend-call-automation/**'
+      - 'nginx/conf.d/**'
+  pull_request:
+    branches: [ "master" ]
+    paths:
+      - 'frontend-call-automation/**'
+      - 'backend-call-automation/**'
+      - 'nginx/conf.d/**'
+  schedule:
+    - cron: '0 0 * * 4'  # Ejecutar cada jueves a medianoche
+
+jobs:
+  check-security-headers:
+    name: Verificar Encabezados de Seguridad
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 markdown
+
+      - name: Create security headers check script
+        run: |
+          cat > check_security_headers.py << 'EOF'
+          import requests
+          import sys
+          import json
+          import os
+          from datetime import datetime
+
+          # Lista de encabezados de seguridad a verificar
+          SECURITY_HEADERS = {
+              'Strict-Transport-Security': 'Protege contra ataques de downgrade y secuestro de cookies',
+              'Content-Security-Policy': 'Protege contra ataques XSS y de inyección de datos',
+              'X-Content-Type-Options': 'Previene el MIME-sniffing',
+              'X-Frame-Options': 'Protege contra ataques de clickjacking',
+              'X-XSS-Protection': 'Proporciona protección contra XSS en navegadores antiguos',
+              'Referrer-Policy': 'Controla la información del referrer enviada',
+              'Permissions-Policy': 'Controla las características del navegador',
+              'Cache-Control': 'Controla cómo se almacenan en caché las respuestas',
+              'Clear-Site-Data': 'Borra datos almacenados en el cliente',
+              'Cross-Origin-Embedder-Policy': 'Controla la carga de recursos cross-origin',
+              'Cross-Origin-Opener-Policy': 'Controla el acceso cross-origin a la ventana',
+              'Cross-Origin-Resource-Policy': 'Controla cómo se pueden incorporar los recursos'
+          }
+
+          def check_headers(url):
+              print(f"Verificando encabezados de seguridad para: {url}")
+              
+              try:
+                  response = requests.get(url, timeout=10)
+                  headers = response.headers
+                  
+                  results = {
+                      'url': url,
+                      'status_code': response.status_code,
+                      'headers_present': {},
+                      'headers_missing': {},
+                      'timestamp': datetime.now().isoformat()
+                  }
+                  
+                  for header, description in SECURITY_HEADERS.items():
+                      if header in headers:
+                          results['headers_present'][header] = {
+                              'value': headers[header],
+                              'description': description
+                          }
+                      else:
+                          results['headers_missing'][header] = {
+                              'description': description
+                          }
+                  
+                  return results
+                  
+              except Exception as e:
+                  print(f"Error al verificar {url}: {str(e)}")
+                  return {
+                      'url': url,
+                      'error': str(e),
+                      'timestamp': datetime.now().isoformat()
+                  }
+
+          def generate_markdown_report(results):
+              md = "# Informe de Encabezados de Seguridad\n\n"
+              md += f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
+              
+              for url_result in results:
+                  md += f"## URL: {url_result['url']}\n\n"
+                  
+                  if 'error' in url_result:
+                      md += f"**Error:** {url_result['error']}\n\n"
+                      continue
+                  
+                  md += f"**Código de estado:** {url_result['status_code']}\n\n"
+                  
+                  md += "### Encabezados Presentes\n\n"
+                  if url_result['headers_present']:
+                      md += "| Encabezado | Valor | Descripción |\n"
+                      md += "|------------|-------|-------------|\n"
+                      for header, info in url_result['headers_present'].items():
+                          md += f"| {header} | `{info['value']}` | {info['description']} |\n"
+                  else:
+                      md += "*No se encontraron encabezados de seguridad.*\n\n"
+                  
+                  md += "\n### Encabezados Faltantes\n\n"
+                  if url_result['headers_missing']:
+                      md += "| Encabezado | Descripción |\n"
+                      md += "|------------|-------------|\n"
+                      for header, info in url_result['headers_missing'].items():
+                          md += f"| {header} | {info['description']} |\n"
+                  else:
+                      md += "*Todos los encabezados de seguridad están presentes. ¡Excelente!*\n\n"
+                  
+                  md += "\n---\n\n"
+              
+              md += "## Recomendaciones\n\n"
+              md += "Para mejorar la seguridad de la aplicación, considere implementar los encabezados faltantes. "
+              md += "Consulte [OWASP Secure Headers Project](https://owasp.org/www-project-secure-headers/) para más información.\n\n"
+              
+              return md
+
+          if __name__ == "__main__":
+              # URLs a verificar (en un entorno real, estas serían las URLs de tu aplicación)
+              # En este ejemplo, usamos URLs de ejemplo
+              urls_to_check = [
+                  "https://example.com",
+                  "https://securityheaders.com"
+              ]
+              
+              # En un entorno CI, podrías obtener las URLs de variables de entorno
+              if 'CHECK_URLS' in os.environ:
+                  urls_to_check = os.environ['CHECK_URLS'].split(',')
+              
+              results = []
+              for url in urls_to_check:
+                  results.append(check_headers(url))
+              
+              # Guardar resultados en formato JSON
+              with open('security_headers_results.json', 'w') as f:
+                  json.dump(results, f, indent=2)
+              
+              # Generar informe en Markdown
+              markdown_report = generate_markdown_report(results)
+              with open('security_headers_report.md', 'w') as f:
+                  f.write(markdown_report)
+              
+              print("Verificación completada. Resultados guardados en security_headers_results.json y security_headers_report.md")
+          EOF
+
+      - name: Run security headers check
+        run: python check_security_headers.py
+        env:
+          CHECK_URLS: "https://example.com,https://securityheaders.com"
+
+      - name: Upload security headers report
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-headers-report
+          path: |
+            security_headers_results.json
+            security_headers_report.md

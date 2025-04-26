@@ -1,0 +1,20 @@
+name: "CodeQL Config"
+
+queries:
+  - uses: security-and-quality
+
+paths:
+  - backend-call-automation
+  - frontend-call-automation
+  - scripts
+
+paths-ignore:
+  - '**/node_modules/**'
+  - '**/vendor/**'
+  - '**/__pycache__/**'
+  - '**/tests/**'
+  - '**/.venv/**'
+  - '**/docs/**'
+  - '**/build/**'
+  - '**/dist/**'
+  - '**/.next/**'

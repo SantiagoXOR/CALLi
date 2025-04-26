@@ -13,6 +13,7 @@
 - [ ] Performance improvement
 - [ ] Tests
 - [ ] Build/CI changes
+- [ ] Security improvement
 - [ ] Other (please describe):
 
 ## Related Issues
@@ -38,22 +39,44 @@
 - [ ] Added/updated integration tests
 - [ ] Tested manually
 - [ ] Verified documentation examples work
+- [ ] Ejecutado análisis de seguridad
 
 ## Checklist
 
-- [ ] My code follows the project's style guidelines
-- [ ] I have performed a self-review of my code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes generate no new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
-- [ ] Any dependent changes have been merged and published
+- [ ] Mi código sigue las guías de estilo del proyecto
+- [ ] He realizado una auto-revisión de mi código
+- [ ] He comentado mi código, especialmente en áreas difíciles de entender
+- [ ] He realizado los cambios correspondientes en la documentación
+- [ ] Mis cambios no generan nuevas advertencias
+- [ ] He añadido pruebas que demuestran que mi solución es efectiva
+- [ ] Las pruebas unitarias nuevas y existentes pasan localmente con mis cambios
+- [ ] Cualquier cambio dependiente ha sido fusionado y publicado
 
-## Screenshots (if applicable)
+## Consideraciones de Seguridad
 
-<!-- Add screenshots to help explain your changes if relevant -->
+- [ ] He realizado una autoevaluación de seguridad de este código
+- [ ] He seguido las prácticas seguras de codificación
+- [ ] He validado todas las entradas de usuario
+- [ ] He sanitizado todas las salidas para prevenir XSS
+- [ ] He utilizado consultas parametrizadas para acceder a bases de datos
+- [ ] He verificado que no hay credenciales o secretos en el código
+- [ ] He revisado las dependencias en busca de vulnerabilidades
 
-## Additional Notes
+<!-- Si este cambio afecta a la seguridad, responde a las siguientes preguntas: -->
 
-<!-- Any additional information that might be helpful for reviewers -->
+- ¿Este cambio introduce nuevos puntos de entrada de datos del usuario?
+  <!-- Si es así, ¿cómo se validan y sanitizan estos datos? -->
+
+- ¿Este cambio afecta a la autenticación o autorización?
+  <!-- Si es así, ¿cómo se mantiene la seguridad? -->
+
+- ¿Este cambio maneja datos sensibles?
+  <!-- Si es así, ¿cómo se protegen estos datos? -->
+
+## Screenshots (si aplica)
+
+<!-- Añade capturas de pantalla para ayudar a explicar tus cambios si es relevante -->
+
+## Notas Adicionales
+
+<!-- Cualquier información adicional que pueda ser útil para los revisores -->
