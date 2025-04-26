@@ -1,0 +1,1 @@
+Sistema Avanzado de Automatización de Llamadas con IA - Plataforma que combina Next.js, FastAPI, Twilio y ElevenLabs para crear experiencias de comunicación telefónica inteligentes y naturales.
