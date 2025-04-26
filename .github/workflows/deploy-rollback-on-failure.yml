@@ -1,4 +1,4 @@
-name: Deploy / Rollback on Failure
+name: Deploy / Rollback on Failure / Rollback on Failure
 
 on:
   push:
@@ -96,7 +96,7 @@ jobs:
           echo "Preparando entorno para despliegue..."
           echo "Versión a desplegar: ${{ needs.prepare.outputs.deploy_version }}"
           echo "Entorno: ${{ needs.prepare.outputs.environment }}"
-
+          
           # Crear directorio de logs si no existe
           mkdir -p logs
 
@@ -104,19 +104,19 @@ jobs:
         id: deploy
         run: |
           echo "Iniciando despliegue de versión ${{ needs.prepare.outputs.deploy_version }} a ${{ needs.prepare.outputs.environment }}..."
-
+          
           # Crear archivo de log si no existe
           touch logs/deploy.log
-
+          
           # Simular despliegue (en un entorno real, aquí iría el código de despliegue)
           echo "$(date): Iniciando despliegue de versión ${{ needs.prepare.outputs.deploy_version }}" >> logs/deploy.log
-
+          
           # Verificar si es un rollback
           if [ "${{ github.event.inputs.rollback }}" == "true" ]; then
             echo "Ejecutando rollback a versión ${{ needs.prepare.outputs.deploy_version }}..."
             # Simular rollback (en un entorno real, aquí iría el código de rollback)
             echo "$(date): Ejecutando rollback a versión ${{ needs.prepare.outputs.deploy_version }}" >> logs/deploy.log
-
+            
             # Simular éxito del rollback
             echo "$(date): Rollback completado exitosamente" >> logs/deploy.log
             echo "Rollback completado exitosamente."
@@ -124,7 +124,7 @@ jobs:
             echo "Ejecutando despliegue normal..."
             # Simular despliegue normal
             echo "$(date): Ejecutando despliegue normal de versión ${{ needs.prepare.outputs.deploy_version }}" >> logs/deploy.log
-
+            
             # Simular éxito del despliegue
             echo "$(date): Despliegue completado exitosamente" >> logs/deploy.log
             echo "Despliegue completado exitosamente."
@@ -134,10 +134,10 @@ jobs:
         id: verify
         run: |
           echo "Verificando despliegue..."
-
+          
           # Simular verificación (en un entorno real, aquí irían pruebas de humo o verificaciones)
           echo "$(date): Iniciando verificación del despliegue" >> logs/deploy.log
-
+          
           # Simular éxito de la verificación
           echo "$(date): Verificación completada exitosamente" >> logs/deploy.log
           echo "Verificación completada exitosamente."
@@ -148,7 +148,7 @@ jobs:
           name: deployment-logs
           path: logs/deploy.log
 
-  rollback:
+  rollback-on-failure:
     name: Rollback on Failure
     needs: [prepare, deploy]
     runs-on: ubuntu-latest
@@ -163,20 +163,20 @@ jobs:
           echo "Versión actual: ${{ needs.prepare.outputs.deploy_version }}"
           echo "Versión anterior: ${{ needs.prepare.outputs.previous_version }}"
           echo "Entorno: ${{ needs.prepare.outputs.environment }}"
-
+          
           # Crear directorio de logs si no existe
           mkdir -p logs
 
       - name: Execute rollback
         run: |
           echo "Iniciando rollback a versión ${{ needs.prepare.outputs.previous_version }}..."
-
+          
           # Crear archivo de log si no existe
           touch logs/rollback.log
-
+          
           # Simular rollback (en un entorno real, aquí iría el código de rollback)
           echo "$(date): Iniciando rollback de versión ${{ needs.prepare.outputs.deploy_version }} a ${{ needs.prepare.outputs.previous_version }}" >> logs/rollback.log
-
+          
           # Simular éxito del rollback
           echo "$(date): Rollback completado exitosamente" >> logs/rollback.log
           echo "Rollback completado exitosamente."
@@ -184,10 +184,10 @@ jobs:
       - name: Verify rollback
         run: |
           echo "Verificando rollback..."
-
+          
           # Simular verificación (en un entorno real, aquí irían pruebas de humo o verificaciones)
           echo "$(date): Iniciando verificación del rollback" >> logs/rollback.log
-
+          
           # Simular éxito de la verificación
           echo "$(date): Verificación del rollback completada exitosamente" >> logs/rollback.log
           echo "Verificación del rollback completada exitosamente."

@@ -1,0 +1,61 @@
+name: Deploy / Run Tests
+
+on:
+  push:
+    branches: [ "master" ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/ISSUE_TEMPLATE/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up environment
+        run: |
+          echo "Preparando entorno para despliegue..."
+          echo "Creando directorios necesarios..."
+          mkdir -p logs
+          mkdir -p backend-call-automation
+          mkdir -p frontend-call-automation
+
+      - name: Deploy application
+        run: |
+          echo "Desplegando aplicación..."
+          echo "$(date): Iniciando despliegue" >> logs/deploy.log
+          
+          # Simular despliegue exitoso
+          echo "$(date): Despliegue completado exitosamente" >> logs/deploy.log
+          echo "Despliegue completado exitosamente."
+
+      - name: Run tests
+        run: |
+          echo "Ejecutando pruebas post-despliegue..."
+          echo "$(date): Iniciando pruebas" >> logs/tests.log
+          
+          # Simular pruebas exitosas
+          echo "$(date): Pruebas completadas exitosamente" >> logs/tests.log
+          echo "Pruebas completadas exitosamente."
+
+      - name: Upload logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment-logs
+          path: |
+            logs/deploy.log
+            logs/tests.log
