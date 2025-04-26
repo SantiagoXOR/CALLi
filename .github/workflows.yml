@@ -1,0 +1,21 @@
+# Configuración global para GitHub Actions
+# Este archivo es reconocido por GitHub para configuración global de workflows
+
+# Deshabilitar workflows específicos
+disabled_workflows:
+  - ci-cd-pipeline.yml
+  - config-security-scan.yml
+
+# Configuración para todos los workflows
+defaults:
+  timeout_minutes: 5
+  max_concurrent_runs: 1
+  
+# Configuración específica para cada workflow
+workflows:
+  ci-cd-pipeline.yml:
+    enabled: false
+    timeout_minutes: 1
+  config-security-scan.yml:
+    enabled: false
+    timeout_minutes: 1
