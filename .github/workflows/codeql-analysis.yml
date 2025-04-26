@@ -20,7 +20,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'javascript', 'python' ]
+        language: [ 'javascript', 'python', 'cpp' ]
+        # Excluir cpp si no hay código C/C++ en el proyecto
+        exclude:
+          - language: cpp
+            # Esta condición siempre es falsa, pero sirve para documentar
+            # que se puede excluir cpp si no hay código C/C++ en el proyecto
+            condition: true
 
     steps:
     - name: Checkout repository
@@ -30,10 +36,19 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
+        config-file: ./.github/codeql/codeql-config.yml
         queries: security-and-quality
+
+    # Para C/C++, necesitamos un paso de compilación
+    - name: Build C/C++ (if needed)
+      if: matrix.language == 'cpp'
+      run: |
+        echo "No hay código C/C++ que compilar, pero este paso es necesario para CodeQL"
+        # En un proyecto real con código C/C++, aquí iría el comando de compilación
 
     - name: Autobuild
       uses: github/codeql-action/autobuild@v2
+      if: matrix.language != 'cpp'
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
