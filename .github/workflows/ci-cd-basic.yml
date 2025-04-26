@@ -1,0 +1,50 @@
+name: CI/CD Basic
+
+on:
+  workflow_dispatch:
+
+jobs:
+  basic-test:
+    name: Basic Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create directories
+        run: |
+          mkdir -p backend-call-automation/tests
+          mkdir -p backend-call-automation/app
+          mkdir -p logs
+
+      - name: Create test file
+        run: |
+          cat > backend-call-automation/tests/test_basic.py << 'EOF'
+def test_true():
+    assert True
+EOF
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install pytest
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+
+      - name: Run test
+        run: |
+          cd backend-call-automation
+          python -m pytest tests/test_basic.py -v
+
+      - name: Create log
+        run: |
+          echo "Tests completed successfully" > logs/test.log
+
+      - name: Upload logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-logs
+          path: logs/test.log

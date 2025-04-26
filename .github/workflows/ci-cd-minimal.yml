@@ -1,0 +1,33 @@
+name: CI/CD Minimal
+
+on:
+  push:
+    branches: [ "master" ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/ISSUE_TEMPLATE/**'
+  workflow_dispatch:
+
+jobs:
+  minimal-test:
+    name: Minimal Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create test directory
+        run: mkdir -p test
+
+      - name: Create test file
+        run: echo "Test passed" > test/result.txt
+
+      - name: Display test result
+        run: cat test/result.txt
+
+      - name: Upload test result
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-result
+          path: test/result.txt

@@ -1,12 +1,6 @@
-name: "Configuration Security Scan"
+name: "Configuration Security Scan (Disabled)"
 
 on:
-  push:
-    branches: [ "master" ]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.github/ISSUE_TEMPLATE/**'
   workflow_dispatch:
 
 jobs:

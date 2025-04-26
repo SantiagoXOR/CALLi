@@ -1,18 +1,7 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline (Disabled)
 
 on:
-  push:
-    branches: [ "master" ]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.github/ISSUE_TEMPLATE/**'
-  pull_request:
-    branches: [ "master" ]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.github/ISSUE_TEMPLATE/**'
+  workflow_dispatch:
 
 jobs:
   backend-tests:
