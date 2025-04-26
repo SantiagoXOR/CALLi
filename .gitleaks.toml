@@ -1,0 +1,85 @@
+# Configuración de Gitleaks para detectar secretos en el código
+
+title = "Gitleaks Configuration"
+
+# Reglas para detectar secretos
+[[rules]]
+id = "generic-api-key"
+description = "Generic API Key"
+regex = '''(?i)((api[_-]?key|apikey|api[_-]?token|x[_-]?api[_-]?key)[_-]?)[=:]["']?[ ]*[A-Za-z0-9/+]{32,}["']?'''
+tags = ["key", "API", "generic"]
+[rules.allowlist]
+description = "Allowed patterns"
+regexes = [
+  '''EXAMPLE_KEY''',
+  '''SAMPLE_KEY''',
+  '''TEST_KEY''',
+]
+
+[[rules]]
+id = "generic-secret"
+description = "Generic Secret"
+regex = '''(?i)((secret|password|credentials|pass|pwd)[_-]?)[=:]["']?[ ]*[A-Za-z0-9/+]{8,}["']?'''
+tags = ["key", "secret", "generic"]
+[rules.allowlist]
+description = "Allowed patterns"
+regexes = [
+  '''EXAMPLE_SECRET''',
+  '''SAMPLE_SECRET''',
+  '''TEST_SECRET''',
+  '''password_validation''',
+  '''password_hashers''',
+]
+
+[[rules]]
+id = "aws-access-key"
+description = "AWS Access Key"
+regex = '''(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}'''
+tags = ["key", "AWS"]
+
+[[rules]]
+id = "aws-secret-key"
+description = "AWS Secret Key"
+regex = '''(?i)aws[_-]?secret[_-]?access[_-]?key[ =:]["']?[A-Za-z0-9/+]{40}["']?'''
+tags = ["key", "AWS"]
+
+[[rules]]
+id = "jwt-token"
+description = "JWT Token"
+regex = '''eyJ[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*'''
+tags = ["key", "JWT"]
+[rules.allowlist]
+description = "Allowed patterns"
+regexes = [
+  '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9''',
+]
+
+# Archivos y directorios a excluir
+[allowlist]
+description = "Allowed files and directories"
+paths = [
+  '''(.*?)(jpg|jpeg|png|gif|svg|webp)$''',
+  '''(.*?)(mp4|avi|mov|wmv)$''',
+  '''(.*?)(mp3|wav|ogg)$''',
+  '''(.*?)(pdf|doc|docx|xls|xlsx|ppt|pptx)$''',
+  '''(.*?)(zip|tar|gz|rar)$''',
+  '''(.*?)node_modules(.*?)''',
+  '''(.*?)venv(.*?)''',
+  '''(.*?)\.venv(.*?)''',
+  '''(.*?)\.git(.*?)''',
+  '''(.*?)\.pytest_cache(.*?)''',
+  '''(.*?)__pycache__(.*?)''',
+  '''(.*?)\.mypy_cache(.*?)''',
+  '''(.*?)\.ruff_cache(.*?)''',
+  '''(.*?)\.coverage(.*?)''',
+  '''(.*?)htmlcov(.*?)''',
+  '''(.*?)dist(.*?)''',
+  '''(.*?)build(.*?)''',
+  '''(.*?)\.eggs(.*?)''',
+  '''(.*?)\.tox(.*?)''',
+  '''(.*?)\.idea(.*?)''',
+  '''(.*?)\.vscode(.*?)''',
+  '''(.*?)\.DS_Store(.*?)''',
+  '''(.*?)Thumbs\.db(.*?)''',
+  '''(.*?)\.gitleaks\.toml''',
+]
