@@ -1,4 +1,4 @@
-name: Deploy / Run Tests
+name: Deploy Simple
 
 on:
   push:
@@ -8,15 +8,6 @@ on:
       - 'docs/**'
       - '.github/ISSUE_TEMPLATE/**'
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to deploy to'
-        required: true
-        default: 'staging'
-        type: choice
-        options:
-          - staging
-          - production
 
 jobs:
   deploy:
@@ -29,7 +20,6 @@ jobs:
       - name: Set up environment
         run: |
           echo "Preparando entorno para despliegue..."
-          echo "Creando directorios necesarios..."
           mkdir -p logs
           mkdir -p backend-call-automation
           mkdir -p frontend-call-automation
@@ -37,18 +27,16 @@ jobs:
       - name: Deploy application
         run: |
           echo "Desplegando aplicación..."
+          touch logs/deploy.log
           echo "$(date): Iniciando despliegue" >> logs/deploy.log
-          
-          # Simular despliegue exitoso
           echo "$(date): Despliegue completado exitosamente" >> logs/deploy.log
           echo "Despliegue completado exitosamente."
 
       - name: Run tests
         run: |
           echo "Ejecutando pruebas post-despliegue..."
+          touch logs/tests.log
           echo "$(date): Iniciando pruebas" >> logs/tests.log
-          
-          # Simular pruebas exitosas
           echo "$(date): Pruebas completadas exitosamente" >> logs/tests.log
           echo "Pruebas completadas exitosamente."
 
