@@ -113,33 +113,36 @@ EOF
       - name: Create basic test file if it doesn't exist
         run: |
           if [ ! -f "frontend-call-automation/__tests__/basic.test.tsx" ]; then
-            echo '// Basic test file to ensure the test environment is working correctly
+            cat > frontend-call-automation/__tests__/basic.test.tsx << 'EOF'
+// Basic test file to ensure the test environment is working correctly
+describe("Basic test suite", () => {
+  test("true should be true", () => {
+    expect(true).toBe(true);
+  });
 
-            describe("Basic test suite", () => {
-              test("true should be true", () => {
-                expect(true).toBe(true);
-              });
-
-              test("1 + 1 should equal 2", () => {
-                expect(1 + 1).toBe(2);
-              });
-            });' > frontend-call-automation/__tests__/basic.test.tsx
+  test("1 + 1 should equal 2", () => {
+    expect(1 + 1).toBe(2);
+  });
+});
+EOF
           fi
 
       - name: Create basic package.json if it doesn't exist
         run: |
           if [ ! -f "frontend-call-automation/package.json" ]; then
-            echo '{
-              "name": "frontend-call-automation",
-              "version": "1.0.0",
-              "description": "Frontend for Call Automation",
-              "main": "index.js",
-              "scripts": {
-                "test": "echo \"No tests specified yet\" && exit 0"
-              },
-              "dependencies": {},
-              "devDependencies": {}
-            }' > frontend-call-automation/package.json
+            cat > frontend-call-automation/package.json << 'EOF'
+{
+  "name": "frontend-call-automation",
+  "version": "1.0.0",
+  "description": "Frontend for Call Automation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests specified yet\" && exit 0"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
+EOF
           fi
 
       - name: Install dependencies
