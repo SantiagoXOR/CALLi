@@ -1,0 +1,3 @@
+# Ignorar archivos de workflows deshabilitados
+*.yml.disabled
+*.yaml.disabled

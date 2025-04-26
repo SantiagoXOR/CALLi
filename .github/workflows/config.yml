@@ -1,0 +1,34 @@
+name: Workflow Configuration
+
+on:
+  workflow_dispatch:
+
+jobs:
+  config:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create configuration file
+        run: |
+          echo "# GitHub Actions Configuration" > .github/workflows/config.json
+          echo "{" >> .github/workflows/config.json
+          echo "  \"disabled_workflows\": [" >> .github/workflows/config.json
+          echo "    \"ci-cd-pipeline.yml\"," >> .github/workflows/config.json
+          echo "    \"config-security-scan.yml\"" >> .github/workflows/config.json
+          echo "  ]" >> .github/workflows/config.json
+          echo "}" >> .github/workflows/config.json
+          
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .github/workflows/config.json
+          git commit -m "Configurar workflows deshabilitados" || echo "No changes to commit"
+          
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

@@ -1,0 +1,37 @@
+name: Disable Most Workflows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  disable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Disable workflows
+        run: |
+          # Crear directorio para workflows deshabilitados
+          mkdir -p .github/workflows/disabled
+          
+          # Mover todos los workflows excepto los ultra-minimalistas
+          for file in .github/workflows/*.yml; do
+            filename=$(basename "$file")
+            if [[ "$filename" != "ultra-minimal-"* && "$filename" != "simple-check.yml" && "$filename" != "super-simple-check.yml" && "$filename" != "disable-most.yml" ]]; then
+              mv "$file" ".github/workflows/disabled/$filename.disabled" || true
+            fi
+          done
+          
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .github/workflows/
+          git commit -m "Deshabilitar la mayoría de los workflows" || echo "No changes to commit"
+          
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
