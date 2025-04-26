@@ -33,7 +33,7 @@ class AIConfig(BaseModel):
 
 class CampaignBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=255, description="Nombre de la campaña")
-    description: str | None = Field(None, description="Descripción detallada de la campaña")
+    description: Optional[str] = Field(None, description="Descripción detallada de la campaña")
     status: CampaignStatus = Field(
         default=CampaignStatus.DRAFT,
         description="Estado actual de la campaña"
@@ -88,21 +88,21 @@ class CampaignCreate(CampaignBase):
     pass
 
 class CampaignUpdate(BaseModel):
-    name: str | None = Field(None, min_length=1, max_length=255)
-    description: str | None = None
-    status: CampaignStatus | None = None
-    campaign_type: CampaignType | None = None
-    schedule_start: datetime | None = None
-    schedule_end: datetime | None = None
-    contact_list_ids: List[UUID] | None = None
-    script_template: str | None = Field(None, min_length=10)
-    max_retries: int | None = Field(None, ge=0)
-    retry_delay_minutes: int | None = Field(None, ge=0)
-    calling_hours_start: str | None = None
-    calling_hours_end: str | None = None
-    pending_calls: int | None = Field(None, ge=0)
-    ai_config: AIConfig | None = None
-    key_points: List[str] | None = None
+    name: Optional[str] = Field(None, min_length=1, max_length=255)
+    description: Optional[str] = None
+    status: Optional[CampaignStatus] = None
+    campaign_type: Optional[CampaignType] = None
+    schedule_start: Optional[datetime] = None
+    schedule_end: Optional[datetime] = None
+    contact_list_ids: Optional[List[UUID]] = None
+    script_template: Optional[str] = Field(None, min_length=10)
+    max_retries: Optional[int] = Field(None, ge=0)
+    retry_delay_minutes: Optional[int] = Field(None, ge=0)
+    calling_hours_start: Optional[str] = None
+    calling_hours_end: Optional[str] = None
+    pending_calls: Optional[int] = Field(None, ge=0)
+    ai_config: Optional[AIConfig] = None
+    key_points: Optional[List[str]] = None
 
     model_config = ConfigDict(from_attributes=True)
 

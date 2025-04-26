@@ -54,6 +54,12 @@ run_backend_tests() {
         touch .test_deps_installed
     fi
 
+    # Asegurarse de que el directorio de logs existe
+    mkdir -p logs
+
+    # Crear archivo de log si no existe
+    touch logs/app.log
+
     # Ejecutar pruebas básicas primero
     echo "Ejecutando pruebas básicas..."
     if pytest tests/test_basic.py -v; then

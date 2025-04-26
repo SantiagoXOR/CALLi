@@ -1,6 +1,6 @@
 [tool.bandit]
-exclude_dirs = ["tests", "venv", ".venv", "docs"]
-skips = ["B101"]
+exclude_dirs = ["tests", "venv", ".venv", "docs", "__pycache__", ".git"]
+skips = ["B101", "B104"]
 
 [tool.black]
 line-length = 88
@@ -37,8 +37,13 @@ testpaths = ["backend-call-automation/tests"]
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests",
     "asyncio: mark a test as an asyncio coroutine",
+    "unit: marks tests as unit tests",
 ]

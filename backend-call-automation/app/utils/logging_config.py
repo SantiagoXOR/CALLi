@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 
 class ElevenLabsLogger:
     """Provides structured logging specifically for ElevenLabs service interactions."""
-    
+
     def __init__(self, logger_name: str = "elevenlabs_service"):
         self.logger = logging.getLogger(logger_name)
         # Ensure logger level is set (can be configured externally too)
@@ -59,10 +59,10 @@ class ElevenLabsLogger:
             return None
         sanitized = params.copy()
         # List of keys to sanitize - expand as needed
-        sensitive_keys = ["api_key", "token", "password", "Authorization"] 
+        sensitive_keys = ["api_key", "token", "password", "Authorization"]
         for key in sensitive_keys:
             if key in sanitized:
-                sanitized[key] = "***" 
+                sanitized[key] = "***"
         # Sanitize nested structures if necessary (recursive approach might be needed)
         if "headers" in sanitized and isinstance(sanitized["headers"], dict):
              for h_key in sensitive_keys:
@@ -90,5 +90,7 @@ class ElevenLabsLogger:
     def log_warning(self, method: str, message: str, context: Optional[Dict[str, Any]] = None):
         """Logs warning messages."""
         log_entry = self._create_log_entry("WARNING", method, message, context)
+        self.logger.warning(json.dumps(log_entry))
+
 # Global instance (optional, could be instantiated per service instance)
 # elevenlabs_logger = ElevenLabsLogger()
