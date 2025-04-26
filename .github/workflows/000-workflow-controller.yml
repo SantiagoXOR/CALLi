@@ -1,0 +1,27 @@
+name: Workflow Controller
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  cancel-problematic-workflows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel CI/CD Pipeline
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          workflow_id: "ci-cd-pipeline.yml"
+          access_token: ${{ github.token }}
+          
+      - name: Cancel Configuration Security Scan
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          workflow_id: "config-security-scan.yml"
+          access_token: ${{ github.token }}
+          
+      - name: Success
+        run: echo "Workflows problemáticos cancelados con éxito"

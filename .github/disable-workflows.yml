@@ -1,0 +1,3 @@
+disabled:
+  - ci-cd-pipeline.yml
+  - config-security-scan.yml

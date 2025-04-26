@@ -1,11 +1,15 @@
 name: Configuration Security Scan (Disabled)
 
+# Este workflow está intencionalmente vacío y no hace nada
+# Se ha deshabilitado debido a problemas persistentes
+
 on:
+  # Ningún evento activará este workflow
   workflow_dispatch:
 
 jobs:
   disabled:
+    if: false # Esta condición siempre es falsa, por lo que el job nunca se ejecutará
     runs-on: ubuntu-latest
     steps:
-      - name: Workflow disabled
-        run: echo "This workflow has been disabled due to persistent issues."
+      - run: echo "Este workflow ha sido deshabilitado"

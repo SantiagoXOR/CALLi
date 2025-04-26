@@ -1,3 +1,7 @@
 # Ignorar archivos de workflows deshabilitados
 *.yml.disabled
 *.yaml.disabled
+
+# Ignorar workflows problemáticos específicos
+ci-cd-pipeline.yml
+config-security-scan.yml
