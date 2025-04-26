@@ -94,3 +94,10 @@ repos:
         language: system
         pass_filenames: false
         stages: [commit]
+
+      - id: prevent-prohibited-workflows
+        name: Prevent Prohibited Workflows
+        entry: python .github/scripts/prevent_prohibited_workflows.py
+        language: python
+        files: \.github/workflows/.*\.yml$
+        pass_filenames: true
