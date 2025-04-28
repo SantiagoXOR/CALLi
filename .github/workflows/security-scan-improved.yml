@@ -1,0 +1,136 @@
+name: "Verificación de Seguridad Mejorada"
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - 'frontend-call-automation/**'
+      - 'backend-call-automation/**'
+      - 'nginx/conf.d/**'
+      - '.github/workflows/security-scan-improved.yml'
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:  # Permitir ejecución manual
+
+jobs:
+  security-scan:
+    name: Escaneo de Seguridad
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Verificación de encabezados de seguridad
+      - name: Verificar encabezados de seguridad
+        run: |
+          if [ -f "nginx/conf.d/default.conf" ]; then
+            echo "Verificando encabezados de seguridad en nginx/conf.d/default.conf..."
+            
+            HEADERS_REQUIRED=(
+              "Strict-Transport-Security"
+              "X-Content-Type-Options"
+              "X-Frame-Options"
+              "Content-Security-Policy"
+            )
+            
+            HEADERS_MISSING=0
+            for header in "${HEADERS_REQUIRED[@]}"; do
+              if ! grep -q "$header" nginx/conf.d/default.conf; then
+                echo "::warning::Falta encabezado de seguridad: $header"
+                HEADERS_MISSING=$((HEADERS_MISSING+1))
+              else
+                echo "✅ Encabezado $header encontrado"
+              fi
+            done
+            
+            if [ $HEADERS_MISSING -gt 0 ]; then
+              echo "::warning::Faltan $HEADERS_MISSING encabezados de seguridad"
+            else
+              echo "✅ Todos los encabezados de seguridad requeridos están presentes"
+            fi
+          else
+            echo "::warning::No se encontró el archivo nginx/conf.d/default.conf"
+          fi
+
+      # Verificación de dependencias Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Verificar dependencias Python
+        run: |
+          python -m pip install --upgrade pip
+          
+          # Crear directorio si no existe
+          mkdir -p backend-call-automation
+          
+          # Verificar si existe requirements.txt
+          if [ -f "backend-call-automation/requirements.txt" ]; then
+            echo "Verificando dependencias Python..."
+            pip install safety
+            safety check -r backend-call-automation/requirements.txt --output text || echo "::warning::Se encontraron vulnerabilidades en dependencias Python"
+          else
+            echo "::warning::No se encontró el archivo backend-call-automation/requirements.txt"
+          fi
+
+      # Verificación de dependencias JavaScript
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Verificar dependencias JavaScript
+        run: |
+          # Crear directorio si no existe
+          mkdir -p frontend-call-automation
+          
+          # Verificar si existe package.json
+          if [ -f "frontend-call-automation/package.json" ]; then
+            echo "Verificando dependencias JavaScript..."
+            cd frontend-call-automation
+            npm audit --json || echo "::warning::Se encontraron vulnerabilidades en dependencias JavaScript"
+          else
+            echo "::warning::No se encontró el archivo frontend-call-automation/package.json"
+          fi
+
+      # Verificación de archivos de seguridad
+      - name: Verificar archivos de seguridad
+        run: |
+          FILES_REQUIRED=(
+            "SECURITY.md"
+            "CODE_OF_CONDUCT.md"
+            ".github/CONTRIBUTING.md"
+            ".github/PULL_REQUEST_TEMPLATE.md"
+            ".github/ISSUE_TEMPLATE/security_issue.md"
+            ".github/workflows/codeql-analysis.yml"
+            ".github/dependabot.yml"
+            ".github/workflows/secret-scanning.yml"
+          )
+          
+          FILES_MISSING=0
+          for file in "${FILES_REQUIRED[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "::warning::Falta archivo de seguridad: $file"
+              FILES_MISSING=$((FILES_MISSING+1))
+            else
+              echo "✅ Archivo $file encontrado"
+            fi
+          done
+          
+          if [ $FILES_MISSING -gt 0 ]; then
+            echo "::warning::Faltan $FILES_MISSING archivos de seguridad"
+          else
+            echo "✅ Todos los archivos de seguridad requeridos están presentes"
+          fi
+
+      # Verificación de secretos
+      - name: Verificar secretos
+        run: |
+          echo "Verificando secretos en el código..."
+          
+          # Instalar herramienta de detección de secretos
+          pip install detect-secrets || pip install detect-secrets==1.4.0
+          
+          # Ejecutar detección de secretos
+          detect-secrets scan --all-files || echo "::warning::Se encontraron posibles secretos en el código"
