@@ -21,7 +21,7 @@ flake8-simplify==0.21.0
 pylint==3.0.2
 
 # Security
-bandit==1.7.5
+bandit==1.8.3
 safety==2.3.5
 
 # Documentation
