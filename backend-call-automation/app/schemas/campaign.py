@@ -1,18 +1,19 @@
 from datetime import datetime
 from uuid import UUID
+from typing import Optional, List, Dict
 from pydantic import BaseModel, Field, ConfigDict, validator
 from app.models.campaign import CampaignStatus
 
 class CampaignCreate(BaseModel):
     name: str = Field(..., min_length=1, max_length=255, description="Nombre de la campaña")
-    description: str | None = Field(None, description="Descripción detallada")
+    description: Optional[str] = Field(None, description="Descripción detallada")
     status: CampaignStatus = Field(
         default=CampaignStatus.DRAFT,
         description="Estado inicial de la campaña"
     )
     schedule_start: datetime = Field(..., description="Fecha y hora de inicio")
     schedule_end: datetime = Field(..., description="Fecha y hora de finalización")
-    contact_list_ids: list[UUID] = Field(
+    contact_list_ids: List[UUID] = Field(
         default_factory=list,
         description="IDs de listas de contactos"
     )
@@ -40,16 +41,16 @@ class CampaignCreate(BaseModel):
         return v
 
 class CampaignUpdate(BaseModel):
-    name: str | None = Field(None, min_length=1, max_length=255)
-    description: str | None = None
-    status: CampaignStatus | None = None
-    schedule_start: datetime | None = None
-    schedule_end: datetime | None = None
-    contact_list_ids: list[UUID] | None = None
-    script_template: str | None = Field(None, min_length=10)
-    max_retries: int | None = Field(None, ge=0)
-    retry_delay_minutes: int | None = Field(None, ge=0)
-    calling_hours_start: str | None = None
-    calling_hours_end: str | None = None
+    name: Optional[str] = Field(None, min_length=1, max_length=255)
+    description: Optional[str] = None
+    status: Optional[CampaignStatus] = None
+    schedule_start: Optional[datetime] = None
+    schedule_end: Optional[datetime] = None
+    contact_list_ids: Optional[List[UUID]] = None
+    script_template: Optional[str] = Field(None, min_length=10)
+    max_retries: Optional[int] = Field(None, ge=0)
+    retry_delay_minutes: Optional[int] = Field(None, ge=0)
+    calling_hours_start: Optional[str] = None
+    calling_hours_end: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)

@@ -5,7 +5,7 @@ from datetime import datetime
 from enum import Enum
 from uuid import UUID
 from pydantic import BaseModel, Field, ConfigDict
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 class CallStatus(str, Enum):
     SCHEDULED = "scheduled"
@@ -20,12 +20,12 @@ class CallStatus(str, Enum):
 
 class CallBase(BaseModel):
     contact_id: UUID = Field(..., description="ID del contacto")
-    scheduled_time: datetime | None = Field(None, description="Fecha programada para la llamada")
+    scheduled_time: Optional[datetime] = Field(None, description="Fecha programada para la llamada")
     status: CallStatus = Field(..., description="Estado actual de la llamada")
-    duration: int | None = Field(None, description="Duración en segundos")
-    recording_url: str | None = Field(None, description="URL de grabación")
-    notes: str | None = Field(None, description="Notas adicionales")
-    twilio_sid: str | None = Field(None, description="SID de Twilio")
+    duration: Optional[int] = Field(None, description="Duración en segundos")
+    recording_url: Optional[str] = Field(None, description="URL de grabación")
+    notes: Optional[str] = Field(None, description="Notas adicionales")
+    twilio_sid: Optional[str] = Field(None, description="SID de Twilio")
     retry_attempts: int = Field(0, description="Número de intentos")
     max_retries: int = Field(3, description="Máximo de intentos permitidos")
     script_template: str = Field(..., description="Texto para audio")
@@ -33,7 +33,7 @@ class CallBase(BaseModel):
     status_callback_url: str = Field(..., description="URL para callbacks")
     phone_number: str = Field(..., description="Número destino")
     from_number: str = Field(..., description="Número origen")
-    error_message: str | None = Field(None, description="Mensaje de error")
+    error_message: Optional[str] = Field(None, description="Mensaje de error")
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -49,11 +49,11 @@ class CallCreate(CallBase):
     model_config = ConfigDict(from_attributes=True)
 
 class CallUpdate(BaseModel):
-    status: CallStatus | None = None
-    duration: int | None = None
-    recording_url: str | None = None
-    error_message: str | None = None
-    retry_attempts: int | None = None
+    status: Optional[CallStatus] = None
+    duration: Optional[int] = None
+    recording_url: Optional[str] = None
+    error_message: Optional[str] = None
+    retry_attempts: Optional[int] = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -62,7 +62,7 @@ class Call(CallBase):
     created_at: datetime = Field(..., description="Fecha de creación")
     updated_at: datetime = Field(..., description="Fecha de actualización")
     campaign_id: str = Field(..., description="ID de la campaña")
-    interaction_history: list[dict[str, Any]] | None = Field(
+    interaction_history: Optional[List[Dict[str, Any]]] = Field(
         None,
         description="Historial de interacciones"
     )

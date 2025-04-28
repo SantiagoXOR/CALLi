@@ -29,7 +29,14 @@ repos:
     rev: v1.5.1
     hooks:
       - id: mypy
-        additional_dependencies: [types-all]
+        additional_dependencies:
+          - types-requests
+          - types-PyYAML
+          - types-python-dateutil
+          - types-setuptools
+          - types-toml
+          - types-redis
+          - types-urllib3
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v3.0.3
@@ -101,3 +108,24 @@ repos:
         language: python
         files: \.github/workflows/.*\.yml$
         pass_filenames: true
+
+      - id: check-types
+        name: Check Python types with mypy
+        entry: python scripts/check_types.py
+        language: python
+        types: [python]
+        pass_filenames: false
+
+      - id: run-backend-tests
+        name: Run backend tests
+        entry: python scripts/run_tests.py --backend
+        language: python
+        pass_filenames: false
+        stages: [push]
+
+      - id: kics-security-scan
+        name: Run KICS security scan
+        entry: bash -c 'kics scan -p . --config .kics.config -o security-reports || true'
+        language: system
+        pass_filenames: false
+        stages: [push]

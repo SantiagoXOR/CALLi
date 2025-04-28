@@ -1,7 +1,7 @@
 from prometheus_client import Counter, Histogram, Gauge, Summary
 import time
 import logging
-from typing import Any
+from typing import Any, Dict, Optional
 from datetime import datetime
 from app.config.metrics_config import get_metrics_settings, MetricNames
 from app.config.supabase import supabase_client
@@ -19,22 +19,22 @@ AI_SENTIMENT_SCORE = Gauge(MetricNames.AI_SENTIMENT_SCORE, 'Puntuación de senti
 AI_TOKENS_USED = Summary(MetricNames.AI_TOKENS_USED, 'Número de tokens utilizados en solicitudes de IA')
 
 # Caché para métricas de IA
-AI_METRICS_CACHE: dict[str, dict[str, Any]] = {}
+AI_METRICS_CACHE: Dict[str, Dict[str, Any]] = {}
 
 class AIMetricsService:
     """
     Servicio para recopilar y registrar métricas relacionadas con el procesamiento de IA.
-    
-    Registra métricas importantes como tiempos de respuesta, número total 
+
+    Registra métricas importantes como tiempos de respuesta, número total
     de solicitudes y errores durante el procesamiento de IA.
     """
-    
+
     @staticmethod
     async def record_metrics(
-        start_time: float, 
-        success: bool, 
-        conversation_id: str | None = None,
-        extra_metrics: dict[str, Any] | None = None
+        start_time: float,
+        success: bool,
+        conversation_id: Optional[str] = None,
+        extra_metrics: Optional[Dict[str, Any]] = None
     ):
         """
         Registra métricas de una operación de IA.
@@ -48,18 +48,18 @@ class AIMetricsService:
         duration = time.time() - start_time
         AI_RESPONSE_TIME.observe(duration)
         AI_REQUESTS_TOTAL.inc()
-        
+
         if not success:
             AI_ERRORS_TOTAL.inc()
-            
+
         # Registrar métricas adicionales si están disponibles
         if extra_metrics:
             if 'sentiment_score' in extra_metrics:
                 AI_SENTIMENT_SCORE.set(extra_metrics['sentiment_score'])
-                
+
             if 'tokens_used' in extra_metrics:
                 AI_TOKENS_USED.observe(extra_metrics['tokens_used'])
-        
+
         # Almacenar en caché si hay ID de conversación
         if conversation_id and extra_metrics:
             AI_METRICS_CACHE[conversation_id] = {
@@ -68,18 +68,18 @@ class AIMetricsService:
                 'success': success,
                 **extra_metrics
             }
-            
+
         logger.debug(f"Métricas de IA registradas: duración={duration:.2f}s, éxito={success}")
-    
+
     @staticmethod
-    def get_metrics_summary() -> dict[str, Any]:
+    def get_metrics_summary() -> Dict[str, Any]:
         """
         Obtiene un resumen de las métricas de IA registradas.
 
         Returns:
             dict[str, Any]: Resumen con:
                 total_requests: Total de solicitudes procesadas
-                total_errors: Total de errores registrados  
+                total_errors: Total de errores registrados
                 cached_conversations: Número de conversaciones en caché
         """
         return {
@@ -91,7 +91,7 @@ class AIMetricsService:
     @staticmethod
     async def record_conversation_metrics(
         conversation_id: str,
-        metrics: dict[str, Any]
+        metrics: Dict[str, Any]
     ) -> None:
         """Registra métricas de conversación."""
         try:

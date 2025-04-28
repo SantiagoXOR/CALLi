@@ -9,7 +9,7 @@ import asyncio
 import logging
 import json
 from datetime import datetime
-from typing import Any
+from typing import Any, Dict, Optional, List
 
 from app.config.ai_config import AISettings
 from app.config.supabase import supabase_client
@@ -26,14 +26,14 @@ class AIConversationService:
             convert_system_message_to_human=True
         )
         self._rate_limit_semaphore = asyncio.Semaphore(5)
-        
+
         self.prompt = PromptTemplate(
             input_variables=["history", "input"],
             template="""Eres un agente telefónico profesional y amable. Tu objetivo es ayudar al usuario.
-            
+
             Historial de la conversación:
             {history}
-            
+
             Humano: {input}
             AI: """
         )
@@ -41,9 +41,9 @@ class AIConversationService:
     async def process_message(
         self,
         message: str,
-        conversation_id: str | None = None,
-        context: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+        conversation_id: Optional[str] = None,
+        context: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
         """Procesa un mensaje y genera una respuesta."""
         async with self._rate_limit_semaphore:
             try:
@@ -102,7 +102,7 @@ class AIConversationService:
                 logger.error(f"Error procesando mensaje: {str(e)}")
                 raise HTTPException(status_code=500, detail="Error procesando mensaje")
 
-    async def analyze_sentiment(self, text: str) -> dict[str, Any]:
+    async def analyze_sentiment(self, text: str) -> Dict[str, Any]:
         """Analiza el sentimiento del texto."""
         output_parser = JsonOutputParser()
         prompt = PromptTemplate(
@@ -128,8 +128,8 @@ class AIConversationService:
         conversation_id: str,
         message: str,
         response: str,
-        input_sentiment: dict[str, Any],
-        response_sentiment: dict[str, float] | None = None
+        input_sentiment: Dict[str, Any],
+        response_sentiment: Optional[Dict[str, Any]] = None
     ) -> None:
         """Guarda métricas de la conversación.
 
@@ -152,7 +152,7 @@ class AIConversationService:
         }
         await self.save_metrics_to_db(interaction_data)
 
-    async def save_metrics_to_db(self, interaction_data: dict[str, Any]) -> None:
+    async def save_metrics_to_db(self, interaction_data: Dict[str, Any]) -> None:
         """Guarda las métricas en la base de datos."""
         logger.info(f"Guardando métricas en la base de datos: {interaction_data}")
         # Implementación del guardado de métricas en la base de datos
@@ -168,14 +168,14 @@ class AIConversationService:
     def extract_conversation_context(
         self,
         memory: ConversationBufferMemory
-    ) -> dict[str, Any]:
+    ) -> Dict[str, Any]:
         """Extrae el contexto de la conversación.
 
         Args:
             memory: Memoria de la conversación
 
         Returns:
-            dict[str, Any]: Contexto extraído
+            Dict[str, Any]: Contexto extraído
         """
         # Implementación de la extracción de contexto
         return {}

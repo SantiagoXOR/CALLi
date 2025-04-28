@@ -37,5 +37,6 @@ pytest>=7.0.0  # Framework de testing
 pytest-asyncio>=0.21.0  # Soporte para testing asíncrono
 pytest-cov>=4.0.0  # Cobertura de código
 pytest-mock>=3.0.0  # Utilidades de mock para testing
+respx>=0.22.0  # Mocking de respuestas HTTP para httpx
 pre-commit>=2.15.0  # Hooks de pre-commit
 ruff>=0.1.0  # Linter y formateador de código

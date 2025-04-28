@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, status
 from datetime import datetime
+from typing import Optional, List
 from uuid import UUID
 from app.models.campaign import Campaign, CampaignCreate, CampaignUpdate, CampaignStatus
 from app.services.campaign_service import CampaignService
@@ -14,7 +15,7 @@ async def create_campaign(
 ) -> Campaign:
     """
     Crea una nueva campaña.
-    
+
     Parámetros:
     - **name**: Nombre de la campaña (requerido)
     - **description**: Descripción opcional
@@ -42,18 +43,18 @@ async def get_campaign(
     campaign_service = CampaignService(supabase_client)
     return await campaign_service.get_campaign(campaign_id)
 
-@router.get("/", response_model=list[Campaign])
+@router.get("/", response_model=List[Campaign])
 async def list_campaigns(
     page: int = 1,
     page_size: int = 10,
-    status: CampaignStatus | None = None,
-    start_date: datetime | None = None,
-    end_date: datetime | None = None,
+    status: Optional[CampaignStatus] = None,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
     supabase_client = Depends(get_supabase_client)
-) -> list[Campaign]:
+) -> List[Campaign]:
     """
     Lista las campañas con filtros opcionales.
-    
+
     Parámetros:
     - **page**: Número de página (default: 1)
     - **page_size**: Tamaño de página (default: 10)
@@ -78,7 +79,7 @@ async def update_campaign(
 ) -> Campaign:
     """
     Actualiza una campaña existente.
-    
+
     Campos actualizables:
     - name
     - description
@@ -117,7 +118,7 @@ async def update_campaign_stats(
 ) -> Campaign:
     """
     Actualiza las estadísticas de una campaña.
-    
+
     Parámetros:
     - **total_calls**: Total de llamadas realizadas
     - **successful_calls**: Llamadas exitosas
