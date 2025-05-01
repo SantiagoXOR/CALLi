@@ -136,3 +136,24 @@ repos:
         language: python
         pass_filenames: false
         stages: [pre-commit, pre-push]
+
+      - id: fix-tests
+        name: Fix test environment
+        entry: python scripts/fix_tests.py
+        language: python
+        pass_filenames: false
+        stages: [pre-commit, pre-push]
+
+      - id: check-licenses
+        name: Check dependency licenses
+        entry: python scripts/check_licenses.py
+        language: python
+        pass_filenames: false
+        stages: [pre-commit, pre-push]
+
+      - id: backend-security-check
+        name: Run backend security check
+        entry: python scripts/backend_security_check.py
+        language: python
+        pass_filenames: false
+        stages: [pre-commit, pre-push]

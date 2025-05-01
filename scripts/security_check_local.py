@@ -11,6 +11,39 @@ import json
 import subprocess
 from typing import List, Tuple
 
+def mask_secret(secret: str) -> str:
+    """
+    Enmascara un secreto para evitar mostrarlo en texto claro.
+
+    Args:
+        secret: El secreto a enmascarar
+
+    Returns:
+        El secreto enmascarado, mostrando solo los primeros 4 caracteres
+    """
+    if not secret or len(secret) < 8:
+        return "[SECRETO REDACTADO]"
+
+    # Extraer solo la parte del valor después del signo igual
+    if "=" in secret:
+        parts = secret.split("=", 1)
+        if len(parts) == 2:
+            key, value = parts
+            # Limpiar comillas
+            value = value.strip()
+            if value.startswith(("'", '"')) and value.endswith(("'", '"')):
+                value = value[1:-1]
+            # Enmascarar solo el valor
+            if len(value) > 8:
+                masked_value = value[:4] + '*' * (len(value) - 4)
+            else:
+                masked_value = "****"
+            return f"{key}= [VALOR SENSIBLE: {masked_value}]"
+
+    # Si no se puede separar, enmascarar todo el string
+    visible_part = secret[:4]
+    return f"{visible_part}{'*' * (len(secret) - 4)}"
+
 # Colores para la salida en terminal
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
@@ -20,14 +53,32 @@ BOLD = "\033[1m"
 
 
 def print_header(text: str) -> None:
-    """Imprime un encabezado formateado."""
+    """
+    Imprime un encabezado formateado.
+
+    Args:
+        text: El texto a mostrar como encabezado
+
+    Returns:
+        None
+    """
     print(f"\n{BOLD}{'=' * 60}{RESET}")
     print(f"{BOLD}{text}{RESET}")
     print(f"{BOLD}{'=' * 60}{RESET}\n")
 
 
 def print_result(name: str, status: bool, message: str = "") -> None:
-    """Imprime el resultado de una verificación."""
+    """
+    Imprime el resultado de una verificación.
+
+    Args:
+        name: Nombre de la verificación
+        status: True si pasó, False si falló
+        message: Mensaje adicional a mostrar en caso de fallo
+
+    Returns:
+        None
+    """
     status_text = f"{GREEN}✓ PASS{RESET}" if status else f"{RED}✗ FAIL{RESET}"
     print(f"{status_text} {name}")
     if message and not status:
@@ -35,7 +86,15 @@ def print_result(name: str, status: bool, message: str = "") -> None:
 
 
 def run_command(cmd: List[str]) -> Tuple[int, str]:
-    """Ejecuta un comando y devuelve el código de salida y la salida."""
+    """
+    Ejecuta un comando y devuelve el código de salida y la salida.
+
+    Args:
+        cmd: Lista de strings que representan el comando a ejecutar
+
+    Returns:
+        Tupla con el código de salida (int) y la salida (str)
+    """
     try:
         result = subprocess.run(cmd, capture_output=True, text=True)
         return result.returncode, result.stdout + result.stderr
@@ -44,7 +103,16 @@ def run_command(cmd: List[str]) -> Tuple[int, str]:
 
 
 def check_file_content(file_path: str, pattern: str) -> bool:
-    """Verifica si un archivo contiene un patrón específico."""
+    """
+    Verifica si un archivo contiene un patrón específico.
+
+    Args:
+        file_path: Ruta al archivo a verificar
+        pattern: Patrón regex a buscar
+
+    Returns:
+        True si el patrón se encuentra en el archivo, False en caso contrario
+    """
     if not os.path.isfile(file_path):
         return False
 
@@ -57,7 +125,12 @@ def check_file_content(file_path: str, pattern: str) -> bool:
 
 
 def check_security_headers() -> Tuple[bool, str]:
-    """Verifica los encabezados de seguridad en la configuración de nginx."""
+    """
+    Verifica los encabezados de seguridad en la configuración de nginx.
+
+    Returns:
+        Tupla con un booleano (True si todos los encabezados están presentes) y un mensaje
+    """
     nginx_conf = "nginx/conf.d/default.conf"
     if not os.path.isfile(nginx_conf):
         return False, f"No se encontró el archivo {nginx_conf}"
@@ -87,7 +160,12 @@ def check_security_headers() -> Tuple[bool, str]:
 
 
 def check_security_files() -> Tuple[bool, str]:
-    """Verifica la existencia de archivos de seguridad requeridos."""
+    """
+    Verifica la existencia de archivos de seguridad requeridos.
+
+    Returns:
+        Tupla con un booleano (True si todos los archivos existen) y un mensaje
+    """
     required_files = [
         "SECURITY.md",
         "CODE_OF_CONDUCT.md",
@@ -114,7 +192,12 @@ def check_security_files() -> Tuple[bool, str]:
 
 
 def check_python_dependencies() -> Tuple[bool, str]:
-    """Verifica vulnerabilidades en dependencias Python."""
+    """
+    Verifica vulnerabilidades en dependencias Python.
+
+    Returns:
+        Tupla con un booleano (True si no hay vulnerabilidades) y un mensaje
+    """
     requirements_file = "backend-call-automation/requirements.txt"
     if not os.path.isfile(requirements_file):
         return False, f"No se encontró el archivo {requirements_file}"
@@ -146,7 +229,12 @@ def check_python_dependencies() -> Tuple[bool, str]:
 
 
 def check_js_dependencies() -> Tuple[bool, str]:
-    """Verifica vulnerabilidades en dependencias JavaScript."""
+    """
+    Verifica vulnerabilidades en dependencias JavaScript.
+
+    Returns:
+        Tupla con un booleano (True si no hay vulnerabilidades) y un mensaje
+    """
     package_json = "frontend-call-automation/package.json"
     if not os.path.isfile(package_json):
         return False, f"No se encontró el archivo {package_json}"
@@ -200,7 +288,12 @@ def check_js_dependencies() -> Tuple[bool, str]:
 
 
 def check_secrets_in_code() -> Tuple[bool, List[str]]:
-    """Busca posibles secretos en el código."""
+    """
+    Busca posibles secretos en el código.
+
+    Returns:
+        Tupla con un booleano (True si no hay secretos) y una lista de secretos encontrados
+    """
     patterns = [
         r'password\s*=\s*[\'"][^\'"]+[\'"]',
         r'api[_-]?key\s*=\s*[\'"][^\'"]+[\'"]',
@@ -283,18 +376,24 @@ def check_secrets_in_code() -> Tuple[bool, List[str]]:
                                         or "dummy" in value.lower()
                                     ):
                                         continue
-                                    found_secrets.append(f"{file_path}: {value}")
+                                    # Almacenar la ubicación del secreto pero enmascarar el valor
+                                    found_secrets.append(f"{file_path}: {mask_secret(value)}")
                     except (UnicodeDecodeError, IsADirectoryError, PermissionError):
                         continue
 
         return len(found_secrets) == 0, found_secrets
     except Exception as e:
-        print(f"{RED}Error al buscar secretos: {str(e)}{RESET}")
-        return False, [f"Error al buscar secretos: {str(e)}"]
+        print(f"{RED}Error al buscar secretos: Se produjo un error durante la búsqueda{RESET}")
+        return False, ["Error al buscar secretos: Se produjo un error durante la búsqueda"]
 
 
 def main() -> int:
-    """Función principal que ejecuta todas las verificaciones."""
+    """
+    Función principal que ejecuta todas las verificaciones.
+
+    Returns:
+        0 si todas las verificaciones críticas pasan, 1 en caso contrario
+    """
     print_header("Verificación de Seguridad de CALLi")
 
     # Verificaciones críticas que deben pasar

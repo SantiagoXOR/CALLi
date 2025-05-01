@@ -1,11 +1,19 @@
 name: Workflow Controller
 
+# Definición de permisos mínimos necesarios
+permissions:
+  contents: read
+  actions: write
+
 on:
   push:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
   workflow_dispatch:
+  schedule:
+    # Ejecutar cada hora para asegurarse de que los workflows problemáticos estén cancelados
+    - cron: '0 * * * *'
 
 jobs:
   cancel-problematic-workflows:
@@ -16,12 +24,14 @@ jobs:
         with:
           workflow_id: "ci-cd-pipeline.yml"
           access_token: ${{ github.token }}
-          
+          all_but_latest: true
+
       - name: Cancel Configuration Security Scan
         uses: styfle/cancel-workflow-action@0.11.0
         with:
           workflow_id: "config-security-scan.yml"
           access_token: ${{ github.token }}
-          
+          all_but_latest: true
+
       - name: Success
         run: echo "Workflows problemáticos cancelados con éxito"

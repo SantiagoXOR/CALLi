@@ -1,5 +1,11 @@
 name: Security Checks
 
+# Definición de permisos mínimos necesarios
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
 on:
   schedule:
     - cron: '0 0 * * 0'  # Ejecutar cada domingo a medianoche
@@ -23,34 +29,34 @@ jobs:
   frontend-security:
     name: Frontend Security Checks
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: frontend-call-automation/package-lock.json
-          
+
       - name: Install dependencies
         run: |
           cd frontend-call-automation
           npm ci
-          
+
       - name: Run npm audit
         run: |
           cd frontend-call-automation
           npm audit --json > npm-audit-report.json || true
-          
+
       - name: Upload audit results
         uses: actions/upload-artifact@v4
         with:
           name: npm-audit-report
           path: frontend-call-automation/npm-audit-report.json
-          
+
       - name: Check for high or critical vulnerabilities
         run: |
           cd frontend-call-automation
@@ -61,40 +67,40 @@ jobs:
           else
             echo "No high or critical vulnerabilities found"
           fi
-  
+
   backend-security:
     name: Backend Security Checks
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
           cache-dependency-path: backend-call-automation/requirements.txt
-          
+
       - name: Install dependencies
         run: |
           cd backend-call-automation
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install safety
-          
+
       - name: Run safety check
         run: |
           cd backend-call-automation
           python -m safety check --json > safety-report.json || true
-          
+
       - name: Upload safety results
         uses: actions/upload-artifact@v4
         with:
           name: safety-report
           path: backend-call-automation/safety-report.json
-          
+
       - name: Check for high or critical vulnerabilities
         run: |
           cd backend-call-automation
