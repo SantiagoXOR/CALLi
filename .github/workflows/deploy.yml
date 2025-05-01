@@ -38,42 +38,42 @@ jobs:
           # Create basic backend test file
           if [ ! -f "backend-call-automation/tests/test_basic.py" ]; then
             cat > backend-call-automation/tests/test_basic.py << 'EOF'
-# Basic test file to ensure the test environment is working correctly
-def test_true_is_true():
-    """Test that True is equal to True."""
-    assert True is True
-EOF
+            # Basic test file to ensure the test environment is working correctly
+            def test_true_is_true():
+                """Test that True is equal to True."""
+                assert True is True
+            EOF
           fi
 
           # Create basic frontend test file
           if [ ! -f "frontend-call-automation/__tests__/basic.test.js" ]; then
             cat > frontend-call-automation/__tests__/basic.test.js << 'EOF'
-// Basic test file to ensure the test environment is working correctly
-test('true is true', () => {
-  expect(true).toBe(true);
-});
-EOF
+            // Basic test file to ensure the test environment is working correctly
+            test('true is true', () => {
+              expect(true).toBe(true);
+            });
+            EOF
           fi
 
           # Create basic package.json if it doesn't exist
           if [ ! -f "frontend-call-automation/package.json" ]; then
             cat > frontend-call-automation/package.json << 'EOF'
-{
-  "name": "frontend-call-automation",
-  "version": "1.0.0",
-  "scripts": {
-    "test": "echo 'No tests specified yet' && exit 0"
-  }
-}
-EOF
+            {
+              "name": "frontend-call-automation",
+              "version": "1.0.0",
+              "scripts": {
+                "test": "echo 'No tests specified yet' && exit 0"
+              }
+            }
+            EOF
           fi
 
           # Create basic requirements.txt if it doesn't exist
           if [ ! -f "backend-call-automation/requirements.txt" ]; then
             cat > backend-call-automation/requirements.txt << 'EOF'
-pytest==7.3.1
-pytest-cov==4.1.0
-EOF
+            pytest==7.3.1
+            pytest-cov==4.1.0
+            EOF
           fi
 
       - name: Set up Python

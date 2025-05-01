@@ -21,22 +21,22 @@ jobs:
           # Crear requirements.txt básico si no existe
           if [ ! -f "backend-call-automation/requirements.txt" ]; then
             cat > backend-call-automation/requirements.txt << 'EOF'
-pytest==7.3.1
-pytest-cov==4.1.0
-EOF
+            pytest==7.3.1
+            pytest-cov==4.1.0
+            EOF
           fi
 
           # Crear package.json básico si no existe
           if [ ! -f "frontend-call-automation/package.json" ]; then
             cat > frontend-call-automation/package.json << 'EOF'
-{
-  "name": "frontend-call-automation",
-  "version": "1.0.0",
-  "scripts": {
-    "test": "echo 'No tests specified yet' && exit 0"
-  }
-}
-EOF
+            {
+              "name": "frontend-call-automation",
+              "version": "1.0.0",
+              "scripts": {
+                "test": "echo 'No tests specified yet' && exit 0"
+              }
+            }
+            EOF
           fi
 
       # Escaneo de seguridad para Python
