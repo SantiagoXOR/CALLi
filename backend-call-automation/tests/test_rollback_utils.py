@@ -15,7 +15,7 @@ from scripts.rollback_utils import (
     SNAPSHOT_DIR,
     SNAPSHOT_FILE
 )
-from prometheus_client import Collector
+from prometheus_client import CollectorRegistry, Collector
 
 @pytest.fixture(autouse=True)
 def manage_snapshot_file(tmp_path):
