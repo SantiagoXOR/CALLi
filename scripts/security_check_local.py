@@ -11,6 +11,7 @@ import json
 import subprocess
 from typing import List, Tuple
 
+
 def mask_secret(secret: str) -> str:
     """
     Enmascara un secreto para evitar mostrarlo en texto claro.
@@ -35,7 +36,7 @@ def mask_secret(secret: str) -> str:
                 value = value[1:-1]
             # Enmascarar solo el valor
             if len(value) > 8:
-                masked_value = value[:4] + '*' * (len(value) - 4)
+                masked_value = value[:4] + "*" * (len(value) - 4)
             else:
                 masked_value = "****"
             return f"{key}= [VALOR SENSIBLE: {masked_value}]"
@@ -43,6 +44,7 @@ def mask_secret(secret: str) -> str:
     # Si no se puede separar, enmascarar todo el string
     visible_part = secret[:4]
     return f"{visible_part}{'*' * (len(secret) - 4)}"
+
 
 # Colores para la salida en terminal
 GREEN = "\033[92m"
@@ -98,8 +100,8 @@ def run_command(cmd: List[str]) -> Tuple[int, str]:
     try:
         result = subprocess.run(cmd, capture_output=True, text=True)
         return result.returncode, result.stdout + result.stderr
-    except Exception as e:
-        return 1, str(e)
+    except Exception:
+        return 1, "Error al ejecutar el comando"
 
 
 def check_file_content(file_path: str, pattern: str) -> bool:
@@ -224,8 +226,8 @@ def check_python_dependencies() -> Tuple[bool, str]:
             )
 
         return True, ""
-    except Exception as e:
-        return False, f"Error al verificar dependencias Python: {str(e)}"
+    except Exception:
+        return False, "Error al verificar dependencias Python: Se produjo un error durante la verificación"
 
 
 def check_js_dependencies() -> Tuple[bool, str]:
@@ -280,11 +282,11 @@ def check_js_dependencies() -> Tuple[bool, str]:
                 )
 
         return True, ""
-    except Exception as e:
+    except Exception:
         # Asegurarse de volver al directorio original en caso de error
         if "current_dir" in locals():
             os.chdir(current_dir)
-        return False, f"Error al verificar dependencias JavaScript: {str(e)}"
+        return False, "Error al verificar dependencias JavaScript: Se produjo un error durante la verificación"
 
 
 def check_secrets_in_code() -> Tuple[bool, List[str]]:
@@ -377,14 +379,20 @@ def check_secrets_in_code() -> Tuple[bool, List[str]]:
                                     ):
                                         continue
                                     # Almacenar la ubicación del secreto pero enmascarar el valor
-                                    found_secrets.append(f"{file_path}: {mask_secret(value)}")
+                                    found_secrets.append(
+                                        f"{file_path}: {mask_secret(value)}"
+                                    )
                     except (UnicodeDecodeError, IsADirectoryError, PermissionError):
                         continue
 
         return len(found_secrets) == 0, found_secrets
-    except Exception as e:
-        print(f"{RED}Error al buscar secretos: Se produjo un error durante la búsqueda{RESET}")
-        return False, ["Error al buscar secretos: Se produjo un error durante la búsqueda"]
+    except Exception:
+        print(
+            f"{RED}Error al buscar secretos: Se produjo un error durante la búsqueda{RESET}"
+        )
+        return False, [
+            "Error al buscar secretos: Se produjo un error durante la búsqueda"
+        ]
 
 
 def main() -> int:

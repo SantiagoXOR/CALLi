@@ -16,6 +16,10 @@ jobs:
   security-scan:
     name: Escaneo de Seguridad
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -25,14 +29,14 @@ jobs:
         run: |
           if [ -f "nginx/conf.d/default.conf" ]; then
             echo "Verificando encabezados de seguridad en nginx/conf.d/default.conf..."
-            
+
             HEADERS_REQUIRED=(
               "Strict-Transport-Security"
               "X-Content-Type-Options"
               "X-Frame-Options"
               "Content-Security-Policy"
             )
-            
+
             HEADERS_MISSING=0
             for header in "${HEADERS_REQUIRED[@]}"; do
               if ! grep -q "$header" nginx/conf.d/default.conf; then
@@ -42,7 +46,7 @@ jobs:
                 echo "✅ Encabezado $header encontrado"
               fi
             done
-            
+
             if [ $HEADERS_MISSING -gt 0 ]; then
               echo "::warning::Faltan $HEADERS_MISSING encabezados de seguridad"
             else
@@ -61,10 +65,10 @@ jobs:
       - name: Verificar dependencias Python
         run: |
           python -m pip install --upgrade pip
-          
+
           # Crear directorio si no existe
           mkdir -p backend-call-automation
-          
+
           # Verificar si existe requirements.txt
           if [ -f "backend-call-automation/requirements.txt" ]; then
             echo "Verificando dependencias Python..."
@@ -84,7 +88,7 @@ jobs:
         run: |
           # Crear directorio si no existe
           mkdir -p frontend-call-automation
-          
+
           # Verificar si existe package.json
           if [ -f "frontend-call-automation/package.json" ]; then
             echo "Verificando dependencias JavaScript..."
@@ -107,7 +111,7 @@ jobs:
             ".github/dependabot.yml"
             ".github/workflows/secret-scanning.yml"
           )
-          
+
           FILES_MISSING=0
           for file in "${FILES_REQUIRED[@]}"; do
             if [ ! -f "$file" ]; then
@@ -117,7 +121,7 @@ jobs:
               echo "✅ Archivo $file encontrado"
             fi
           done
-          
+
           if [ $FILES_MISSING -gt 0 ]; then
             echo "::warning::Faltan $FILES_MISSING archivos de seguridad"
           else
@@ -128,9 +132,9 @@ jobs:
       - name: Verificar secretos
         run: |
           echo "Verificando secretos en el código..."
-          
+
           # Instalar herramienta de detección de secretos
           pip install detect-secrets || pip install detect-secrets==1.4.0
-          
+
           # Ejecutar detección de secretos
           detect-secrets scan --all-files || echo "::warning::Se encontraron posibles secretos en el código"
