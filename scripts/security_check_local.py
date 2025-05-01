@@ -439,8 +439,8 @@ def main() -> int:
 
     if not secrets_check:
         critical_passed = False
-        for secret in found_secrets:
-            print(f"  {YELLOW}{secret}{RESET}")
+        for _ in found_secrets:
+            print(f"  {YELLOW}Se encontró un posible secreto en el archivo.{RESET}")
 
     print_header("Resultado Final")
     if critical_passed:
