@@ -6,10 +6,9 @@ Este script realiza verificaciones básicas de seguridad en el código y la conf
 
 import os
 import re
-import sys
 import subprocess
+import sys
 from pathlib import Path
-from typing import List, Tuple
 
 
 # Colores para la salida en terminal
@@ -30,9 +29,7 @@ def print_header(text: str) -> None:
 def print_result(name: str, status: bool, message: str = "") -> None:
     """Imprime el resultado de una verificación."""
     status_text = (
-        f"{Colors.GREEN}✓ PASS{Colors.ENDC}"
-        if status
-        else f"{Colors.RED}✗ FAIL{Colors.ENDC}"
+        f"{Colors.GREEN}✓ PASS{Colors.ENDC}" if status else f"{Colors.RED}✗ FAIL{Colors.ENDC}"
     )
     print(f"{status_text} {name}")
     if message and not status:
@@ -49,12 +46,12 @@ def check_file_content(file_path: str, pattern: str) -> bool:
     if not os.path.isfile(file_path):
         return False
 
-    with open(file_path, "r", encoding="utf-8") as f:
+    with open(file_path, encoding="utf-8") as f:
         content = f.read()
         return bool(re.search(pattern, content))
 
 
-def check_env_files() -> Tuple[bool, str]:
+def check_env_files() -> tuple[bool, str]:
     """Verifica los archivos .env en busca de problemas de seguridad."""
     env_files = list(Path(".").glob("**/.env*"))
     example_files = [f for f in env_files if "example" in f.name.lower()]
@@ -82,7 +79,7 @@ def check_env_files() -> Tuple[bool, str]:
     return True, ""
 
 
-def check_security_headers() -> Tuple[bool, str]:
+def check_security_headers() -> tuple[bool, str]:
     """Verifica los encabezados de seguridad en la configuración de nginx."""
     nginx_conf = "nginx/conf.d/default.conf"
     if not os.path.isfile(nginx_conf):
@@ -95,7 +92,7 @@ def check_security_headers() -> Tuple[bool, str]:
         "Content-Security-Policy",
     ]
 
-    with open(nginx_conf, "r", encoding="utf-8") as f:
+    with open(nginx_conf, encoding="utf-8") as f:
         content = f.read()
 
     missing_headers = []
@@ -112,14 +109,14 @@ def check_security_headers() -> Tuple[bool, str]:
     return True, ""
 
 
-def check_csrf_protection() -> Tuple[bool, str]:
+def check_csrf_protection() -> tuple[bool, str]:
     """Verifica la protección CSRF en el frontend y backend."""
     frontend_api = "frontend-call-automation/src/lib/api.js"
 
     if not os.path.isfile(frontend_api):
         return False, f"No se encontró el archivo {frontend_api}"
 
-    with open(frontend_api, "r", encoding="utf-8") as f:
+    with open(frontend_api, encoding="utf-8") as f:
         content = f.read()
 
     if not re.search(r"csrf|xsrf", content, re.IGNORECASE):
@@ -128,12 +125,12 @@ def check_csrf_protection() -> Tuple[bool, str]:
     return True, ""
 
 
-def check_security_md() -> Tuple[bool, str]:
+def check_security_md() -> tuple[bool, str]:
     """Verifica el archivo SECURITY.md."""
     if not os.path.isfile("SECURITY.md"):
         return False, "No se encontró el archivo SECURITY.md"
 
-    with open("SECURITY.md", "r", encoding="utf-8") as f:
+    with open("SECURITY.md", encoding="utf-8") as f:
         content = f.read()
 
     if not re.search(r"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+", content):
@@ -179,7 +176,7 @@ def mask_secret(secret: str) -> str:
     return f"{visible_part}{'*' * (len(secret) - 4)}"
 
 
-def check_secrets_in_code() -> Tuple[bool, List[str]]:
+def check_secrets_in_code() -> tuple[bool, list[str]]:
     """Busca posibles secretos en el código."""
     patterns = [
         r'password\s*=\s*[\'"][^\'"]+[\'"]',
@@ -214,7 +211,7 @@ def check_secrets_in_code() -> Tuple[bool, List[str]]:
             file_path = os.path.join(root, file)
 
             try:
-                with open(file_path, "r", encoding="utf-8") as f:
+                with open(file_path, encoding="utf-8") as f:
                     content = f.read()
 
                     for pattern in patterns:
@@ -258,9 +255,7 @@ def main() -> int:
     print_result(
         "No hay secretos en el código",
         secrets_check,
-        f"Se encontraron {len(found_secrets)} posibles secretos"
-        if not secrets_check
-        else "",
+        f"Se encontraron {len(found_secrets)} posibles secretos" if not secrets_check else "",
     )
 
     if not secrets_check:
@@ -276,11 +271,8 @@ def main() -> int:
             f"\n{Colors.GREEN}{Colors.BOLD}✓ Todas las verificaciones de seguridad pasaron{Colors.ENDC}"
         )
         return 0
-    else:
-        print(
-            f"\n{Colors.RED}{Colors.BOLD}✗ Algunas verificaciones de seguridad fallaron{Colors.ENDC}"
-        )
-        return 1
+    print(f"\n{Colors.RED}{Colors.BOLD}✗ Algunas verificaciones de seguridad fallaron{Colors.ENDC}")
+    return 1
 
 
 if __name__ == "__main__":
