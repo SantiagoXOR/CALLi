@@ -7,9 +7,8 @@ class, method, and function levels according to the Google docstring style.
 """
 
 import ast
-import os
 import sys
-from typing import List, Set, Tuple
+from typing import List
 
 
 def check_docstrings(filename: str) -> List[str]:
@@ -21,7 +20,7 @@ def check_docstrings(filename: str) -> List[str]:
     Returns:
         List of error messages, empty if no errors
     """
-    with open(filename, 'r', encoding='utf-8') as file:
+    with open(filename, "r", encoding="utf-8") as file:
         content = file.read()
 
     errors = []
@@ -38,20 +37,32 @@ def check_docstrings(filename: str) -> List[str]:
     for node in ast.walk(tree):
         if isinstance(node, (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
             # Skip private methods/functions (starting with _)
-            if node.name.startswith('_') and node.name != '__init__':
+            if node.name.startswith("_") and node.name != "__init__":
                 continue
-                
+
             docstring = ast.get_docstring(node)
             if not docstring:
-                errors.append(f"Missing docstring for {node.__class__.__name__} '{node.name}' in {filename}")
-            elif docstring and isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                errors.append(
+                    f"Missing docstring for {node.__class__.__name__} '{node.name}' in {filename}"
+                )
+            elif docstring and isinstance(
+                node, (ast.FunctionDef, ast.AsyncFunctionDef)
+            ):
                 # Check function docstring sections
-                if "Args:" not in docstring and "Parameters:" not in docstring and len(node.args.args) > 1:
+                if (
+                    "Args:" not in docstring
+                    and "Parameters:" not in docstring
+                    and len(node.args.args) > 1
+                ):
                     # First arg might be self/cls, so only warn if more than 1 arg
-                    errors.append(f"Function '{node.name}' in {filename} is missing Args: section")
-                
+                    errors.append(
+                        f"Function '{node.name}' in {filename} is missing Args: section"
+                    )
+
                 if "Returns:" not in docstring and node.returns:
-                    errors.append(f"Function '{node.name}' in {filename} has return annotation but missing Returns: section")
+                    errors.append(
+                        f"Function '{node.name}' in {filename} has return annotation but missing Returns: section"
+                    )
 
     return errors
 
@@ -69,7 +80,7 @@ def main() -> int:
 
     all_errors = []
     for filename in files:
-        if filename.endswith('.py'):
+        if filename.endswith(".py"):
             errors = check_docstrings(filename)
             all_errors.extend(errors)
 

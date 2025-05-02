@@ -73,18 +73,18 @@ if [ ! -f ".env.production" ]; then
     exit 1
 else
     echo -e "${GREEN}[OK] Archivo .env.production encontrado.${NC}"
-    
+
     # Verificar variables críticas
     REQUIRED_VARS=("SUPABASE_URL" "SUPABASE_KEY" "TWILIO_ACCOUNT_SID" "TWILIO_AUTH_TOKEN" "REDIS_PASSWORD" "SECRET_KEY" "ELEVENLABS_API_KEY" "OPENAI_API_KEY")
     MISSING_VARS=0
-    
+
     for VAR in "${REQUIRED_VARS[@]}"; do
         if ! grep -q "^$VAR=" .env.production; then
             echo -e "${RED}[ERROR] Variable de entorno requerida no encontrada: $VAR${NC}"
             MISSING_VARS=$((MISSING_VARS+1))
         fi
     done
-    
+
     if [ $MISSING_VARS -gt 0 ]; then
         echo -e "${RED}[ERROR] Faltan $MISSING_VARS variables de entorno requeridas.${NC}"
         exit 1

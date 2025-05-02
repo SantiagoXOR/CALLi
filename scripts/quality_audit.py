@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 import subprocess
 import sys
-from pathlib import Path
 from typing import List, Tuple
 import os
+
 
 def run_command(command: List[str]) -> Tuple[int, str]:
     """Ejecuta un comando y retorna el código de salida y la salida."""
     process = subprocess.run(command, capture_output=True, text=True, shell=True)
     return process.returncode, process.stdout
+
 
 def check_python_files() -> bool:
     """Verifica la calidad de archivos Python."""
@@ -36,6 +37,7 @@ def check_python_files() -> bool:
         return False
 
     return True
+
 
 def check_typescript_files() -> bool:
     """Verifica la calidad de archivos TypeScript."""

@@ -61,7 +61,7 @@ fi
 if [ ! -d "scripts/data-loader" ]; then
     echo "Creando directorio para data-loader..."
     mkdir -p scripts/data-loader
-    
+
     # Crear Dockerfile para data-loader
     cat > scripts/data-loader/Dockerfile << EOL
 FROM python:3.11-slim
@@ -75,7 +75,7 @@ COPY . .
 
 CMD ["python", "load_test_data.py"]
 EOL
-    
+
     # Crear requirements.txt para data-loader
     cat > scripts/data-loader/requirements.txt << EOL
 supabase==1.0.3
@@ -83,7 +83,7 @@ pandas==2.0.3
 faker==18.13.0
 python-dotenv==1.0.0
 EOL
-    
+
     # Crear script para cargar datos de ejemplo
     cat > scripts/data-loader/load_test_data.py << EOL
 #!/usr/bin/env python3
@@ -113,7 +113,7 @@ fake = Faker('es_ES')
 def create_test_users():
     """Crear usuarios de prueba."""
     print("Creando usuarios de prueba...")
-    
+
     users = [
         {"email": "admin@example.com", "password": "password123", "role": "admin"},
         {"email": "user@example.com", "password": "password123", "role": "user"},
@@ -121,7 +121,7 @@ def create_test_users():
         {"email": "sales@example.com", "password": "password123", "role": "user"},
         {"email": "support@example.com", "password": "password123", "role": "user"},
     ]
-    
+
     for user in users:
         try:
             # Registrar usuario en Supabase Auth
@@ -129,9 +129,9 @@ def create_test_users():
                 "email": user["email"],
                 "password": user["password"]
             })
-            
+
             user_id = auth_response.user.id
-            
+
             # Insertar información adicional en la tabla de usuarios
             supabase.table("users").insert({
                 "id": user_id,
@@ -141,17 +141,17 @@ def create_test_users():
                 "avatar_url": f"https://i.pravatar.cc/150?u={user_id}",
                 "created_at": datetime.now().isoformat()
             }).execute()
-            
+
             print(f"  Usuario creado: {user['email']} (Rol: {user['role']})")
         except Exception as e:
             print(f"  Error al crear usuario {user['email']}: {str(e)}")
-    
+
     print("Usuarios de prueba creados.")
 
 def create_test_contacts(num_contacts=50):
     """Crear contactos de prueba."""
     print(f"Creando {num_contacts} contactos de prueba...")
-    
+
     contacts = []
     for _ in range(num_contacts):
         contact = {
@@ -165,7 +165,7 @@ def create_test_contacts(num_contacts=50):
             "created_at": datetime.now().isoformat()
         }
         contacts.append(contact)
-    
+
     # Insertar contactos en lotes de 10
     for i in range(0, len(contacts), 10):
         batch = contacts[i:i+10]
@@ -174,28 +174,28 @@ def create_test_contacts(num_contacts=50):
             print(f"  Lote {i//10 + 1} de contactos creado.")
         except Exception as e:
             print(f"  Error al crear lote {i//10 + 1} de contactos: {str(e)}")
-    
+
     print("Contactos de prueba creados.")
 
 def create_test_campaigns(num_campaigns=5):
     """Crear campañas de prueba."""
     print(f"Creando {num_campaigns} campañas de prueba...")
-    
+
     # Obtener contactos para asignar a las campañas
     contacts_response = supabase.table("contacts").select("id").execute()
     contact_ids = [contact["id"] for contact in contacts_response.data]
-    
+
     campaign_types = ["ventas", "soporte", "encuesta", "seguimiento", "informativa"]
     campaign_statuses = ["draft", "scheduled", "active", "paused", "completed"]
-    
+
     for i in range(num_campaigns):
         # Crear campaña
         campaign_type = campaign_types[i % len(campaign_types)]
         campaign_status = campaign_statuses[i % len(campaign_statuses)]
-        
+
         start_date = datetime.now() + timedelta(days=random.randint(1, 30))
         end_date = start_date + timedelta(days=random.randint(7, 60))
-        
+
         campaign = {
             "name": f"Campaña de {campaign_type.capitalize()} {i+1}",
             "description": fake.paragraph(),
@@ -208,16 +208,16 @@ def create_test_campaigns(num_campaigns=5):
             "script_template": f"Hola {{name}}, te llamamos de {{company}} para {fake.sentence()}",
             "created_at": datetime.now().isoformat()
         }
-        
+
         try:
             # Insertar campaña
             campaign_response = supabase.table("campaigns").insert(campaign).execute()
             campaign_id = campaign_response.data[0]["id"]
-            
+
             # Asignar contactos aleatorios a la campaña
             selected_contacts = random.sample(contact_ids, random.randint(5, 20))
             campaign_contacts = []
-            
+
             for contact_id in selected_contacts:
                 campaign_contact = {
                     "campaign_id": campaign_id,
@@ -226,48 +226,48 @@ def create_test_campaigns(num_campaigns=5):
                     "created_at": datetime.now().isoformat()
                 }
                 campaign_contacts.append(campaign_contact)
-            
+
             # Insertar relaciones campaña-contacto
             supabase.table("campaign_contacts").insert(campaign_contacts).execute()
-            
+
             print(f"  Campaña creada: {campaign['name']} con {len(selected_contacts)} contactos")
         except Exception as e:
             print(f"  Error al crear campaña {i+1}: {str(e)}")
-    
+
     print("Campañas de prueba creadas.")
 
 def create_test_calls(num_calls_per_campaign=10):
     """Crear llamadas de prueba."""
     print("Creando llamadas de prueba...")
-    
+
     # Obtener campañas
     campaigns_response = supabase.table("campaigns").select("id,name").execute()
-    
+
     if not campaigns_response.data:
         print("  No hay campañas para crear llamadas.")
         return
-    
+
     call_statuses = ["scheduled", "in-progress", "completed", "failed", "no-answer"]
-    
+
     for campaign in campaigns_response.data:
         campaign_id = campaign["id"]
-        
+
         # Obtener contactos de la campaña
         contacts_response = supabase.table("campaign_contacts").select("contact_id").eq("campaign_id", campaign_id).execute()
-        
+
         if not contacts_response.data:
             print(f"  No hay contactos para la campaña {campaign['name']}.")
             continue
-        
+
         contact_ids = [contact["contact_id"] for contact in contacts_response.data]
-        
+
         # Crear llamadas para contactos aleatorios
         selected_contacts = random.sample(contact_ids, min(num_calls_per_campaign, len(contact_ids)))
-        
+
         for contact_id in selected_contacts:
             call_status = random.choice(call_statuses)
             start_time = datetime.now() - timedelta(days=random.randint(0, 14), hours=random.randint(0, 23))
-            
+
             call = {
                 "campaign_id": campaign_id,
                 "contact_id": contact_id,
@@ -279,36 +279,36 @@ def create_test_calls(num_calls_per_campaign=10):
                 "notes": fake.paragraph() if random.random() > 0.5 else None,
                 "created_at": datetime.now().isoformat()
             }
-            
+
             try:
                 supabase.table("calls").insert(call).execute()
             except Exception as e:
                 print(f"  Error al crear llamada: {str(e)}")
-        
+
         print(f"  {len(selected_contacts)} llamadas creadas para la campaña {campaign['name']}")
-    
+
     print("Llamadas de prueba creadas.")
 
 def main():
     """Función principal."""
     print("Iniciando carga de datos de prueba...")
-    
+
     # Esperar a que el backend esté disponible
     print("Esperando a que el backend esté disponible...")
     time.sleep(10)
-    
+
     # Crear datos de prueba
     create_test_users()
     create_test_contacts(50)
     create_test_campaigns(5)
     create_test_calls(10)
-    
+
     print("Carga de datos de prueba completada.")
 
 if __name__ == "__main__":
     main()
 EOL
-    
+
     echo -e "${GREEN}[OK] Directorio y archivos para data-loader creados.${NC}"
 else
     echo -e "${GREEN}[OK] Directorio para data-loader ya existe.${NC}"

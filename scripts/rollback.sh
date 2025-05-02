@@ -32,18 +32,18 @@ fi
 # Función para realizar rollback de la base de datos
 rollback_database() {
     echo -e "${YELLOW}\n=== Realizando rollback de la base de datos ===${NC}"
-    
+
     # Verificar si existe un backup de la versión anterior
     if [ ! -f "backups/db_backup_${PREVIOUS_VERSION}.sql" ]; then
         echo -e "${RED}Error: No se encontró un backup de la base de datos para la versión $PREVIOUS_VERSION.${NC}"
         echo "Ubicación esperada: backups/db_backup_${PREVIOUS_VERSION}.sql"
         return 1
     fi
-    
+
     echo "Restaurando backup de la base de datos..."
     # En un entorno real, aquí se restauraría el backup
     # Por ejemplo: docker-compose exec -T db pg_restore -U postgres -d postgres < backups/db_backup_${PREVIOUS_VERSION}.sql
-    
+
     echo -e "${GREEN}✓ Base de datos restaurada a la versión $PREVIOUS_VERSION${NC}"
     return 0
 }
@@ -51,25 +51,25 @@ rollback_database() {
 # Función para realizar rollback de las imágenes Docker
 rollback_docker_images() {
     echo -e "${YELLOW}\n=== Realizando rollback de las imágenes Docker ===${NC}"
-    
+
     # Detener los contenedores actuales
     echo "Deteniendo contenedores actuales..."
     docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
-    
+
     # Cambiar las etiquetas de las imágenes en el archivo docker-compose.prod.yml
     echo "Actualizando docker-compose.prod.yml para usar la versión $PREVIOUS_VERSION..."
     # En un entorno real, aquí se modificaría el archivo docker-compose.prod.yml
     # Por ejemplo: sed -i "s/latest/${PREVIOUS_VERSION}/g" docker-compose.prod.yml
-    
+
     # Descargar las imágenes de la versión anterior
     echo "Descargando imágenes de la versión $PREVIOUS_VERSION..."
     # En un entorno real, aquí se descargarían las imágenes
     # Por ejemplo: docker pull username/call-automation-backend:${PREVIOUS_VERSION}
-    
+
     # Iniciar los contenedores con la versión anterior
     echo "Iniciando contenedores con la versión $PREVIOUS_VERSION..."
     docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-    
+
     echo -e "${GREEN}✓ Imágenes Docker restauradas a la versión $PREVIOUS_VERSION${NC}"
     return 0
 }
@@ -77,11 +77,11 @@ rollback_docker_images() {
 # Función para verificar el estado después del rollback
 verify_rollback() {
     echo -e "${YELLOW}\n=== Verificando estado después del rollback ===${NC}"
-    
+
     # Esperar a que los servicios estén disponibles
     echo "Esperando a que los servicios estén disponibles..."
     sleep 10
-    
+
     # Verificar que el backend está funcionando
     echo "Verificando el backend..."
     if curl -s http://localhost:8000/health | grep -q "ok"; then
@@ -90,7 +90,7 @@ verify_rollback() {
         echo -e "${RED}✗ Backend no responde correctamente${NC}"
         return 1
     fi
-    
+
     # Verificar que el frontend está funcionando
     echo "Verificando el frontend..."
     if curl -s http://localhost:80 | grep -q "html"; then
@@ -99,7 +99,7 @@ verify_rollback() {
         echo -e "${RED}✗ Frontend no responde correctamente${NC}"
         return 1
     fi
-    
+
     echo -e "${GREEN}✓ Todos los servicios están funcionando correctamente después del rollback${NC}"
     return 0
 }
