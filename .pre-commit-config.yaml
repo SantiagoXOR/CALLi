@@ -100,7 +100,7 @@ repos:
         entry: bash scripts/check_docs_updated.sh || true
         language: system
         pass_filenames: false
-        stages: [commit]
+        stages: [pre-commit]
 
       - id: prevent-prohibited-workflows
         name: Prevent Prohibited Workflows
@@ -121,11 +121,39 @@ repos:
         entry: python scripts/run_tests.py --backend
         language: python
         pass_filenames: false
-        stages: [push]
+        stages: [pre-push]
 
       - id: kics-security-scan
         name: Run KICS security scan
         entry: bash -c 'kics scan -p . --config .kics.config -o security-reports || true'
         language: system
         pass_filenames: false
-        stages: [push]
+        stages: [pre-push]
+
+      - id: security-check-local
+        name: Run local security check
+        entry: python scripts/security_check_local.py
+        language: python
+        pass_filenames: false
+        stages: [pre-commit, pre-push]
+
+      - id: fix-tests
+        name: Fix test environment
+        entry: python scripts/fix_tests.py
+        language: python
+        pass_filenames: false
+        stages: [pre-commit, pre-push]
+
+      - id: check-licenses
+        name: Check dependency licenses
+        entry: python scripts/check_licenses.py
+        language: python
+        pass_filenames: false
+        stages: [pre-commit, pre-push]
+
+      - id: backend-security-check
+        name: Run backend security check
+        entry: python scripts/backend_security_check.py
+        language: python
+        pass_filenames: false
+        stages: [pre-commit, pre-push]

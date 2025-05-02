@@ -21,20 +21,20 @@ jobs:
         run: |
           # Create basic requirements.txt
           cat > backend-call-automation/requirements.txt << 'EOF'
-pytest==7.3.1
-pytest-cov==4.1.0
-EOF
+          pytest==7.3.1
+          pytest-cov==4.1.0
+          EOF
 
           # Create basic package.json
           cat > frontend-call-automation/package.json << 'EOF'
-{
-  "name": "frontend-call-automation",
-  "version": "1.0.0",
-  "scripts": {
-    "test": "echo 'No tests specified yet' && exit 0"
-  }
-}
-EOF
+          {
+            "name": "frontend-call-automation",
+            "version": "1.0.0",
+            "scripts": {
+              "test": "echo 'No tests specified yet' && exit 0"
+            }
+          }
+          EOF
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -51,10 +51,10 @@ EOF
           mkdir -p logs
           touch logs/bandit-results.log
           touch logs/safety-results.log
-          
+
           echo "Ejecutando análisis de seguridad con Bandit..."
           bandit -r backend-call-automation -f txt -o logs/bandit-results.log || echo "Advertencias de seguridad encontradas, pero continuamos"
-          
+
           echo "Ejecutando análisis de seguridad con Safety..."
           safety check -r backend-call-automation/requirements.txt --output text > logs/safety-results.log || echo "Vulnerabilidades encontradas, pero continuamos"
 
@@ -66,7 +66,7 @@ EOF
       - name: Run JavaScript security scans
         run: |
           touch logs/npm-audit-results.log
-          
+
           echo "Ejecutando análisis de seguridad con npm audit..."
           cd frontend-call-automation && npm audit --json > ../logs/npm-audit-results.log || echo "Vulnerabilidades encontradas, pero continuamos"
 

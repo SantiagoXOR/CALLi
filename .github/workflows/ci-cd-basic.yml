@@ -20,9 +20,9 @@ jobs:
       - name: Create test file
         run: |
           cat > backend-call-automation/tests/test_basic.py << 'EOF'
-def test_true():
-    assert True
-EOF
+          def test_true():
+              assert True
+          EOF
 
       - name: Set up Python
         uses: actions/setup-python@v4
