@@ -17,8 +17,13 @@ parent_dir = project_root.parent
 if parent_dir.exists():
     sys.path.insert(0, str(parent_dir))
 
+# 3. Agregar el directorio scripts al PYTHONPATH
+scripts_dir = project_root / "scripts"
+if scripts_dir.exists():
+    sys.path.insert(0, str(scripts_dir))
+
 # 3. Imprimir información de depuración sobre el PYTHONPATH
-print(f"PYTHONPATH configurado para tests:")
+print("PYTHONPATH configurado para tests:")
 print(f"- Directorio actual: {os.getcwd()}")
 print(f"- Directorio del proyecto: {project_root}")
 print(f"- sys.path: {sys.path[:5]}")  # Mostrar solo los primeros 5 elementos para brevedad

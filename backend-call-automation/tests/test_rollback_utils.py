@@ -7,7 +7,8 @@ import pytest
 # Importamos prometheus_client directamente en lugar de Collector
 import prometheus_client
 
-from scripts.rollback_utils import (
+# Importamos directamente desde rollback_utils
+from rollback_utils import (
     _apply_default_config,
     clear_redis_cache,
     close_all_elevenlabs_connections,
@@ -22,8 +23,8 @@ def manage_snapshot_file(tmp_path):
     """Asegura que el directorio y archivo snapshot se manejen en tmp_path"""
     test_snapshot_dir = tmp_path / "snapshots"
     test_snapshot_file = test_snapshot_dir / "elevenlabs_config_snapshot.json"
-    with patch("scripts.rollback_utils.SNAPSHOT_DIR", test_snapshot_dir), patch(
-        "scripts.rollback_utils.SNAPSHOT_FILE", test_snapshot_file
+    with patch("rollback_utils.SNAPSHOT_DIR", test_snapshot_dir), patch(
+        "rollback_utils.SNAPSHOT_FILE", test_snapshot_file
     ):
         yield test_snapshot_file
 
@@ -35,7 +36,7 @@ def mock_redis_sync():
     mock.scan_iter.return_value = iter([])
     mock.delete.return_value = 0
     mock.delete.__qualname__ = "MagicMock.delete"
-    with patch("scripts.rollback_utils.redis_client", mock) as patched_mock:
+    with patch("rollback_utils.redis_client", mock) as patched_mock:
         monkeypatch = pytest.MonkeyPatch()
         monkeypatch.setattr(
             asyncio,
@@ -57,7 +58,7 @@ def mock_redis_async():
 
     mock.scan_iter.side_effect = mock_scan_iter_impl
     mock.delete.return_value = 0
-    with patch("scripts.rollback_utils.redis_client", mock) as patched_mock:
+    with patch("rollback_utils.redis_client", mock) as patched_mock:
         yield patched_mock
 
 
@@ -73,7 +74,7 @@ def mock_connection_pool():
 
     mock_pool_class = MagicMock()
     mock_pool_class.get_instance.return_value = mock_pool_instance
-    with patch("scripts.rollback_utils.ConnectionPool", mock_pool_class):
+    with patch("rollback_utils.ConnectionPool", mock_pool_class):
         yield mock_pool_instance
 
 
@@ -82,7 +83,7 @@ def mock_prometheus_registry():
     """Mock para prometheus_client.REGISTRY"""
     mock_registry = MagicMock(spec_set=["unregister", "_names_to_collectors"])
     mock_registry._names_to_collectors = {}
-    with patch("scripts.rollback_utils.REGISTRY", mock_registry):
+    with patch("rollback_utils.REGISTRY", mock_registry):
         yield mock_registry
 
 
@@ -94,7 +95,7 @@ def mock_settings_object():
     settings_obj.ELEVENLABS_CONNECTION_TIMEOUT = 99
     settings_obj.ELEVENLABS_POL_SIZE = 99
     settings_obj.reload = MagicMock()
-    with patch("scripts.rollback_utils.settings", settings_obj):
+    with patch("rollback_utils.settings", settings_obj):
         yield settings_obj
 
 
