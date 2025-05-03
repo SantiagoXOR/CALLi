@@ -34,7 +34,7 @@ class AIConversationService:
         self.cache_service = cache_service or CacheService()
         self.llm = self._initialize_llm()
         self.prompt_templates = self._load_prompt_templates()
-        
+
     def _initialize_llm(self):
         """Inicializa el modelo de lenguaje."""
         if self.settings.LLM_PROVIDER == "openai":
@@ -53,7 +53,7 @@ class AIConversationService:
             )
         else:
             raise ValueError(f"Unsupported LLM provider: {self.settings.LLM_PROVIDER}")
-    
+
     def _load_prompt_templates(self):
         """Carga las plantillas de prompts para diferentes tipos de campaña."""
         return {
@@ -70,7 +70,7 @@ class AIConversationService:
                 template=self.settings.CAMPAIGN_PROMPTS["survey"]
             )
         }
-        
+
     async def generate_response(
         self,
         conversation_id: str,
@@ -80,25 +80,25 @@ class AIConversationService:
     ) -> Dict[str, Any]:
         """
         Genera una respuesta basada en el mensaje del usuario y el contexto.
-        
+
         Args:
             conversation_id: ID único de la conversación
             message: Mensaje del usuario
             context: Contexto adicional (nombre, campaña, etc.)
             campaign_type: Tipo de campaña (sales, support, survey)
-            
+
         Returns:
             Dict con la respuesta y metadatos
         """
         # Implementación para generar respuesta
-        
+
     async def analyze_sentiment(self, text: str) -> Dict[str, Any]:
         """
         Analiza el sentimiento de un texto.
-        
+
         Args:
             text: Texto a analizar
-            
+
         Returns:
             Dict con análisis de sentimiento
         """
@@ -113,34 +113,34 @@ El `ConversationMemory` gestiona el historial y contexto de las conversaciones.
 class ConversationMemory:
     def __init__(self, cache_service=None):
         self.cache_service = cache_service or CacheService()
-        
+
     async def get_memory(self, conversation_id: str) -> List[Dict[str, str]]:
         """
         Obtiene el historial de una conversación.
-        
+
         Args:
             conversation_id: ID único de la conversación
-            
+
         Returns:
             Lista de mensajes de la conversación
         """
         # Implementación para obtener memoria
-        
+
     async def add_message(self, conversation_id: str, role: str, content: str) -> None:
         """
         Añade un mensaje al historial de la conversación.
-        
+
         Args:
             conversation_id: ID único de la conversación
             role: Rol del mensaje (user, assistant)
             content: Contenido del mensaje
         """
         # Implementación para añadir mensaje
-        
+
     async def clear_memory(self, conversation_id: str) -> None:
         """
         Limpia el historial de una conversación.
-        
+
         Args:
             conversation_id: ID único de la conversación
         """
@@ -157,7 +157,7 @@ sequenceDiagram
     participant AI as AIConversationService
     participant Memory as ConversationMemory
     participant LLM as LLM Provider
-    
+
     Call->>AI: Iniciar conversación
     AI->>Memory: Crear memoria
     AI->>AI: Seleccionar plantilla
@@ -173,22 +173,22 @@ sequenceDiagram
 async def start_conversation(campaign_id: str, contact_id: str, campaign_type: str = "sales") -> Dict[str, Any]:
     """
     Inicia una nueva conversación.
-    
+
     Args:
         campaign_id: ID de la campaña
         contact_id: ID del contacto
         campaign_type: Tipo de campaña
-        
+
     Returns:
         Dict con información de la conversación
     """
     # Generar ID de conversación
     conversation_id = f"{campaign_id}_{contact_id}_{int(time.time())}"
-    
+
     # Obtener información de campaña y contacto
     campaign = await campaign_repository.find_by_id(campaign_id)
     contact = await contact_repository.find_by_id(contact_id)
-    
+
     # Preparar contexto
     context = {
         "contact_name": contact.name,
@@ -197,11 +197,11 @@ async def start_conversation(campaign_id: str, contact_id: str, campaign_type: s
         "objective": campaign.objective,
         "key_points": campaign.key_points
     }
-    
+
     # Inicializar memoria de conversación
     memory = ConversationMemory()
     await memory.clear_memory(conversation_id)
-    
+
     # Generar mensaje inicial
     response = await ai_conversation_service.generate_response(
         conversation_id=conversation_id,
@@ -209,7 +209,7 @@ async def start_conversation(campaign_id: str, contact_id: str, campaign_type: s
         context=context,
         campaign_type=campaign_type
     )
-    
+
     return {
         "conversation_id": conversation_id,
         "initial_message": response["response"],
@@ -226,7 +226,7 @@ sequenceDiagram
     participant Memory as ConversationMemory
     participant Sentiment as SentimentAnalyzer
     participant LLM as LLM Provider
-    
+
     Call->>AI: Procesar respuesta (mensaje)
     AI->>Memory: Obtener historial
     AI->>Sentiment: Analizar sentimiento
@@ -246,11 +246,11 @@ sequenceDiagram
 async def process_user_response(conversation_id: str, user_message: str) -> Dict[str, Any]:
     """
     Procesa la respuesta del usuario y genera una respuesta.
-    
+
     Args:
         conversation_id: ID de la conversación
         user_message: Mensaje del usuario
-        
+
     Returns:
         Dict con respuesta y metadatos
     """
@@ -258,10 +258,10 @@ async def process_user_response(conversation_id: str, user_message: str) -> Dict
     conversation = await conversation_repository.find_by_id(conversation_id)
     if not conversation:
         raise ValueError(f"Conversation not found: {conversation_id}")
-    
+
     # Analizar sentimiento del mensaje del usuario
     user_sentiment = await ai_conversation_service.analyze_sentiment(user_message)
-    
+
     # Generar respuesta
     response = await ai_conversation_service.generate_response(
         conversation_id=conversation_id,
@@ -269,7 +269,7 @@ async def process_user_response(conversation_id: str, user_message: str) -> Dict
         context=conversation.context,
         campaign_type=conversation.campaign_type
     )
-    
+
     # Guardar interacción
     await conversation_repository.add_interaction(
         conversation_id=conversation_id,
@@ -278,7 +278,7 @@ async def process_user_response(conversation_id: str, user_message: str) -> Dict
         assistant_message=response["response"],
         assistant_sentiment=response["response_sentiment"]
     )
-    
+
     return {
         "response": response["response"],
         "user_sentiment": user_sentiment,
@@ -383,10 +383,10 @@ El análisis de sentimientos permite comprender la actitud y emoción del usuari
 async def analyze_sentiment(self, text: str) -> Dict[str, Any]:
     """
     Analiza el sentimiento de un texto.
-    
+
     Args:
         text: Texto a analizar
-        
+
     Returns:
         Dict con análisis de sentimiento
     """
@@ -402,15 +402,15 @@ async def analyze_sentiment(self, text: str) -> Dict[str, Any]:
                 "surprise": 0.0
             }
         }
-    
+
     # Usar LLM para análisis de sentimiento
     prompt = PromptTemplate(
         input_variables=["text"],
         template="""
         Analiza el sentimiento y las emociones en el siguiente texto:
-        
+
         Texto: {text}
-        
+
         Proporciona un análisis en formato JSON con la siguiente estructura:
         {{
             "sentiment": "positive/negative/neutral",
@@ -426,13 +426,13 @@ async def analyze_sentiment(self, text: str) -> Dict[str, Any]:
         }}
         """
     )
-    
+
     chain = LLMChain(
         llm=self.llm,
         prompt=prompt,
         output_parser=JsonOutputParser()
     )
-    
+
     try:
         result = await chain.apredict(text=text)
         return result
@@ -479,33 +479,33 @@ async def suggest_actions(
 ) -> List[Dict[str, Any]]:
     """
     Sugiere acciones basadas en la conversación.
-    
+
     Args:
         conversation_id: ID de la conversación
         user_message: Último mensaje del usuario
         user_sentiment: Análisis de sentimiento del usuario
         conversation_history: Historial de la conversación
         context: Contexto de la conversación
-        
+
     Returns:
         Lista de acciones sugeridas
     """
     prompt = PromptTemplate(
         input_variables=["user_message", "sentiment", "history", "context"],
         template="""
-        Basándote en la siguiente conversación y análisis de sentimiento, 
+        Basándote en la siguiente conversación y análisis de sentimiento,
         sugiere las mejores acciones a tomar:
-        
+
         Último mensaje del usuario: {user_message}
-        
+
         Análisis de sentimiento: {sentiment}
-        
+
         Historial de conversación:
         {history}
-        
+
         Contexto:
         {context}
-        
+
         Proporciona hasta 3 acciones recomendadas en formato JSON:
         [
             {{
@@ -517,13 +517,13 @@ async def suggest_actions(
         ]
         """
     )
-    
+
     chain = LLMChain(
         llm=self.llm,
         prompt=prompt,
         output_parser=JsonOutputParser()
     )
-    
+
     try:
         result = await chain.apredict(
             user_message=user_message,
@@ -567,21 +567,21 @@ async def get_cached_response(
 ) -> Optional[Dict[str, Any]]:
     """
     Intenta obtener una respuesta en caché.
-    
+
     Args:
         conversation_id: ID de la conversación
         message: Mensaje del usuario
         context_hash: Hash del contexto
-        
+
     Returns:
         Respuesta en caché o None
     """
     cache_key = f"ai_response:{conversation_id}:{hash(message)}:{context_hash}"
     cached_data = await self.cache_service.get(cache_key)
-    
+
     if cached_data:
         return json.loads(cached_data)
-    
+
     return None
 
 async def cache_response(
@@ -594,7 +594,7 @@ async def cache_response(
 ) -> None:
     """
     Almacena una respuesta en caché.
-    
+
     Args:
         conversation_id: ID de la conversación
         message: Mensaje del usuario
@@ -660,7 +660,7 @@ async def log_conversation_metrics(
 ) -> None:
     """
     Registra métricas de conversación.
-    
+
     Args:
         conversation_id: ID de la conversación
         user_message: Mensaje del usuario
@@ -681,13 +681,13 @@ async def log_conversation_metrics(
         "response_time": response_time,
         "token_usage": token_usage
     }
-    
+
     # Guardar métricas en base de datos
     await metrics_repository.save(metrics)
-    
+
     # Registrar en sistema de monitoreo
     logger.info(f"Conversation metrics: {json.dumps(metrics)}")
-    
+
     # Incrementar contadores
     self.metrics.increment(
         "ai_conversation.messages",
@@ -696,7 +696,7 @@ async def log_conversation_metrics(
             "conversation_id": conversation_id
         }
     )
-    
+
     self.metrics.timing(
         "ai_conversation.response_time",
         response_time,
@@ -713,19 +713,19 @@ def test_generate_response():
     # Configurar mock de LLM
     mock_llm = AsyncMock()
     mock_llm.apredict.return_value = "Hola, ¿en qué puedo ayudarte hoy?"
-    
+
     # Configurar mock de memoria
     mock_memory = AsyncMock()
     mock_memory.get_memory.return_value = [
         {"role": "assistant", "content": "Bienvenido a nuestra empresa."},
         {"role": "user", "content": "Hola, me interesa su producto."}
     ]
-    
+
     # Inyectar mocks en servicio
     ai_service = AIConversationService()
     ai_service.llm = mock_llm
     ai_service.memory = mock_memory
-    
+
     # Ejecutar función
     result = await ai_service.generate_response(
         conversation_id="test-conversation",
@@ -733,11 +733,11 @@ def test_generate_response():
         context={"product": "Software XYZ", "objective": "Venta"},
         campaign_type="sales"
     )
-    
+
     # Verificar resultado
     assert "response" in result
     assert result["response"] == "Hola, ¿en qué puedo ayudarte hoy?"
-    
+
     # Verificar que se llamó a los mocks correctamente
     mock_memory.get_memory.assert_called_once_with("test-conversation")
     mock_llm.apredict.assert_called_once()
@@ -750,11 +750,11 @@ def test_conversation_flow():
     # Configurar servicios reales
     ai_service = AIConversationService()
     memory = ConversationMemory()
-    
+
     # Iniciar conversación
     conversation_id = f"test_{int(time.time())}"
     await memory.clear_memory(conversation_id)
-    
+
     # Paso 1: Mensaje inicial
     response1 = await ai_service.generate_response(
         conversation_id=conversation_id,
@@ -766,11 +766,11 @@ def test_conversation_flow():
         },
         campaign_type="sales"
     )
-    
+
     # Verificar respuesta inicial
     assert "response" in response1
     assert len(response1["response"]) > 0
-    
+
     # Paso 2: Respuesta del usuario
     response2 = await ai_service.generate_response(
         conversation_id=conversation_id,
@@ -783,11 +783,11 @@ def test_conversation_flow():
         },
         campaign_type="sales"
     )
-    
+
     # Verificar segunda respuesta
     assert "response" in response2
     assert "precio" in response2["response"].lower()
-    
+
     # Verificar memoria
     memory_entries = await memory.get_memory(conversation_id)
     assert len(memory_entries) == 3  # Inicial + usuario + respuesta
@@ -841,37 +841,37 @@ class AISettings(BaseSettings):
     # API Keys
     OPENAI_API_KEY: str
     GOOGLE_API_KEY: Optional[str] = None
-    
+
     # Provider Configuration
     LLM_PROVIDER: str = "openai"  # openai, google
     DEFAULT_MODEL: str = "gpt-4"
     MAX_TOKENS: int = 150
     TEMPERATURE: float = 0.7
-    
+
     # Memory Configuration
     MAX_HISTORY_TOKENS: int = 2000
     MEMORY_TTL: int = 86400  # 24 hours
-    
+
     # Prompts
     CAMPAIGN_PROMPTS: Dict[str, str] = {
         "sales": """Eres un vendedor profesional experto en {product}.
                    Objetivo: {objective}
                    Puntos clave: {key_points}
                    Historial: {history}""",
-        
+
         "support": """Eres un agente de soporte técnico especializado en {product}.
                      Problemas comunes: {common_issues}
                      Historial: {history}""",
-        
+
         "survey": """Eres un encuestador profesional realizando una investigación sobre {topic}.
                     Preguntas clave: {key_questions}
                     Historial: {history}"""
     }
-    
+
     # Cache Configuration
     CACHE_ENABLED: bool = True
     CACHE_TTL: int = 3600  # 1 hour
-    
+
     class Config:
         env_file = ".env"
 ```

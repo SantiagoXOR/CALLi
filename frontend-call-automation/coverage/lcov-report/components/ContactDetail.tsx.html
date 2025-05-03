@@ -15,41 +15,41 @@
         }
     </style>
 </head>
-    
+
 <body>
 <div class='wrapper'>
     <div class='pad1'>
         <h1><a href="../index.html">All files</a> / <a href="index.html">components</a> ContactDetail.tsx</h1>
         <div class='clearfix'>
-            
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">68% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>17/25</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">10% </span>
                 <span class="quiet">Branches</span>
                 <span class='fraction'>1/10</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">25% </span>
                 <span class="quiet">Functions</span>
                 <span class='fraction'>1/4</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">68% </span>
                 <span class="quiet">Lines</span>
                 <span class='fraction'>17/25</span>
             </div>
-        
-            
+
+
         </div>
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
@@ -460,7 +460,7 @@ interface ContactDetailProps {
 &nbsp;
 export function ContactDetail({ contactId, onEdit, onBack }: ContactDetailProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  
+
   const { data: contact, isLoading, error } = useGetContact(contactId);
   const deleteMutation = useDeleteContact();
 &nbsp;
@@ -631,4 +631,3 @@ export function ContactDetail({ contactId, onEdit, onBack }: ContactDetailProps)
         <script src="../block-navigation.js"></script>
     </body>
 </html>
-    

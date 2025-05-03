@@ -17,9 +17,9 @@ El sistema utiliza cuatro tipos principales de métricas de Prometheus:
 
 ### call_latency_seconds
 
-**Tipo**: Histogram  
-**Descripción**: Latencia de las llamadas en segundos  
-**Unidades**: Segundos  
+**Tipo**: Histogram
+**Descripción**: Latencia de las llamadas en segundos
+**Unidades**: Segundos
 **Etiquetas**:
 - `status`: Estado de la llamada (completed, failed, etc.)
 
@@ -41,9 +41,9 @@ histogram_quantile(0.95, sum(rate(call_latency_seconds_bucket[5m])) by (le))
 
 ### audio_quality_score
 
-**Tipo**: Gauge  
-**Descripción**: Puntuación de calidad del audio  
-**Unidades**: Puntuación (0-1)  
+**Tipo**: Gauge
+**Descripción**: Puntuación de calidad del audio
+**Unidades**: Puntuación (0-1)
 **Etiquetas**:
 - `voice`: ID de la voz utilizada
 
@@ -63,9 +63,9 @@ avg(audio_quality_score) by (voice)
 
 ### total_calls
 
-**Tipo**: Counter  
-**Descripción**: Número total de llamadas realizadas  
-**Unidades**: Llamadas  
+**Tipo**: Counter
+**Descripción**: Número total de llamadas realizadas
+**Unidades**: Llamadas
 **Etiquetas**:
 - `status`: Estado de la llamada (completed, failed, etc.)
 - `campaign_id`: ID de la campaña
@@ -89,9 +89,9 @@ sum(rate(total_calls{status="completed"}[5m])) / sum(rate(total_calls[5m]))
 
 ### call_duration_seconds
 
-**Tipo**: Histogram  
-**Descripción**: Duración de las llamadas en segundos  
-**Unidades**: Segundos  
+**Tipo**: Histogram
+**Descripción**: Duración de las llamadas en segundos
+**Unidades**: Segundos
 **Etiquetas**:
 - `campaign_id`: ID de la campaña
 
@@ -115,9 +115,9 @@ histogram_quantile(0.95, sum(rate(call_duration_seconds_bucket[5m])) by (le))
 
 ### ai_response_time_seconds
 
-**Tipo**: Histogram  
-**Descripción**: Tiempo de respuesta de la IA en segundos  
-**Unidades**: Segundos  
+**Tipo**: Histogram
+**Descripción**: Tiempo de respuesta de la IA en segundos
+**Unidades**: Segundos
 **Etiquetas**:
 - `model`: Modelo de IA utilizado
 
@@ -139,9 +139,9 @@ histogram_quantile(0.95, sum(rate(ai_response_time_seconds_bucket[5m])) by (le, 
 
 ### ai_requests_total
 
-**Tipo**: Counter  
-**Descripción**: Número total de solicitudes a la IA  
-**Unidades**: Solicitudes  
+**Tipo**: Counter
+**Descripción**: Número total de solicitudes a la IA
+**Unidades**: Solicitudes
 **Etiquetas**:
 - `model`: Modelo de IA utilizado
 - `status`: Estado de la solicitud (success, error)
@@ -162,9 +162,9 @@ sum(rate(ai_requests_total{status="error"}[5m])) / sum(rate(ai_requests_total[5m
 
 ### ai_errors_total
 
-**Tipo**: Counter  
-**Descripción**: Número total de errores de la IA  
-**Unidades**: Errores  
+**Tipo**: Counter
+**Descripción**: Número total de errores de la IA
+**Unidades**: Errores
 **Etiquetas**:
 - `model`: Modelo de IA utilizado
 - `error_type`: Tipo de error
@@ -185,9 +185,9 @@ sum(rate(ai_errors_total[5m])) by (error_type)
 
 ### ai_sentiment_score
 
-**Tipo**: Gauge  
-**Descripción**: Puntuación de sentimiento detectado por la IA  
-**Unidades**: Puntuación (-1 a 1)  
+**Tipo**: Gauge
+**Descripción**: Puntuación de sentimiento detectado por la IA
+**Unidades**: Puntuación (-1 a 1)
 **Etiquetas**:
 - `campaign_id`: ID de la campaña
 
@@ -207,9 +207,9 @@ avg(ai_sentiment_score) by (campaign_id)
 
 ### ai_tokens_used
 
-**Tipo**: Summary  
-**Descripción**: Número de tokens utilizados en solicitudes de IA  
-**Unidades**: Tokens  
+**Tipo**: Summary
+**Descripción**: Número de tokens utilizados en solicitudes de IA
+**Unidades**: Tokens
 **Etiquetas**:
 - `model`: Modelo de IA utilizado
 
@@ -231,9 +231,9 @@ sum(rate(ai_tokens_used_sum[1h])) by (model)
 
 ### elevenlabs_requests_total
 
-**Tipo**: Counter  
-**Descripción**: Número total de solicitudes a ElevenLabs  
-**Unidades**: Solicitudes  
+**Tipo**: Counter
+**Descripción**: Número total de solicitudes a ElevenLabs
+**Unidades**: Solicitudes
 **Etiquetas**:
 - `method`: Método de la API llamado
 - `status`: Estado de la solicitud (success, error)
@@ -254,9 +254,9 @@ sum(rate(elevenlabs_requests_total{status="error"}[5m])) / sum(rate(elevenlabs_r
 
 ### elevenlabs_request_duration_seconds
 
-**Tipo**: Histogram  
-**Descripción**: Latencia de solicitudes a ElevenLabs  
-**Unidades**: Segundos  
+**Tipo**: Histogram
+**Descripción**: Latencia de solicitudes a ElevenLabs
+**Unidades**: Segundos
 **Etiquetas**:
 - `method`: Método de la API llamado
 
@@ -278,9 +278,9 @@ histogram_quantile(0.95, sum(rate(elevenlabs_request_duration_seconds_bucket[5m]
 
 ### elevenlabs_pool_connections_active
 
-**Tipo**: Gauge  
-**Descripción**: Número de conexiones activas en el pool  
-**Unidades**: Conexiones  
+**Tipo**: Gauge
+**Descripción**: Número de conexiones activas en el pool
+**Unidades**: Conexiones
 
 **Uso**:
 - Monitorear el uso del pool de conexiones
@@ -298,9 +298,9 @@ elevenlabs_pool_connections_active / elevenlabs_pool_size * 100
 
 ### elevenlabs_pool_size
 
-**Tipo**: Gauge  
-**Descripción**: Tamaño configurado del pool de conexiones  
-**Unidades**: Conexiones  
+**Tipo**: Gauge
+**Descripción**: Tamaño configurado del pool de conexiones
+**Unidades**: Conexiones
 
 **Uso**:
 - Referencia para el tamaño máximo del pool
@@ -314,9 +314,9 @@ elevenlabs_pool_size
 
 ### elevenlabs_errors_total
 
-**Tipo**: Counter  
-**Descripción**: Número total de errores específicos  
-**Unidades**: Errores  
+**Tipo**: Counter
+**Descripción**: Número total de errores específicos
+**Unidades**: Errores
 **Etiquetas**:
 - `error_type`: Tipo de error
 
@@ -336,9 +336,9 @@ sum(rate(elevenlabs_errors_total[5m])) by (error_type)
 
 ### elevenlabs_generation_duration_seconds
 
-**Tipo**: Histogram  
-**Descripción**: Duración de la generación de audio  
-**Unidades**: Segundos  
+**Tipo**: Histogram
+**Descripción**: Duración de la generación de audio
+**Unidades**: Segundos
 **Etiquetas**:
 - `voice`: Voz utilizada
 
@@ -360,9 +360,9 @@ sum(rate(elevenlabs_generation_duration_seconds_sum[5m])) by (voice) / sum(rate(
 
 ### elevenlabs_audio_quality_score
 
-**Tipo**: Histogram  
-**Descripción**: Calidad del audio generado  
-**Unidades**: Puntuación (0-1)  
+**Tipo**: Histogram
+**Descripción**: Calidad del audio generado
+**Unidades**: Puntuación (0-1)
 
 **Buckets**: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 
@@ -384,9 +384,9 @@ sum(rate(elevenlabs_audio_quality_score_bucket{le="0.7"}[5m])) / sum(rate(eleven
 
 ### http_requests_total
 
-**Tipo**: Counter  
-**Descripción**: Número total de solicitudes HTTP  
-**Unidades**: Solicitudes  
+**Tipo**: Counter
+**Descripción**: Número total de solicitudes HTTP
+**Unidades**: Solicitudes
 **Etiquetas**:
 - `method`: Método HTTP (GET, POST, etc.)
 - `path`: Ruta de la solicitud
@@ -411,9 +411,9 @@ topk(5, sum(rate(http_requests_total[5m])) by (path))
 
 ### http_request_duration_seconds
 
-**Tipo**: Histogram  
-**Descripción**: Duración de las solicitudes HTTP  
-**Unidades**: Segundos  
+**Tipo**: Histogram
+**Descripción**: Duración de las solicitudes HTTP
+**Unidades**: Segundos
 **Etiquetas**:
 - `method`: Método HTTP
 - `path`: Ruta de la solicitud
@@ -439,9 +439,9 @@ topk(5, histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5
 
 ### process_cpu_seconds_total
 
-**Tipo**: Counter  
-**Descripción**: Tiempo total de CPU utilizado  
-**Unidades**: Segundos  
+**Tipo**: Counter
+**Descripción**: Tiempo total de CPU utilizado
+**Unidades**: Segundos
 
 **Uso**:
 - Monitorear el uso de CPU
@@ -456,9 +456,9 @@ rate(process_cpu_seconds_total[1m])
 
 ### process_resident_memory_bytes
 
-**Tipo**: Gauge  
-**Descripción**: Memoria residente utilizada  
-**Unidades**: Bytes  
+**Tipo**: Gauge
+**Descripción**: Memoria residente utilizada
+**Unidades**: Bytes
 
 **Uso**:
 - Monitorear el uso de memoria
@@ -478,9 +478,9 @@ rate(process_resident_memory_bytes[1h])
 
 ### cache_hits_total
 
-**Tipo**: Counter  
-**Descripción**: Número total de aciertos de caché  
-**Unidades**: Aciertos  
+**Tipo**: Counter
+**Descripción**: Número total de aciertos de caché
+**Unidades**: Aciertos
 **Etiquetas**:
 - `cache`: Tipo de caché (redis, memory, etc.)
 
@@ -500,9 +500,9 @@ sum(rate(cache_hits_total[5m])) by (cache)
 
 ### cache_misses_total
 
-**Tipo**: Counter  
-**Descripción**: Número total de fallos de caché  
-**Unidades**: Fallos  
+**Tipo**: Counter
+**Descripción**: Número total de fallos de caché
+**Unidades**: Fallos
 **Etiquetas**:
 - `cache`: Tipo de caché (redis, memory, etc.)
 
@@ -522,9 +522,9 @@ sum(rate(cache_hits_total[5m])) / (sum(rate(cache_hits_total[5m])) + sum(rate(ca
 
 ### cache_size_bytes
 
-**Tipo**: Gauge  
-**Descripción**: Tamaño de la caché en bytes  
-**Unidades**: Bytes  
+**Tipo**: Gauge
+**Descripción**: Tamaño de la caché en bytes
+**Unidades**: Bytes
 **Etiquetas**:
 - `cache`: Tipo de caché (redis, memory, etc.)
 
@@ -635,7 +635,7 @@ Para crear dashboards dinámicos en Grafana, se recomienda utilizar las siguient
    ```
    # CPU
    rate(process_cpu_seconds_total[$interval])
-   
+
    # Memoria
    process_resident_memory_bytes / 1024 / 1024
    ```

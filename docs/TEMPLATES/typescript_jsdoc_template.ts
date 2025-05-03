@@ -1,12 +1,12 @@
 /**
  * Module for [brief description of module purpose].
- * 
+ *
  * This module provides [detailed description of module functionality and purpose].
- * 
+ *
  * @example
  * ```tsx
  * import { SomeComponent } from './components/SomeComponent';
- * 
+ *
  * function App() {
  *   return <SomeComponent prop1="value" />;
  * }
@@ -29,10 +29,10 @@ interface SampleComponentProps {
 
 /**
  * Sample component description
- * 
+ *
  * Longer description with more details about what this component does,
  * its purpose, and any important implementation details.
- * 
+ *
  * @component
  * @example
  * ```tsx
@@ -41,10 +41,10 @@ interface SampleComponentProps {
  * </SampleComponent>
  * ```
  */
-export function SampleComponent({ 
-  prop1, 
-  prop2 = 0, 
-  children 
+export function SampleComponent({
+  prop1,
+  prop2 = 0,
+  children
 }: SampleComponentProps): JSX.Element {
   // Component implementation
   return (
@@ -57,15 +57,15 @@ export function SampleComponent({
 
 /**
  * Sample utility function
- * 
+ *
  * Longer description with more details about what this function does,
  * its purpose, and any important implementation details.
- * 
+ *
  * @param {string} param1 - Description of param1
  * @param {number[]} param2 - Description of param2
  * @returns {boolean} Description of return value
  * @throws {Error} When param1 is empty
- * 
+ *
  * @example
  * ```ts
  * const result = utilityFunction('test', [1, 2, 3]);

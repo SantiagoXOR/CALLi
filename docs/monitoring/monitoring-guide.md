@@ -22,17 +22,17 @@ graph TD
     A[Aplicación] -->|Instrumentación| B[Métricas]
     A -->|Logs| C[Logging]
     A -->|Trazas| D[OpenTelemetry]
-    
+
     B -->|Exposición| E[Endpoint Prometheus]
     C -->|Centralización| F[Elasticsearch]
     D -->|Exportación| G[Jaeger]
-    
+
     E -->|Scraping| H[Prometheus]
     F -->|Indexación| I[Kibana]
-    
+
     H -->|Visualización| J[Grafana]
     H -->|Alertas| K[AlertManager]
-    
+
     K -->|Notificaciones| L[Email/Slack/PagerDuty]
 ```
 
@@ -153,7 +153,7 @@ La configuración del sistema de monitoreo se realiza a través del módulo `app
 ```python
 class MetricsSettings(BaseSettings):
     """Configuración para el sistema de métricas."""
-    
+
     enabled: bool = True
     prometheus_endpoint: str = "http://localhost:9090"
     opentelemetry_enabled: bool = False
@@ -192,14 +192,14 @@ from app.services.monitoring_service import MonitoringService
 class MyService:
     def __init__(self):
         self.monitoring_service = MonitoringService()
-    
+
     async def process_call(self, call_id: str):
         start_time = time.time()
-        
+
         try:
             # Lógica del servicio...
             result = await self._do_processing()
-            
+
             # Registrar métricas
             metrics = {
                 "latency": time.time() - start_time,
@@ -207,7 +207,7 @@ class MyService:
                 "duration": result.duration
             }
             await self.monitoring_service.record_call_metrics(call_id, metrics)
-            
+
             return result
         except Exception as e:
             # Registrar error

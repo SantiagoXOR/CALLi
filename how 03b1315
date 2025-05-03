@@ -1,0 +1,131 @@
+[1mdiff --git a/.github/workflows/config-scan.yml b/.github/workflows/config-scan.yml[m
+[1mindex a86d0e2..52b63c2 100644[m
+[1m--- a/.github/workflows/config-scan.yml[m
+[1m+++ b/.github/workflows/config-scan.yml[m
+[36m@@ -35,11 +35,11 @@[m [mjobs:[m
+       - name: Checkout code[m
+         uses: actions/checkout@v3[m
+ [m
+[31m-      - name: Install kics[m
+[32m+[m[32m      - name: Install KICS[m
+         run: |[m
+[31m-          wget -q -O kics.tar.gz https://github.com/Checkmarx/kics/releases/download/v1.6.1/kics_1.6.1_linux_x64.tar.gz[m
+[31m-          tar -xzf kics.tar.gz[m
+[31m-          chmod +x kics[m
+[32m+[m[32m          curl -L -o kics.tar.gz https://github.com/Checkmarx/kics/releases/download/v1.6.1/kics_1.6.1_linux_x64.tar.gz[m
+[32m+[m[32m          tar -xzf kics.tar.gz || (echo "Fallo al descomprimir KICS" && exit 1)[m
+[32m+[m[32m          chmod +x kics || (echo "No se pudo hacer ejecutable KICS" && exit 1)[m
+ [m
+       - name: Run KICS scan[m
+         run: |[m
+[1mdiff --git a/.github/workflows/test-and-security.yml b/.github/workflows/test-and-security.yml[m
+[1mnew file mode 100644[m
+[1mindex 0000000..872f39f[m
+[1m--- /dev/null[m
+[1m+++ b/.github/workflows/test-and-security.yml[m
+[36m@@ -0,0 +1,77 @@[m
+[32m+[m[32mname: Tests y Seguridad[m
+[32m+[m
+[32m+[m[32mon:[m
+[32m+[m[32m  push:[m
+[32m+[m[32m    branches: [ master, main, develop ][m
+[32m+[m[32m  pull_request:[m
+[32m+[m[32m    branches: [ master, main, develop ][m
+[32m+[m[32m  workflow_dispatch:[m
+[32m+[m
+[32m+[m[32mjobs:[m
+[32m+[m[32m  backend-tests:[m
+[32m+[m[32m    runs-on: ubuntu-latest[m
+[32m+[m[32m    steps:[m
+[32m+[m[32m      - uses: actions/checkout@v3[m
+[32m+[m
+[32m+[m[32m      - name: Set up Python[m
+[32m+[m[32m        uses: actions/setup-python@v4[m
+[32m+[m[32m        with:[m
+[32m+[m[32m          python-version: '3.10'[m
+[32m+[m
+[32m+[m[32m      - name: Install dependencies[m
+[32m+[m[32m        run: |[m
+[32m+[m[32m          python -m pip install --upgrade pip[m
+[32m+[m[32m          pip install -r requirements.txt[m
+[32m+[m[32m          pip install -r backend-call-automation/requirements.txt[m
+[32m+[m[32m          pip install pytest pytest-asyncio pytest-cov pytest-mock respx email-validator prometheus-client[m
+[32m+[m
+[32m+[m[32m      - name: Set PYTHONPATH[m
+[32m+[m[32m        run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV[m
+[32m+[m
+[32m+[m[32m      - name: Run backend tests[m
+[32m+[m[32m        run: |[m
+[32m+[m[32m          pytest tests/ --cov=app --cov-report=xml[m
+[32m+[m
+[32m+[m[32m      - name: Upload coverage report[m
+[32m+[m[32m        uses: codecov/codecov-action@v3[m
+[32m+[m[32m        with:[m
+[32m+[m[32m          file: ./coverage.xml[m
+[32m+[m[32m          fail_ci_if_error: false[m
+[32m+[m
+[32m+[m[32m  security-scan:[m
+[32m+[m[32m    runs-on: ubuntu-latest[m
+[32m+[m[32m    steps:[m
+[32m+[m[32m      - uses: actions/checkout@v3[m
+[32m+[m
+[32m+[m[32m      - name: Install KICS[m
+[32m+[m[32m        run: |[m
+[32m+[m[32m          curl -sfL 'https://raw.githubusercontent.com/Checkmarx/kics/master/install.sh' | sh[m
+[32m+[m
+[32m+[m[32m      - name: Run KICS scan[m
+[32m+[m[32m        run: |[m
+[32m+[m[32m          ./bin/kics scan -p . --config .kics.config -o security-reports[m
+[32m+[m[32m        continue-on-error: true[m
+[32m+[m
+[32m+[m[32m      - name: Upload security reports[m
+[32m+[m[32m        uses: actions/upload-artifact@v3[m
+[32m+[m[32m        with:[m
+[32m+[m[32m          name: security-reports[m
+[32m+[m[32m          path: security-reports/[m
+[32m+[m
+[32m+[m[32m  pre-commit:[m
+[32m+[m[32m    runs-on: ubuntu-latest[m
+[32m+[m[32m    steps:[m
+[32m+[m[32m      - uses: actions/checkout@v3[m
+[32m+[m
+[32m+[m[32m      - name: Set up Python[m
+[32m+[m[32m        uses: actions/setup-python@v4[m
+[32m+[m[32m        with:[m
+[32m+[m[32m          python-version: '3.10'[m
+[32m+[m
+[32m+[m[32m      - name: Install pre-commit[m
+[32m+[m[32m        run: |[m
+[32m+[m[32m          pip install pre-commit[m
+[32m+[m
+[32m+[m[32m      - name: Run pre-commit[m
+[32m+[m[32m        run: |[m
+[32m+[m[32m          pre-commit run --all-files[m
+[1mdiff --git a/backend-call-automation/tests/test_rollback_utils.py b/backend-call-automation/tests/test_rollback_utils.py[m
+[1mindex ede5ddc..b3c379d 100644[m
+[1m--- a/backend-call-automation/tests/test_rollback_utils.py[m
+[1m+++ b/backend-call-automation/tests/test_rollback_utils.py[m
+[36m@@ -15,7 +15,7 @@[m [mfrom scripts.rollback_utils import ([m
+     SNAPSHOT_DIR,[m
+     SNAPSHOT_FILE[m
+ )[m
+[31m-from prometheus_client import Collector[m
+[32m+[m[32mfrom prometheus_client import CollectorRegistry, Collector[m
+ [m
+ @pytest.fixture(autouse=True)[m
+ def manage_snapshot_file(tmp_path):[m
+[1mdiff --git a/scripts/security_check_local.py b/scripts/security_check_local.py[m
+[1mindex 6bc889b..7a3718b 100755[m
+[1m--- a/scripts/security_check_local.py[m
+[1m+++ b/scripts/security_check_local.py[m
+[36m@@ -439,8 +439,8 @@[m [mdef main() -> int:[m
+ [m
+     if not secrets_check:[m
+         critical_passed = False[m
+[31m-        for secret in found_secrets:[m
+[31m-            print(f"  {YELLOW}{secret}{RESET}")[m
+[32m+[m[32m        for _ in found_secrets:[m
+[32m+[m[32m            print(f"  {YELLOW}Se encontró un posible secreto en el archivo.{RESET}")[m
+ [m
+     print_header("Resultado Final")[m
+     if critical_passed:[m

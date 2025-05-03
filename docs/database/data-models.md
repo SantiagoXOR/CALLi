@@ -189,7 +189,7 @@ class CallMetrics(BaseModel):
     no_answer_calls: int = Field(default=0, description="Llamadas sin respuesta")
     busy_calls: int = Field(default=0, description="Llamadas ocupadas")
     avg_duration: float = Field(default=0.0, description="Duración promedio de las llamadas en segundos")
-    
+
     model_config = ConfigDict(from_attributes=True)
 ```
 

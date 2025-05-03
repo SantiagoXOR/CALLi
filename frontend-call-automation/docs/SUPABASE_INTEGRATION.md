@@ -95,7 +95,7 @@ type Campaign = Database["public"]["Tables"]["campaigns"]["Row"];
 
 function CampaignList() {
   const campaignsData = useSupabaseData<Campaign>("campaigns");
-  
+
   // Obtener todas las campañas
   const loadCampaigns = async () => {
     const campaigns = await campaignsData.getAll({
@@ -103,7 +103,7 @@ function CampaignList() {
     });
     // Hacer algo con las campañas
   };
-  
+
   // Crear una nueva campaña
   const createCampaign = async (data) => {
     const newCampaign = await campaignsData.create(data);
@@ -124,12 +124,12 @@ async function fetchData() {
     .from("campaigns")
     .select("*")
     .order("created_at", { ascending: false });
-    
+
   if (error) {
     console.error("Error:", error);
     return;
   }
-  
+
   // Hacer algo con los datos
 }
 ```

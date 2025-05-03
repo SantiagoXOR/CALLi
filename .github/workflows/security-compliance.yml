@@ -104,7 +104,7 @@ jobs:
           def check_file_content(file_path, pattern):
               if not os.path.exists(file_path):
                   return False
-              
+
               try:
                   with open(file_path, 'r', encoding='utf-8') as f:
                       content = f.read()
@@ -116,20 +116,20 @@ jobs:
           def generate_markdown_report(file_results, content_results):
               md = "# Informe de Cumplimiento de Seguridad\n\n"
               md += f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
-              
+
               # Resumen
               total_checks = len(file_results) + len(content_results)
               passed_checks = sum(1 for r in file_results.values() if r['status'] == 'PASS')
               passed_checks += sum(1 for r in content_results.values() if r['status'] == 'PASS')
-              
+
               failed_required = sum(1 for r in file_results.values() if r['status'] == 'FAIL' and r['required'])
               failed_required += sum(1 for r in content_results.values() if r['status'] == 'FAIL' and r['required'])
-              
+
               md += f"## Resumen\n\n"
               md += f"- **Total de verificaciones:** {total_checks}\n"
               md += f"- **Verificaciones aprobadas:** {passed_checks} ({passed_checks/total_checks*100:.1f}%)\n"
               md += f"- **Verificaciones requeridas fallidas:** {failed_required}\n\n"
-              
+
               # Estado general
               if failed_required > 0:
                   md += "**Estado general: ❌ NO CUMPLE**\n\n"
@@ -137,34 +137,34 @@ jobs:
               else:
                   md += "**Estado general: ✅ CUMPLE**\n\n"
                   md += "El proyecto cumple con los requisitos mínimos de seguridad. Considere implementar las recomendaciones adicionales.\n\n"
-              
+
               # Verificaciones de archivos
               md += "## Verificaciones de Archivos\n\n"
               md += "| Verificación | Estado | Requerido | Ruta |\n"
               md += "|-------------|--------|-----------|------|\n"
-              
+
               for check_id, result in file_results.items():
                   status_icon = "✅" if result['status'] == 'PASS' else "❌"
                   required = "Sí" if result['required'] else "No"
                   md += f"| {result['description']} | {status_icon} | {required} | `{result['path']}` |\n"
-              
+
               # Verificaciones de contenido
               md += "\n## Verificaciones de Contenido\n\n"
               md += "| Verificación | Estado | Requerido | Archivo |\n"
               md += "|-------------|--------|-----------|------|\n"
-              
+
               for check_id, result in content_results.items():
                   status_icon = "✅" if result['status'] == 'PASS' else "❌"
                   required = "Sí" if result['required'] else "No"
                   md += f"| {result['description']} | {status_icon} | {required} | `{result['file']}` |\n"
-              
+
               # Recomendaciones
               md += "\n## Recomendaciones\n\n"
-              
+
               # Problemas requeridos
               required_issues = [r for r in file_results.values() if r['status'] == 'FAIL' and r['required']]
               required_issues += [r for r in content_results.values() if r['status'] == 'FAIL' and r['required']]
-              
+
               if required_issues:
                   md += "### Problemas Críticos (Requeridos)\n\n"
                   for issue in required_issues:
@@ -173,11 +173,11 @@ jobs:
                       else:
                           md += f"- Implementar en `{issue['file']}`: {issue['description']}\n"
                   md += "\n"
-              
+
               # Mejoras opcionales
               optional_issues = [r for r in file_results.values() if r['status'] == 'FAIL' and not r['required']]
               optional_issues += [r for r in content_results.values() if r['status'] == 'FAIL' and not r['required']]
-              
+
               if optional_issues:
                   md += "### Mejoras Recomendadas (Opcionales)\n\n"
                   for issue in optional_issues:
@@ -186,7 +186,7 @@ jobs:
                       else:
                           md += f"- Considere implementar en `{issue['file']}`: {issue['description']}\n"
                   md += "\n"
-              
+
               return md
 
           if __name__ == "__main__":
@@ -200,7 +200,7 @@ jobs:
                       "status": "PASS" if check_file_exists(check_info["path"]) else "FAIL"
                   }
                   file_results[check_id] = result
-              
+
               # Verificar contenido
               content_results = {}
               for check_id, check_info in CONTENT_CHECKS.items():
@@ -211,29 +211,29 @@ jobs:
                       "status": "PASS" if check_file_content(check_info["file"], check_info["pattern"]) else "FAIL"
                   }
                   content_results[check_id] = result
-              
+
               # Guardar resultados en formato JSON
               all_results = {
                   "timestamp": datetime.now().isoformat(),
                   "file_checks": file_results,
                   "content_checks": content_results
               }
-              
+
               with open('security_compliance_results.json', 'w') as f:
                   json.dump(all_results, f, indent=2)
-              
+
               # Generar informe en Markdown
               markdown_report = generate_markdown_report(file_results, content_results)
               with open('security_compliance_report.md', 'w') as f:
                   f.write(markdown_report)
-              
+
               # Determinar el código de salida
               failed_required = sum(1 for r in file_results.values() if r['status'] == 'FAIL' and r['required'])
               failed_required += sum(1 for r in content_results.values() if r['status'] == 'FAIL' and r['required'])
-              
+
               print("Verificación de cumplimiento completada.")
               print(f"Resultados guardados en security_compliance_results.json y security_compliance_report.md")
-              
+
               if failed_required > 0:
                   print(f"❌ NO CUMPLE: {failed_required} verificaciones requeridas fallidas")
                   sys.exit(1)

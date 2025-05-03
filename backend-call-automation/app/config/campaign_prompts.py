@@ -204,17 +204,60 @@ CAMPAIGN_PROMPTS = {
     "survey": SURVEY_PROMPT,
     "follow_up": FOLLOW_UP_PROMPT,
     "educational": EDUCATIONAL_PROMPT,
-    "retention": RETENTION_PROMPT
+    "retention": RETENTION_PROMPT,
 }
 
 # Variables requeridas por tipo de campaña
 REQUIRED_VARIABLES = {
-    "sales": ["company_name", "product", "objective", "key_points", "contact_name", "contact_history", "history", "input"],
-    "support": ["company_name", "product", "common_issues", "contact_name", "support_history", "history", "input"],
+    "sales": [
+        "company_name",
+        "product",
+        "objective",
+        "key_points",
+        "contact_name",
+        "contact_history",
+        "history",
+        "input",
+    ],
+    "support": [
+        "company_name",
+        "product",
+        "common_issues",
+        "contact_name",
+        "support_history",
+        "history",
+        "input",
+    ],
     "survey": ["topic", "key_questions", "contact_name", "history", "input"],
-    "follow_up": ["company_name", "objective", "previous_interaction", "contact_name", "contact_history", "history", "input"],
-    "educational": ["company_name", "topic", "educational_goals", "key_points", "contact_name", "knowledge_level", "history", "input"],
-    "retention": ["company_name", "objective", "contact_name", "customer_tenure", "current_services", "cancellation_reason", "history", "input"]
+    "follow_up": [
+        "company_name",
+        "objective",
+        "previous_interaction",
+        "contact_name",
+        "contact_history",
+        "history",
+        "input",
+    ],
+    "educational": [
+        "company_name",
+        "topic",
+        "educational_goals",
+        "key_points",
+        "contact_name",
+        "knowledge_level",
+        "history",
+        "input",
+    ],
+    "retention": [
+        "company_name",
+        "objective",
+        "contact_name",
+        "customer_tenure",
+        "current_services",
+        "cancellation_reason",
+        "history",
+        "input",
+    ],
 }
 
 # Valores por defecto para variables opcionales
@@ -223,5 +266,5 @@ DEFAULT_VALUES = {
     "support_history": "No hay historial de soporte previo disponible.",
     "knowledge_level": "intermedio",
     "customer_tenure": "cliente actual",
-    "cancellation_reason": "razón no especificada"
+    "cancellation_reason": "razón no especificada",
 }

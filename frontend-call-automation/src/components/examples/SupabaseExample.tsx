@@ -12,7 +12,7 @@ export function SupabaseExample() {
   const supabase = useSupabase();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   // Usar el hook personalizado para interactuar con la tabla de campañas
   const campaignsData = useSupabaseData<Campaign>("campaigns");
 
@@ -46,7 +46,7 @@ export function SupabaseExample() {
 
     // Método 1: Usando el hook personalizado
     const created = await campaignsData.create(newCampaign);
-    
+
     if (created) {
       setCampaigns([created, ...campaigns]);
     }
@@ -57,12 +57,12 @@ export function SupabaseExample() {
     //   .insert([newCampaign])
     //   .select()
     //   .single();
-    
+
     // if (error) {
     //   console.error("Error al crear campaña:", error);
     //   return;
     // }
-    
+
     // setCampaigns([data as Campaign, ...campaigns]);
   };
 
@@ -70,7 +70,7 @@ export function SupabaseExample() {
   const deleteCampaign = async (id: string) => {
     // Método 1: Usando el hook personalizado
     const success = await campaignsData.remove(id);
-    
+
     if (success) {
       setCampaigns(campaigns.filter(campaign => campaign.id !== id));
     }
@@ -80,12 +80,12 @@ export function SupabaseExample() {
     //   .from("campaigns")
     //   .delete()
     //   .eq("id", id);
-    
+
     // if (error) {
     //   console.error("Error al eliminar campaña:", error);
     //   return;
     // }
-    
+
     // setCampaigns(campaigns.filter(campaign => campaign.id !== id));
   };
 
@@ -96,14 +96,14 @@ export function SupabaseExample() {
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Ejemplo de Supabase</h2>
-      
+
       <button
         onClick={createCampaign}
         className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mb-4"
       >
         Crear Nueva Campaña
       </button>
-      
+
       <div className="space-y-4">
         {campaigns.length === 0 ? (
           <p>No hay campañas disponibles</p>
@@ -125,7 +125,7 @@ export function SupabaseExample() {
                   </span>
                 </div>
               </div>
-              
+
               <button
                 onClick={() => deleteCampaign(campaign.id)}
                 className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"

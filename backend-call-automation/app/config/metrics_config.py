@@ -1,8 +1,9 @@
 """Configuración centralizada para el sistema de métricas y monitoreo."""
 
-from pydantic_settings import BaseSettings
 from functools import lru_cache
-from typing import Dict, List
+
+from pydantic_settings import BaseSettings
+
 
 class MetricsSettings(BaseSettings):
     """
@@ -16,20 +17,21 @@ class MetricsSettings(BaseSettings):
         retention_days (int): Días de retención de métricas históricas
         alert_thresholds (Dict[str, float]): Umbrales para alertas de métricas
     """
+
     enabled: bool = True
     prometheus_endpoint: str = "http://localhost:9090"
     opentelemetry_enabled: bool = False
     log_level: str = "INFO"
     retention_days: int = 30
-    alert_thresholds: Dict[str, float] = {
+    alert_thresholds: dict[str, float] = {
         "call_latency": 5.0,  # segundos
         "audio_quality": 0.7,  # puntuación mínima
         "ai_response_time": 3.0,  # segundos
-        "error_rate": 0.05  # 5% de tasa de error
+        "error_rate": 0.05,  # 5% de tasa de error
     }
 
     # Métricas que se deben recopilar
-    enabled_metrics: List[str] = [
+    enabled_metrics: list[str] = [
         "call_latency",
         "audio_quality",
         "total_calls",
@@ -38,14 +40,15 @@ class MetricsSettings(BaseSettings):
         "ai_requests_total",
         "ai_errors_total",
         "ai_sentiment_score",
-        "ai_tokens_used"
+        "ai_tokens_used",
     ]
 
     class Config:
         env_prefix = "METRICS_"
         case_sensitive = False
 
-@lru_cache()
+
+@lru_cache
 def get_metrics_settings() -> MetricsSettings:
     """
     Obtiene la configuración de métricas con caché para evitar recargas innecesarias.

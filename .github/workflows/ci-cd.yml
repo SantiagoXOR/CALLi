@@ -14,8 +14,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: "3.11"
+          cache: "pip"
 
       - name: Create backend directory if it doesn't exist
         run: |
@@ -28,34 +28,34 @@ jobs:
         run: |
           if [ ! -f "backend-call-automation/tests/test_basic.py" ]; then
             cat > backend-call-automation/tests/test_basic.py << 'EOF'
-# Basic test file to ensure the test environment is working correctly
+            # Basic test file to ensure the test environment is working correctly
 
-def test_true_is_true():
-    """Test that True is equal to True."""
-    assert True is True
+            def test_true_is_true():
+                """Test that True is equal to True."""
+                assert True is True
 
-def test_one_plus_one_equals_two():
-    """Test that 1 + 1 = 2."""
-    assert 1 + 1 == 2
-EOF
+            def test_one_plus_one_equals_two():
+                """Test that 1 + 1 = 2."""
+                assert 1 + 1 == 2
+            EOF
           fi
 
       - name: Create basic app file if it doesn't exist
         run: |
           if [ ! -f "backend-call-automation/app/__init__.py" ]; then
             cat > backend-call-automation/app/__init__.py << 'EOF'
-"""Main application package."""
-EOF
+            """Main application package."""
+            EOF
           fi
 
       - name: Create requirements.txt if it doesn't exist
         run: |
           if [ ! -f "backend-call-automation/requirements.txt" ]; then
             cat > backend-call-automation/requirements.txt << 'EOF'
-pytest==7.3.1
-pytest-asyncio==0.21.0
-pytest-cov==4.1.0
-EOF
+            pytest==7.3.1
+            pytest-asyncio==0.21.0
+            pytest-cov==4.1.0
+            EOF
           fi
 
       - name: Install dependencies
@@ -90,9 +90,9 @@ EOF
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: 'frontend-call-automation/package-lock.json'
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: "frontend-call-automation/package-lock.json"
 
       - name: Create frontend directory if it doesn't exist
         run: |
@@ -103,35 +103,35 @@ EOF
         run: |
           if [ ! -f "frontend-call-automation/__tests__/basic.test.tsx" ]; then
             cat > frontend-call-automation/__tests__/basic.test.tsx << 'EOF'
-// Basic test file to ensure the test environment is working correctly
-describe("Basic test suite", () => {
-  test("true should be true", () => {
-    expect(true).toBe(true);
-  });
+            // Basic test file to ensure the test environment is working correctly
+            describe("Basic test suite", () => {
+              test("true should be true", () => {
+                expect(true).toBe(true);
+              });
 
-  test("1 + 1 should equal 2", () => {
-    expect(1 + 1).toBe(2);
-  });
-});
-EOF
+              test("1 + 1 should equal 2", () => {
+                expect(1 + 1).toBe(2);
+              });
+            });
+            EOF
           fi
 
       - name: Create basic package.json if it doesn't exist
         run: |
           if [ ! -f "frontend-call-automation/package.json" ]; then
             cat > frontend-call-automation/package.json << 'EOF'
-{
-  "name": "frontend-call-automation",
-  "version": "1.0.0",
-  "description": "Frontend for Call Automation",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"No tests specified yet\" && exit 0"
-  },
-  "dependencies": {},
-  "devDependencies": {}
-}
-EOF
+            {
+              "name": "frontend-call-automation",
+              "version": "1.0.0",
+              "description": "Frontend for Call Automation",
+              "main": "index.js",
+              "scripts": {
+                "test": "echo \"No tests specified yet\" && exit 0"
+              },
+              "dependencies": {},
+              "devDependencies": {}
+            }
+            EOF
           fi
 
       - name: Install dependencies
@@ -156,8 +156,8 @@ EOF
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: "3.11"
+          cache: "pip"
 
       - name: Install dependencies
         run: |

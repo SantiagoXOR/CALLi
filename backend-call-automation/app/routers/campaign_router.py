@@ -1,17 +1,18 @@
-from fastapi import APIRouter, Depends, status
 from datetime import datetime
-from typing import Optional, List
 from uuid import UUID
-from app.models.campaign import Campaign, CampaignCreate, CampaignUpdate, CampaignStatus
-from app.services.campaign_service import CampaignService
+
+from fastapi import APIRouter, Depends, status
+
 from app.config.database import get_supabase_client
+from app.models.campaign import Campaign, CampaignCreate, CampaignStatus, CampaignUpdate
+from app.services.campaign_service import CampaignService
 
 router = APIRouter(prefix="/api/campaigns", tags=["campaigns"])
 
+
 @router.post("/", response_model=Campaign, status_code=status.HTTP_201_CREATED)
 async def create_campaign(
-    campaign: CampaignCreate,
-    supabase_client = Depends(get_supabase_client)
+    campaign: CampaignCreate, supabase_client=Depends(get_supabase_client)
 ) -> Campaign:
     """
     Crea una nueva campaña.
@@ -32,26 +33,25 @@ async def create_campaign(
     campaign_service = CampaignService(supabase_client)
     return await campaign_service.create_campaign(campaign)
 
+
 @router.get("/{campaign_id}", response_model=Campaign)
-async def get_campaign(
-    campaign_id: UUID,
-    supabase_client = Depends(get_supabase_client)
-) -> Campaign:
+async def get_campaign(campaign_id: UUID, supabase_client=Depends(get_supabase_client)) -> Campaign:
     """
     Obtiene una campaña por su ID.
     """
     campaign_service = CampaignService(supabase_client)
     return await campaign_service.get_campaign(campaign_id)
 
-@router.get("/", response_model=List[Campaign])
+
+@router.get("/", response_model=list[Campaign])
 async def list_campaigns(
     page: int = 1,
     page_size: int = 10,
-    status: Optional[CampaignStatus] = None,
-    start_date: Optional[datetime] = None,
-    end_date: Optional[datetime] = None,
-    supabase_client = Depends(get_supabase_client)
-) -> List[Campaign]:
+    status: CampaignStatus | None = None,
+    start_date: datetime | None = None,
+    end_date: datetime | None = None,
+    supabase_client=Depends(get_supabase_client),
+) -> list[Campaign]:
     """
     Lista las campañas con filtros opcionales.
 
@@ -64,18 +64,13 @@ async def list_campaigns(
     """
     campaign_service = CampaignService(supabase_client)
     return await campaign_service.list_campaigns(
-        page=page,
-        page_size=page_size,
-        status=status,
-        start_date=start_date,
-        end_date=end_date
+        page=page, page_size=page_size, status=status, start_date=start_date, end_date=end_date
     )
+
 
 @router.patch("/{campaign_id}", response_model=Campaign)
 async def update_campaign(
-    campaign_id: UUID,
-    campaign_update: CampaignUpdate,
-    supabase_client = Depends(get_supabase_client)
+    campaign_id: UUID, campaign_update: CampaignUpdate, supabase_client=Depends(get_supabase_client)
 ) -> Campaign:
     """
     Actualiza una campaña existente.
@@ -96,16 +91,15 @@ async def update_campaign(
     campaign_service = CampaignService(supabase_client)
     return await campaign_service.update_campaign(campaign_id, campaign_update)
 
+
 @router.delete("/{campaign_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_campaign(
-    campaign_id: UUID,
-    supabase_client = Depends(get_supabase_client)
-) -> None:
+async def delete_campaign(campaign_id: UUID, supabase_client=Depends(get_supabase_client)) -> None:
     """
     Elimina una campaña.
     """
     campaign_service = CampaignService(supabase_client)
     await campaign_service.delete_campaign(campaign_id)
+
 
 @router.patch("/{campaign_id}/stats", response_model=Campaign)
 async def update_campaign_stats(
@@ -114,7 +108,7 @@ async def update_campaign_stats(
     successful_calls: int,
     failed_calls: int,
     pending_calls: int,
-    supabase_client = Depends(get_supabase_client)
+    supabase_client=Depends(get_supabase_client),
 ) -> Campaign:
     """
     Actualiza las estadísticas de una campaña.
@@ -127,9 +121,5 @@ async def update_campaign_stats(
     """
     campaign_service = CampaignService(supabase_client)
     return await campaign_service.update_campaign_stats(
-        campaign_id,
-        total_calls,
-        successful_calls,
-        failed_calls,
-        pending_calls
+        campaign_id, total_calls, successful_calls, failed_calls, pending_calls
     )

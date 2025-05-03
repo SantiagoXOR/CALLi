@@ -1,0 +1,12 @@
+{
+  "exceptions": [
+    {
+      "package": "example-package",
+      "version": "1.0.0",
+      "license": "GPL-3.0",
+      "reason": "Este paquete solo se usa en desarrollo, no en producci\u00f3n",
+      "approved_by": "Equipo Legal",
+      "approved_date": "2025-01-01"
+    }
+  ]
+}

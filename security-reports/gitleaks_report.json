@@ -1,0 +1,26 @@
+[
+ {
+  "Description": "Generic API Key",
+  "StartLine": 42,
+  "EndLine": 42,
+  "StartColumn": 9,
+  "EndColumn": 55,
+  "Match": "API_KEY=AIzaSyBcDBONCgzY1i5LgXbVPcyehUkiAzO9yhE",
+  "Secret": "API_KEY=AIzaSyBcDBONCgzY1i5LgXbVPcyehUkiAzO9yhE",
+  "File": "backend-call-automation/.env.development",
+  "SymlinkFile": "",
+  "Commit": "7233fba6d27524a2dfd608557c20b34227a0f23d",
+  "Entropy": 4.8255534,
+  "Author": "Santiago Martinez",
+  "Email": "santiagomartinez@upc.edu.ar",
+  "Date": "2025-04-25T23:00:56Z",
+  "Message": "Preparación para el lanzamiento del MVP v1.0.0",
+  "Tags": [
+   "key",
+   "API",
+   "generic"
+  ],
+  "RuleID": "generic-api-key",
+  "Fingerprint": "7233fba6d27524a2dfd608557c20b34227a0f23d:backend-call-automation/.env.development:generic-api-key:42"
+ }
+]

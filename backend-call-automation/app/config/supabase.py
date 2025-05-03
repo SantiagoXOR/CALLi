@@ -10,39 +10,76 @@ Variables de entorno requeridas:
     - SUPABASE_KEY: Clave de acceso anónimo de Supabase
 """
 
-from supabase import create_client, Client
+import logging
 import os
-from dotenv import load_dotenv
 import sys
+from pathlib import Path
+from unittest.mock import MagicMock
+
+from dotenv import load_dotenv
+
+from supabase import Client, create_client
+
+# Configurar logger
+logger = logging.getLogger(__name__)
+
 
 # Cargar variables de entorno según el entorno
-if "pytest" in sys.modules:
-    # Si estamos en un entorno de prueba, cargamos .env.test
-    load_dotenv(".env.test")
-else:
-    # En otros entornos, cargamos el .env normal
-    load_dotenv()
+def load_env_files():
+    """Carga los archivos de variables de entorno apropiados."""
+    # Directorio base del proyecto
+    base_dir = Path(__file__).resolve().parent.parent.parent
 
-supabase_url: str = os.getenv("SUPABASE_URL")
-supabase_key: str = os.getenv("SUPABASE_KEY")
+    # Determinar qué archivo .env cargar
+    if "pytest" in sys.modules:
+        # Si estamos en un entorno de prueba, intentamos cargar .env.test
+        env_file = base_dir / ".env.test"
+        if env_file.exists():
+            logger.info(f"Loading test environment from {env_file}")
+            load_dotenv(env_file)
+        else:
+            logger.warning(f"Test environment file {env_file} not found, using default test values")
+    else:
+        # En otros entornos, cargamos el .env normal
+        env_file = base_dir / ".env"
+        if env_file.exists():
+            logger.info(f"Loading environment from {env_file}")
+            load_dotenv(env_file)
+        else:
+            logger.warning(f"Environment file {env_file} not found, using environment variables")
+
+
+# Cargar variables de entorno
+load_env_files()
+
+# Obtener variables de configuración
+supabase_url: str = os.getenv("SUPABASE_URL", "")
+supabase_key: str = os.getenv("SUPABASE_KEY", "")
+
+# Inicializar cliente como None para manejar errores
+supabase_client: Client | None = None
 
 # En entorno de prueba, usar valores por defecto si no están definidos
 if "pytest" in sys.modules and (not supabase_url or not supabase_key):
     supabase_url = "https://example.supabase.co"
     supabase_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock-key-for-testing"
-    print("Using mock Supabase credentials for testing")
+    logger.info("Using mock Supabase credentials for testing")
 elif not supabase_url or not supabase_key:
-    raise ValueError("Missing SUPABASE_URL or SUPABASE_KEY environment variables")
+    error_msg = "Missing SUPABASE_URL or SUPABASE_KEY environment variables"
+    logger.error(error_msg)
+    raise ValueError(error_msg)
 
 # Crear cliente de Supabase
 try:
-    supabase_client: Client = create_client(supabase_url, supabase_key)
+    logger.debug(f"Creating Supabase client with URL: {supabase_url[:20]}...")
+    supabase_client = create_client(supabase_url, supabase_key)
+    logger.info("Supabase client created successfully")
 except Exception as e:
     if "pytest" in sys.modules:
         # En pruebas, crear un mock del cliente
-        from unittest.mock import MagicMock
         supabase_client = MagicMock()
-        print(f"Created mock Supabase client for testing. Error was: {str(e)}")
+        logger.warning(f"Created mock Supabase client for testing. Error was: {e!s}")
     else:
         # En producción, propagar el error
-        raise
+        logger.error(f"Failed to create Supabase client: {e!s}")
+        raise ValueError(f"Error creating Supabase client: {e!s}") from e

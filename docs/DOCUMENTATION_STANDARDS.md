@@ -68,7 +68,7 @@ Use JSDoc for TypeScript/JavaScript code:
 ```typescript
 /**
  * Short description of function
- * 
+ *
  * @param {string} param1 - Description of param1
  * @param {number} param2 - Description of param2
  * @returns {ReturnType} Description of return value
@@ -84,7 +84,7 @@ For React components:
 ```typescript
 /**
  * Component description
- * 
+ *
  * @component
  * @example
  * ```tsx
@@ -116,7 +116,7 @@ and managing call campaigns.
 ```typescript
 /**
  * Module for campaign management components
- * 
+ *
  * This module contains components for displaying and managing
  * call campaigns in the user interface.
  */

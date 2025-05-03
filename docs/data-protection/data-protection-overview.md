@@ -38,7 +38,7 @@ graph TD
     E -->|Grabación| F[Almacenamiento Cifrado]
     F -->|Transcripción| G[Servicio de IA]
     G -->|Análisis| H[Reportes y Dashboard]
-    
+
     I[Usuario] -->|Autenticación| J[Supabase Auth]
     J -->|Token JWT| K[Acceso a Sistema]
     K -->|Acceso controlado| B
@@ -222,7 +222,7 @@ def anonymize_contact_data(contact):
 @app.middleware("http")
 async def log_data_access(request: Request, call_next):
     response = await call_next(request)
-    
+
     # Verificar si la ruta accede a datos sensibles
     if any(sensitive_path in request.url.path for sensitive_path in SENSITIVE_PATHS):
         # Registrar acceso en el sistema de auditoría
@@ -233,7 +233,7 @@ async def log_data_access(request: Request, call_next):
             action="read",
             timestamp=datetime.now()
         )
-    
+
     return response
 ```
 
@@ -268,7 +268,7 @@ function createCampaign(campaignData, privacySettings = {}) {
     ...defaultPrivacySettings,
     ...privacySettings
   };
-  
+
   // Crear campaña con configuración de privacidad
   return api.campaigns.create({
     ...campaignData,
@@ -323,4 +323,3 @@ function createCampaign(campaignData, privacySettings = {}) {
 - [Twilio Privacy & Security](https://www.twilio.com/en-us/legal/privacy)
 - [ElevenLabs Privacy Policy](https://elevenlabs.io/privacy)
 - [Supabase Security](https://supabase.com/docs/guides/platform/security)
-

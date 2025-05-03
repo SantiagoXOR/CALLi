@@ -20,7 +20,7 @@ class ApiService {
 
   constructor() {
     this.baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-    
+
     this.api = axios.create({
       baseURL: this.baseURL,
       headers: {
@@ -53,7 +53,7 @@ class ApiService {
   // Método para manejar errores de API de forma centralizada
   private handleApiError(error: AxiosError): void {
     const { response } = error;
-    
+
     if (response?.status === 401) {
       // Redirigir a login si hay error de autenticación
       toast.error('Sesión expirada. Por favor, inicia sesión nuevamente.');
@@ -65,9 +65,9 @@ class ApiService {
     const errorMessage = response?.data && typeof response.data === 'object' && 'message' in response.data
       ? (response.data as any).message
       : 'Error en la solicitud. Por favor, intenta de nuevo.';
-    
+
     console.error('Error API:', errorMessage, response?.status);
-    
+
     // No mostrar toast para errores 404 (recurso no encontrado)
     if (response?.status !== 404) {
       toast.error(errorMessage);

@@ -37,7 +37,7 @@ Basic Usage
 .. code-block:: python
 
    from app.module_name import ClassName
-   
+
    instance = ClassName("param1", param2=42)
    result = instance.method_name()
 
@@ -47,7 +47,7 @@ Advanced Usage
 .. code-block:: python
 
    from app.module_name import function_name
-   
+
    result = function_name("param1", [1, 2, 3])
 
 API Reference

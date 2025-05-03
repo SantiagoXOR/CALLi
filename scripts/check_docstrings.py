@@ -8,10 +8,9 @@ class, method, and function levels according to the Google docstring style.
 
 import ast
 import sys
-from typing import List
 
 
-def check_docstrings(filename: str) -> List[str]:
+def check_docstrings(filename: str) -> list[str]:
     """Check docstrings in a Python file.
 
     Args:
@@ -20,7 +19,7 @@ def check_docstrings(filename: str) -> List[str]:
     Returns:
         List of error messages, empty if no errors
     """
-    with open(filename, "r", encoding="utf-8") as file:
+    with open(filename, encoding="utf-8") as file:
         content = file.read()
 
     errors = []
@@ -45,9 +44,7 @@ def check_docstrings(filename: str) -> List[str]:
                 errors.append(
                     f"Missing docstring for {node.__class__.__name__} '{node.name}' in {filename}"
                 )
-            elif docstring and isinstance(
-                node, (ast.FunctionDef, ast.AsyncFunctionDef)
-            ):
+            elif docstring and isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 # Check function docstring sections
                 if (
                     "Args:" not in docstring
@@ -55,9 +52,7 @@ def check_docstrings(filename: str) -> List[str]:
                     and len(node.args.args) > 1
                 ):
                     # First arg might be self/cls, so only warn if more than 1 arg
-                    errors.append(
-                        f"Function '{node.name}' in {filename} is missing Args: section"
-                    )
+                    errors.append(f"Function '{node.name}' in {filename} is missing Args: section")
 
                 if "Returns:" not in docstring and node.returns:
                     errors.append(

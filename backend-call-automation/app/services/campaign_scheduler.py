@@ -1,16 +1,16 @@
-from datetime import datetime, timedelta
-from typing import List, Optional
-import logging
 import asyncio
-from fastapi import HTTPException
+import logging
+from datetime import datetime, timedelta
+
+from app.models.call import CallCreate, CallStatus
 from app.models.campaign import Campaign, CampaignStatus
-from app.models.call import Call, CallStatus, CallCreate
-from app.services.campaign_service import CampaignService
 from app.services.call_service import CallService
-# from app.services.contact_service import ContactService
+from app.services.campaign_service import CampaignService
+from app.services.contact_service import ContactService
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 class CampaignScheduler:
     """
@@ -35,12 +35,12 @@ class CampaignScheduler:
         self,
         campaign_service: CampaignService,
         call_service: CallService,
-        # contact_service: ContactService,
+        contact_service: ContactService,
         check_interval: int = 60,
         max_concurrent_calls: int = 10,
         retry_delay: int = 15,
-        max_retries: int = 3
-    ):
+        max_retries: int = 3,
+    ) -> None:
         """
         Inicializa el planificador de campañas.
 
@@ -61,7 +61,7 @@ class CampaignScheduler:
         self.retry_delay = retry_delay
         self.max_retries = max_retries
         self.is_running = False
-        self._task: Optional[asyncio.Task] = None
+        self._task: asyncio.Task | None = None
 
     async def start(self) -> None:
         """
@@ -78,7 +78,7 @@ class CampaignScheduler:
         """
         if self.is_running:
             raise RuntimeError("El planificador ya está en ejecución")
-        
+
         self.is_running = True
         self._task = asyncio.create_task(self._run())
         logger.info("Planificador de campañas iniciado")
@@ -117,7 +117,7 @@ class CampaignScheduler:
                 await self._retry_failed_calls()
                 await asyncio.sleep(self.check_interval)
             except Exception as e:
-                logger.error(f"Error en el planificador: {str(e)}")
+                logger.error(f"Error en el planificador: {e!s}")
                 await asyncio.sleep(self.check_interval)
 
     async def _process_active_campaigns(self) -> None:
@@ -139,16 +139,14 @@ class CampaignScheduler:
             # Obtener campañas activas dentro del horario programado
             now = datetime.now()
             campaigns = await self.campaign_service.list_campaigns(
-                status=CampaignStatus.ACTIVE,
-                start_date=now,
-                end_date=now
+                status=CampaignStatus.ACTIVE, start_date=now, end_date=now
             )
 
             for campaign in campaigns:
                 await self._process_campaign(campaign)
 
         except Exception as e:
-            logger.error(f"Error al procesar campañas activas: {str(e)}")
+            logger.error(f"Error al procesar campañas activas: {e!s}")
 
     async def _process_campaign(self, campaign: Campaign) -> None:
         """
@@ -169,8 +167,7 @@ class CampaignScheduler:
                 logger.info(f"Campaña {campaign.id} no tiene llamadas pendientes")
                 # Marcar como completada si no hay más llamadas pendientes
                 await self.campaign_service.update_campaign(
-                    campaign.id,
-                    {"status": CampaignStatus.COMPLETED}
+                    campaign.id, {"status": CampaignStatus.COMPLETED}
                 )
                 return
 
@@ -181,18 +178,22 @@ class CampaignScheduler:
             for contact in contacts:
                 try:
                     # Verificar si el contacto ya fue llamado
-                    result = await self.supabase.from_("campaign_contacts")\
-                        .select("*")\
-                        .eq("campaign_id", campaign.id)\
-                        .eq("contact_id", contact.id)\
-                        .single()\
+                    result = (
+                        await self.supabase.from_("campaign_contacts")
+                        .select("*")
+                        .eq("campaign_id", campaign.id)
+                        .eq("contact_id", contact.id)
+                        .single()
                         .execute()
+                    )
 
                     if result and result["data"]:
                         contact_status = result["data"]
                         # Saltar si ya fue llamado exitosamente o alcanzó el máximo de reintentos
-                        if (contact_status["call_status"] == "completed" or
-                            contact_status["retry_count"] >= campaign.max_retries):
+                        if (
+                            contact_status["call_status"] == "completed"
+                            or contact_status["retry_count"] >= campaign.max_retries
+                        ):
                             continue
 
                     call_data = CallCreate(
@@ -202,29 +203,35 @@ class CampaignScheduler:
                         webhook_url=f"https://api.example.com/webhook/{campaign.id}/{contact.id}",
                         status_callback_url=f"https://api.example.com/callback/{campaign.id}/{contact.id}",
                         max_retries=campaign.max_retries,
-                        retry_attempts=result["data"]["retry_count"] if result and result["data"] else 0
+                        retry_attempts=result["data"]["retry_count"]
+                        if result and result["data"]
+                        else 0,
                     )
 
                     # Crear la llamada
                     call = await self.call_service.create_call(call_data)
 
                     # Actualizar el estado en campaign_contacts
-                    await self.supabase.from_("campaign_contacts")\
-                        .upsert({
-                            "campaign_id": campaign.id,
-                            "contact_id": contact.id,
-                            "called_at": datetime.now().isoformat(),
-                            "call_status": call.status.value,
-                            "retry_count": call_data.retry_attempts + 1
-                        })\
+                    await (
+                        self.supabase.from_("campaign_contacts")
+                        .upsert(
+                            {
+                                "campaign_id": campaign.id,
+                                "contact_id": contact.id,
+                                "called_at": datetime.now().isoformat(),
+                                "call_status": call.status.value,
+                                "retry_count": call_data.retry_attempts + 1,
+                            }
+                        )
                         .execute()
+                    )
 
                 except Exception as e:
-                    logger.error(f"Error al crear llamada para contacto {contact.id}: {str(e)}")
+                    logger.error(f"Error al crear llamada para contacto {contact.id}: {e!s}")
                     continue
 
         except Exception as e:
-            logger.error(f"Error al procesar campaña {campaign.id}: {str(e)}")
+            logger.error(f"Error al procesar campaña {campaign.id}: {e!s}")
 
     async def _retry_failed_calls(self) -> None:
         """
@@ -240,9 +247,7 @@ class CampaignScheduler:
         """
         try:
             # Obtener llamadas fallidas
-            failed_calls = await self.call_service.list_calls(
-                status=CallStatus.FAILED
-            )
+            failed_calls = await self.call_service.list_calls(status=CallStatus.FAILED)
 
             now = datetime.now()
             for call in failed_calls:
@@ -262,10 +267,10 @@ class CampaignScheduler:
                 try:
                     await self.call_service.retry_call(call.id)
                 except Exception as e:
-                    logger.error(f"Error al reintentar llamada {call.id}: {str(e)}")
+                    logger.error(f"Error al reintentar llamada {call.id}: {e!s}")
 
         except Exception as e:
-            logger.error(f"Error al procesar reintentos: {str(e)}")
+            logger.error(f"Error al procesar reintentos: {e!s}")
 
     async def update_campaign_stats(self, campaign_id: int) -> None:
         """
@@ -293,8 +298,9 @@ class CampaignScheduler:
                     "total_calls": metrics.total_calls,
                     "successful_calls": metrics.completed_calls,
                     "failed_calls": metrics.failed_calls,
-                    "pending_calls": metrics.total_calls - (metrics.completed_calls + metrics.failed_calls)
-                }
+                    "pending_calls": metrics.total_calls
+                    - (metrics.completed_calls + metrics.failed_calls),
+                },
             )
         except Exception as e:
-            logger.error(f"Error al actualizar estadísticas de campaña {campaign_id}: {str(e)}")
+            logger.error(f"Error al actualizar estadísticas de campaña {campaign_id}: {e!s}")

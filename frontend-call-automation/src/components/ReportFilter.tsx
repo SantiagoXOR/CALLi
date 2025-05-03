@@ -61,7 +61,7 @@ export function ReportFilter({ onApplyFilters }: ReportFilterProps) {
     setStartDate(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000));
     setEndDate(new Date());
     setGroupBy("day");
-    
+
     onApplyFilters({
       start_date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       end_date: new Date(),

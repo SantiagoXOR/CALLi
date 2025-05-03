@@ -57,7 +57,7 @@ export default function HomePage() {
 
 **Descripción**: Página que muestra los detalles de una campaña específica.
 
-**Props**: 
+**Props**:
 - `params`: Parámetros de ruta (incluye el ID de la campaña)
 
 **Estado**:

@@ -31,7 +31,7 @@ Generates audio from text with comprehensive metrics collection.
   "voice_id": "21m00Tcm4TlvDq8ikWAM", // Optional: Defaults to ELEVENLABS_DEFAULT_VOICE
   "voice_settings": {
     "stability": 0.7,              // Range: 0.0-1.0
-    "similarity_boost": 0.75,      // Range: 0.0-1.0  
+    "similarity_boost": 0.75,      // Range: 0.0-1.0
     "style": 0.0,                  // Optional style parameter
     "use_speaker_boost": true      // Recommended for cloned voices
   }
@@ -40,7 +40,7 @@ Generates audio from text with comprehensive metrics collection.
 
 **Metrics Collected:**
 - `elevenlabs_request_duration_seconds` - Total request time
-- `elevenlabs_generation_duration_seconds` - Pure synthesis time  
+- `elevenlabs_generation_duration_seconds` - Pure synthesis time
 - `elevenlabs_audio_quality_score` - Basic quality assessment
 - `elevenlabs_pool_usage_ratio` - Connection pool utilization
 - `elevenlabs_retry_count_total` - Retry attempts

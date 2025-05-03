@@ -100,11 +100,11 @@ interface UserProfileProps {
 // Definición del componente
 function UserProfile({ userId, showDetails = false }: UserProfileProps): JSX.Element {
   const [user, setUser] = useState(null);
-  
+
   useEffect(() => {
     // Lógica para cargar datos del usuario
   }, [userId]);
-  
+
   return (
     <div>
       {/* Contenido del componente */}
@@ -137,11 +137,11 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-function CustomButton({ 
-  label, 
-  onClick, 
-  variant = 'primary', 
-  disabled = false 
+function CustomButton({
+  label,
+  onClick,
+  variant = 'primary',
+  disabled = false
 }: ButtonProps): JSX.Element {
   // ...
 }
@@ -283,9 +283,9 @@ export const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  
+
   // Lógica para autenticación
-  
+
   return (
     <UserContext.Provider value={{ user, login, logout }}>
       {children}
@@ -331,11 +331,11 @@ function ContactForm() {
       email: '',
     },
   });
-  
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Lógica para enviar el formulario
   }
-  
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -378,7 +378,7 @@ export const userService = {
       throw error;
     }
   },
-  
+
   async getUserById(id: string): Promise<User> {
     try {
       const response = await axios.get(`${API_URL}/users/${id}`);
@@ -388,7 +388,7 @@ export const userService = {
       throw error;
     }
   },
-  
+
   // Otros métodos...
 };
 ```
@@ -404,7 +404,7 @@ export const userService = {
 function handleApiError(error: unknown): void {
   if (axios.isAxiosError(error)) {
     const status = error.response?.status;
-    
+
     if (status === 401) {
       // Redirigir a login
       toast.error('Sesión expirada. Por favor, inicia sesión nuevamente.');
@@ -415,7 +415,7 @@ function handleApiError(error: unknown): void {
     } else {
       toast.error('Ha ocurrido un error. Por favor, intenta nuevamente.');
     }
-    
+
     // Registrar error para depuración
     console.error('API Error:', error);
   } else {
@@ -556,11 +556,11 @@ describe('UserProfile', () => {
     render(<UserProfile user={{ id: '1', name: 'John Doe' }} />);
     expect(screen.getByText('John Doe')).toBeInTheDocument();
   });
-  
+
   it('llama a onEdit cuando se hace clic en el botón de editar', () => {
     const handleEdit = jest.fn();
     render(<UserProfile user={{ id: '1', name: 'John Doe' }} onEdit={handleEdit} />);
-    
+
     fireEvent.click(screen.getByRole('button', { name: /editar/i }));
     expect(handleEdit).toHaveBeenCalledWith('1');
   });
@@ -586,16 +586,16 @@ describe('Flujo de creación de campaña', () => {
     cy.login('admin@example.com', 'password');
     cy.visit('/campaigns');
   });
-  
+
   it('permite crear una nueva campaña', () => {
     cy.findByRole('button', { name: /crear campaña/i }).click();
-    
+
     cy.findByLabelText(/nombre/i).type('Campaña de Prueba');
     cy.findByLabelText(/descripción/i).type('Esta es una campaña de prueba');
     cy.findByLabelText(/fecha de inicio/i).type('2025-05-01');
-    
+
     cy.findByRole('button', { name: /guardar/i }).click();
-    
+
     cy.findByText('Campaña creada con éxito').should('be.visible');
     cy.url().should('include', '/campaigns');
     cy.findByText('Campaña de Prueba').should('be.visible');

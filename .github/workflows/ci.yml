@@ -2,79 +2,81 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -e ".[test]"
-        cd frontend-call-automation && npm install
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test]"
+          cd frontend-call-automation && npm install
 
-    - name: Run backend checks
-      run: |
-        ruff check .
-        mypy .
-        pytest
+      - name: Run backend checks
+        run: |
+          ruff check .
+          mypy .
+          pytest
 
-    - name: Run frontend checks
-      run: |
-        cd frontend-call-automation
-        npm run lint
-        npm run type-check
-        npm run test
+      - name: Run frontend checks
+        run: |
+          cd frontend-call-automation
+          npm run lint
+          npm run type-check
+          npm run test
 
-    - name: Validate documentation
-      run: |
-        cd backend-call-automation/docs
-        python scripts/validate_diagrams.py
-        python scripts/validate_links.py
-        make clean
-        make diagrams
-        make linkcheck
-        make html
+      - name: Validate documentation
+        run: |
+          cd backend-call-automation/docs
+          python scripts/validate_diagrams.py
+          python scripts/validate_links.py
+          make clean
+          make diagrams
+          make linkcheck
+          make html
 
-    - name: Generate documentation report
-      if: always()
-      run: |
-        cd backend-call-automation/docs
-        echo "# Documentation Status Report" > doc_report.md
-        echo "## Validation Results" >> doc_report.md
-        echo "* Diagrams: $(test -f _build/diagrams.log && cat _build/diagrams.log || echo 'OK')" >> doc_report.md
-        echo "* Links: $(test -f _build/linkcheck/output.txt && cat _build/linkcheck/output.txt || echo 'OK')" >> doc_report.md
+      - name: Generate documentation report
+        if: always()
+        run: |
+          cd backend-call-automation/docs
+          echo "# Documentation Status Report" > doc_report.md
+          echo "## Validation Results" >> doc_report.md
+          echo "* Diagrams: $(test -f _build/diagrams.log && cat _build/diagrams.log || echo 'OK')" >> doc_report.md
+          echo "* Links: $(test -f _build/linkcheck/output.txt && cat _build/linkcheck/output.txt || echo 'OK')" >> doc_report.md
 
-    - name: Upload documentation report
-      if: always()
-      uses: actions/upload-artifact@v3
-      with:
-        name: documentation-report
-        path: backend-call-automation/docs/doc_report.md
+      - name: Upload documentation report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: documentation-report
+          path: backend-call-automation/docs/doc_report.md
 
-    - name: Deploy documentation
-      if: github.ref == 'refs/heads/main' && success()
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./backend-call-automation/docs/_build/html
+      - name: Deploy documentation
+        if: github.ref == 'refs/heads/main' && success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./backend-call-automation/docs/_build/html
 
-    - name: Security scan
-      uses: snyk/actions/python@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Security scan
+        uses: snyk/actions/python@master
+        with:
+          command: test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}

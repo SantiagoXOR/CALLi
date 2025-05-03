@@ -1,9 +1,11 @@
 # Endpoints de IA
 
 ## Procesar Mensaje
+
 `POST /api/v1/ai/process`
 
 **Request Body:**
+
 ```json
 {
     "message": "¿Cuál es el precio?",
@@ -16,6 +18,7 @@
 ```
 
 **Response:**
+
 ```json
 {
     "response": "El Plan Premium tiene un costo de $99/mes",
@@ -31,16 +34,18 @@
 
 ### Obtener Historial de Conversación
 
-```
+```http
 GET /api/v1/ai/conversation/{conversation_id}/history
 ```
 
 **Descripción**: Recupera el historial completo de una conversación.
 
 **Parámetros de URL**:
+
 - `conversation_id` (string, requerido): Identificador único de la conversación.
 
 **Respuesta Exitosa (200 OK)**:
+
 ```json
 {
   "conversation_id": "conv_123",
@@ -68,13 +73,14 @@ GET /api/v1/ai/conversation/{conversation_id}/history
 
 ### Generar Audio
 
-```
+```http
 POST /api/v1/ai/tts/generate
 ```
 
 **Descripción**: Genera audio a partir de texto utilizando el servicio ElevenLabs.
 
 **Cuerpo de la Solicitud**:
+
 ```json
 {
   "text": "Hola, ¿cómo puedo ayudarte hoy?",
@@ -83,11 +89,13 @@ POST /api/v1/ai/tts/generate
 ```
 
 **Respuesta Exitosa (200 OK)**:
-```
+
+```text
 Contenido binario del audio (audio/mpeg)
 ```
 
 **Encabezados de Respuesta**:
+
 - `Content-Type`: audio/mpeg
 - `Content-Disposition`: attachment; filename="audio.mp3"
 
@@ -95,13 +103,14 @@ Contenido binario del audio (audio/mpeg)
 
 ### Obtener Configuración de IA
 
-```
+```http
 GET /api/v1/ai/config
 ```
 
 **Descripción**: Recupera la configuración actual de los servicios de IA.
 
 **Respuesta Exitosa (200 OK)**:
+
 ```json
 {
   "default_model": "gpt-4",
@@ -118,13 +127,14 @@ GET /api/v1/ai/config
 
 ### Actualizar Configuración de IA
 
-```
+```http
 PUT /api/v1/ai/config
 ```
 
 **Descripción**: Actualiza la configuración de los servicios de IA.
 
 **Cuerpo de la Solicitud**:
+
 ```json
 {
   "default_model": "gpt-4",
@@ -134,6 +144,7 @@ PUT /api/v1/ai/config
 ```
 
 **Respuesta Exitosa (200 OK)**:
+
 ```json
 {
   "message": "Configuración actualizada correctamente",
@@ -145,13 +156,16 @@ PUT /api/v1/ai/config
 
 ### Obtener Prompts Predefinidos
 
-```
+```http
 GET /api/v1/ai/prompts
 ```
 
 **Descripción**: Recupera los prompts predefinidos disponibles en el sistema.
 
 **Respuesta Exitosa (200 OK)**:
+
 ```json
 {
-  "sales": "Eres un vendedor profesional experto en {product}
+  "sales": "Eres un vendedor profesional experto en {product}"
+}
+```

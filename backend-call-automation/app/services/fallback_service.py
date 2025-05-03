@@ -1,12 +1,13 @@
 """Servicio de respaldo (fallback) para manejar errores y proporcionar alternativas cuando el servicio principal falla."""
 
-import os
-from datetime import datetime, timedelta
+import asyncio
 import logging
-from prometheus_client import Counter, Histogram, Gauge
-from app.config.settings import settings
-from elevenlabs.client import ElevenLabs # Importar la clase correcta
-from elevenlabs import VoiceSettings # Asumiendo que VoiceSettings sigue aquí
+import os
+from collections.abc import AsyncGenerator
+from datetime import datetime, timedelta
+
+from elevenlabs.client import ElevenLabs  # Importar la clase correcta
+from prometheus_client import Counter, Gauge, Histogram
 
 logger = logging.getLogger(__name__)
 
@@ -17,14 +18,17 @@ class FallbackService:
 
          Este servicio proporciona respuestas alternativas cuando el servicio principal
          experimenta problemas, evitando fallos en cascada y mejorando la resiliencia del sistema.
-         """
-    def __init__(self): # Corrected indentation
+    """
+
+    def __init__(self) -> None:  # Corrected indentation
         """Inicializa el servicio de fallback.
 
         Configura las respuestas predeterminadas para diferentes tipos de campañas,
         inicializa el cliente de métricas y establece el estado inicial del circuit breaker.
         """
-        self.client = ElevenLabs(api_key=os.environ.get("ELEVENLABS_API_KEY")) # Usar la clase correcta
+        self.client = ElevenLabs(
+            api_key=os.environ.get("ELEVENLABS_API_KEY")
+        )  # Usar la clase correcta
         self.fallback_responses = {
             "sales": "Lo siento, estoy experimentando dificultades técnicas. ¿Podría contactar con uno de nuestros representantes de ventas?",
             "support": "Disculpe la interrupción. Para continuar con su soporte, le conectaré con un agente humano.",
@@ -41,9 +45,15 @@ class FallbackService:
         self.default_voice = "Bella"
 
         # Inicializar métricas de Prometheus
-        self.elevenlabs_failures_total = Counter('elevenlabs_failures_total', 'Total de fallos en ElevenLabs')
-        self.elevenlabs_api_latency = Histogram('elevenlabs_api_latency_seconds', 'Latencia de la API de ElevenLabs')
-        self.circuit_breaker_state_gauge = Gauge('circuit_breaker_state', 'Estado del Circuit Breaker (0: cerrado, 1: abierto)')
+        self.elevenlabs_failures_total = Counter(
+            "elevenlabs_failures_total", "Total de fallos en ElevenLabs"
+        )
+        self.elevenlabs_api_latency = Histogram(
+            "elevenlabs_api_latency_seconds", "Latencia de la API de ElevenLabs"
+        )
+        self.circuit_breaker_state_gauge = Gauge(
+            "circuit_breaker_state", "Estado del Circuit Breaker (0: cerrado, 1: abierto)"
+        )
 
     async def handle_failure(self, error: Exception) -> None:
         """
@@ -59,7 +69,7 @@ class FallbackService:
         self.elevenlabs_failures_total.inc()
 
         logger.warning(
-            f"Fallo detectado: {str(error)}. Fallos consecutivos: {self.consecutive_failures}"
+            f"Fallo detectado: {error!s}. Fallos consecutivos: {self.consecutive_failures}"
         )
 
         # Verificar si debemos abrir el circuito
@@ -108,9 +118,9 @@ class FallbackService:
             return True
 
         # Si el circuito está abierto, verificar si ha pasado el tiempo de espera
-        if self.last_failure_time and (
-                datetime.now() - self.last_failure_time
-        ) > timedelta(seconds=self.retry_timeout):
+        if self.last_failure_time and (datetime.now() - self.last_failure_time) > timedelta(
+            seconds=self.retry_timeout
+        ):
             logger.info(
                 f"Cambiando Circuit Breaker a HALF_OPEN después de {self.retry_timeout} segundos"
             )
@@ -139,9 +149,7 @@ class FallbackService:
             self.circuit_breaker_state = "CLOSED"
             self.circuit_breaker_state_gauge.set(0)
 
-    async def get_fallback_response(
-            self, campaign_type: str, context: dict[str, str]
-    ) -> str:
+    async def get_fallback_response(self, campaign_type: str, context: dict[str, str]) -> str:
         """
         Obtiene una respuesta de fallback apropiada según el tipo de campaña
 
@@ -155,7 +163,7 @@ class FallbackService:
         return self.fallback_responses.get(campaign_type, self.default_fallback)
 
     async def get_audio_response(
-            self, campaign_type: str = None, context: dict = None
+        self, campaign_type: str | None = None, context: dict | None = None
     ) -> bytes:
         """
         Genera una respuesta de audio para casos de error, respetando el estado del circuit breaker
@@ -176,9 +184,7 @@ class FallbackService:
 
         try:
             # Obtener texto de respuesta
-            text = await self.get_fallback_response(
-                campaign_type or "general", context or {}
-            )
+            text = await self.get_fallback_response(campaign_type or "general", context or {})
 
             # Generar audio con voz predeterminada
             with self.elevenlabs_api_latency.time():
@@ -195,6 +201,40 @@ class FallbackService:
 
             # Si falla la generación, devolver audio pregrabado
             return self._get_prerecorded_fallback()
+
+    async def get_audio_stream(self) -> AsyncGenerator[bytes, None]:
+        """
+        Proporciona un generador asíncrono de chunks de audio para streaming en caso de fallback.
+
+        Este método es útil para mantener la continuidad del streaming cuando el servicio principal falla.
+
+        Returns:
+            AsyncGenerator[bytes, None]: Generador de chunks de audio
+        """
+        try:
+            # Obtener el audio completo
+            audio_data = await self.get_audio_response()
+
+            # Simular streaming dividiendo en chunks
+            chunk_size = 4096  # 4KB chunks
+            total_chunks = len(audio_data) // chunk_size + (
+                1 if len(audio_data) % chunk_size > 0 else 0
+            )
+
+            logger.info(f"Streaming audio de fallback en {total_chunks} chunks")
+
+            # Entregar los chunks uno por uno
+            for i in range(0, len(audio_data), chunk_size):
+                chunk = audio_data[i : i + chunk_size]
+                yield chunk
+
+                # Pequeña pausa para simular streaming real
+                await asyncio.sleep(0.01)
+
+        except Exception as e:
+            logger.error(f"Error en streaming de audio de fallback: {e!s}")
+            # En caso de error, devolver un chunk vacío
+            yield b""
 
     def _get_prerecorded_fallback(self) -> bytes:
         """
@@ -213,6 +253,6 @@ class FallbackService:
             audio = self.client.generate(text=self.default_fallback, voice=self.default_voice)
             return audio
         except Exception as e:
-            logger.error(f"Error al generar audio de fallback: {str(e)}")
+            logger.error(f"Error al generar audio de fallback: {e!s}")
             # Devolver un archivo de audio vacío como último recurso
-            return bytes()
+            return b""

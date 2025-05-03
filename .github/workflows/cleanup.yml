@@ -15,30 +15,30 @@ jobs:
           # Eliminar completamente los workflows problemáticos
           rm -f .github/workflows/ci-cd-pipeline.yml
           rm -f .github/workflows/config-security-scan.yml
-          
+
           # Crear archivos vacíos para evitar que se vuelvan a crear
           touch .github/workflows/ci-cd-pipeline.yml.deleted
           touch .github/workflows/config-security-scan.yml.deleted
-          
+
           # Crear un archivo README para explicar por qué se eliminaron
           cat > .github/workflows/README.md << 'EOF'
           # Workflows Deshabilitados
 
           Los siguientes workflows han sido deshabilitados debido a problemas persistentes:
-          
+
           - ci-cd-pipeline.yml
           - config-security-scan.yml
-          
+
           Por favor, no vuelvas a crear estos workflows sin antes resolver los problemas subyacentes.
           EOF
-          
+
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .github/workflows/
           git commit -m "Eliminar workflows problemáticos" || echo "No changes to commit"
-          
+
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:

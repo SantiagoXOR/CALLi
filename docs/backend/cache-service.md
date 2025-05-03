@@ -88,10 +88,10 @@ async def set(self, key: str, value: Dict, ttl: Optional[int] = None) -> bool:
     # Determinar TTL basado en la hora del día y patrones de uso
     if ttl is None:
         ttl = self._get_adaptive_ttl()
-    
+
     # Registrar estadística de acceso
     self._record_access(key)
-    
+
     return await set_in_cache(key, value, ttl)
 
 async def delete(self, key: str) -> bool:
@@ -113,7 +113,7 @@ async def start_sync(self) -> None:
     """Inicia la tarea de sincronización periódica con Supabase."""
     if self._running:
         return
-    
+
     self._running = True
     self.sync_task = asyncio.create_task(self._sync_loop())
     logger.info(f"Iniciada sincronización de caché cada {self.sync_interval} segundos")
@@ -122,7 +122,7 @@ async def stop_sync(self) -> None:
     """Detiene la tarea de sincronización periódica."""
     if not self._running:
         return
-    
+
     self._running = False
     if self.sync_task:
         self.sync_task.cancel()
@@ -148,13 +148,13 @@ async def _sync_to_supabase(self) -> None:
     """Sincroniza la caché con Supabase."""
     logger.debug("Iniciando sincronización con Supabase")
     start_time = datetime.now()
-    
+
     # Obtener datos a sincronizar
     keys_to_sync = await self._get_keys_to_sync()
-    
+
     # Sincronizar datos
     synced_count = await sync_to_supabase(keys_to_sync)
-    
+
     # Registrar métricas
     duration = (datetime.now() - start_time).total_seconds()
     logger.info(f"Sincronización completada: {synced_count} elementos en {duration:.2f} segundos")
@@ -170,10 +170,10 @@ def _get_adaptive_ttl(self) -> int:
         TTL en segundos
     """
     current_hour = datetime.now().hour
-    
+
     # Determinar si es hora pico basado en estadísticas
     is_peak_hour = self._is_peak_hour(current_hour)
-    
+
     # Usar TTL más corto en horas pico para mantener datos más frescos
     if is_peak_hour:
         return self.settings["PEAK_TTL"]
@@ -193,12 +193,12 @@ def _is_peak_hour(self, hour: int) -> bool:
     if not self.hourly_access_stats:
         # Si no hay estadísticas, usar horas de oficina como aproximación
         return 9 <= hour <= 18
-    
+
     # Calcular uso promedio para la hora especificada
     hour_stats = [stat for stat in self.hourly_access_stats if stat["hour"] == hour]
     if not hour_stats:
         return False
-    
+
     avg_usage = sum(stat["count"] for stat in hour_stats) / len(hour_stats)
     return avg_usage > self.settings["USAGE_THRESHOLD"]
 
@@ -209,7 +209,7 @@ def _record_access(self, key: str) -> None:
         key: Clave accedida
     """
     current_hour = datetime.now().hour
-    
+
     # Actualizar estadísticas de la hora actual
     hour_stat = next((stat for stat in self.hourly_access_stats if stat["hour"] == current_hour), None)
     if hour_stat:
@@ -222,11 +222,11 @@ def _record_access(self, key: str) -> None:
             "keys": {key},
             "date": datetime.now().date()
         })
-    
+
     # Limpiar estadísticas antiguas (más de 7 días)
     seven_days_ago = datetime.now().date() - timedelta(days=7)
     self.hourly_access_stats = [
-        stat for stat in self.hourly_access_stats 
+        stat for stat in self.hourly_access_stats
         if stat["date"] >= seven_days_ago
     ]
 ```
@@ -313,21 +313,21 @@ class CampaignService:
         # Intentar obtener de caché primero
         cache_key = f"{self.cache_prefix}{campaign_id}"
         cached_data = await self.cache_service.get(cache_key)
-        
+
         if cached_data:
             return Campaign(**cached_data)
-        
+
         # Si no está en caché, obtener de base de datos
         result = self.supabase.from_table("campaigns").select("*").eq("id", campaign_id).execute()
-        
+
         if not result.data:
             raise HTTPException(status_code=404, detail="Campaign not found")
-        
+
         campaign = Campaign(**result.data[0])
-        
+
         # Almacenar en caché para futuras consultas
         await self.cache_service.set(cache_key, campaign.dict())
-        
+
         return campaign
 ```
 

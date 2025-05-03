@@ -12,7 +12,7 @@ erDiagram
     CAMPAIGNS ||--o{ CAMPAIGN_CONTACTS : "incluye"
     CONTACTS ||--o{ CAMPAIGN_CONTACTS : "pertenece"
     CONTACTS ||--o{ CALLS : "recibe"
-    
+
     CAMPAIGNS {
         uuid id PK
         string name
@@ -32,7 +32,7 @@ erDiagram
         timestamp created_at
         timestamp updated_at
     }
-    
+
     CALLS {
         uuid id PK
         uuid campaign_id FK
@@ -48,7 +48,7 @@ erDiagram
         timestamp created_at
         timestamp updated_at
     }
-    
+
     CONTACTS {
         uuid id PK
         string first_name
@@ -59,7 +59,7 @@ erDiagram
         timestamp created_at
         timestamp updated_at
     }
-    
+
     CAMPAIGN_CONTACTS {
         uuid id PK
         uuid campaign_id FK

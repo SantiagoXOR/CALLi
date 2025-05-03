@@ -10,7 +10,7 @@ end note
 
 if (¿Hay campañas activas?) then (sí)
     :Obtener contactos pendientes;
-    
+
     while (¿Hay contactos disponibles?) is (sí)
         if (¿Dentro de horario permitido?) then (sí)
             if (¿Dentro del límite de llamadas?) then (sí)
@@ -37,7 +37,7 @@ if (¿Hay campañas activas?) then (sí)
             stop
         endif
     endwhile (no)
-    
+
     :Verificar llamadas fallidas;
     if (¿Hay llamadas para reintentar?) then (sí)
         :Procesar reintentos;
@@ -46,7 +46,7 @@ if (¿Hay campañas activas?) then (sí)
           max_retries configurado
         end note
     endif
-    
+
 else (no)
     :Esperar siguiente ciclo;
 endif

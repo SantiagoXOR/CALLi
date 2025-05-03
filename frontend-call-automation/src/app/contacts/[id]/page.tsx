@@ -14,7 +14,7 @@ export default function ContactDetailPage() {
   const router = useRouter();
   const params = useParams();
   const contactId = params.id as string;
-  
+
   const [contact, setContact] = useState<Contact | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -62,8 +62,8 @@ export default function ContactDetailPage() {
         </CardHeader>
         <CardContent>
           <p className="text-red-500">{error}</p>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="mt-4"
             onClick={() => router.push('/contacts')}
           >
@@ -76,14 +76,14 @@ export default function ContactDetailPage() {
 
   return (
     <div className="container mx-auto py-6">
-      <Button 
-        variant="outline" 
+      <Button
+        variant="outline"
         className="mb-6"
         onClick={() => router.push('/contacts')}
       >
         <ArrowLeft className="mr-2 h-4 w-4" /> Volver a la lista de contactos
       </Button>
-      
+
       {contact ? (
         <ContactForm
           contact={contact}

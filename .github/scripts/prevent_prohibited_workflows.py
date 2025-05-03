@@ -28,12 +28,8 @@ def main():
         # Verificar si el archivo está en la lista de workflows prohibidos
         if file_name in PROHIBITED_WORKFLOWS:
             print(f"ERROR: No se permite añadir el archivo {file_name}")
-            print(
-                "Este archivo ha sido eliminado permanentemente debido a problemas persistentes."
-            )
-            print(
-                "Por favor, consulta .github/workflows/README.md para más información."
-            )
+            print("Este archivo ha sido eliminado permanentemente debido a problemas persistentes.")
+            print("Por favor, consulta .github/workflows/README.md para más información.")
             sys.exit(1)
 
     # Si llegamos aquí, todos los archivos son válidos

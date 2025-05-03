@@ -1,0 +1,33 @@
+{
+    "version": "0.2",
+    "language": "en,es",
+    "words": [],
+    "flagWords": [],
+    "ignorePaths": [
+        "node_modules/**",
+        ".git/**",
+        "**/*.min.js",
+        "**/*.map"
+    ],
+    "dictionaryDefinitions": [
+        {
+            "name": "technical-terms",
+            "path": "./technical-terms.txt",
+            "description": "Technical terms used in the project"
+        }
+    ],
+    "dictionaries": [
+        "technical-terms"
+    ],
+    "languageSettings": [
+        {
+            "languageId": "python",
+            "locale": "es",
+            "includeRegExpList": [
+                "CStyleComment",
+                "string"
+            ],
+            "dictionaries": ["technical-terms"]
+        }
+    ]
+}

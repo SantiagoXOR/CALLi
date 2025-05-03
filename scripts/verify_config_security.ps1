@@ -20,7 +20,7 @@ try {
 if (-not $kicsInstalled) {
     Write-Host "KICS no está instalado o no está en el PATH" -ForegroundColor $Red
     Write-Host "Instalando KICS..." -ForegroundColor $Yellow
-    
+
     # Verificar si el script de instalación existe
     if (Test-Path ".\scripts\install_kics.ps1") {
         & .\scripts\install_kics.ps1
@@ -29,14 +29,14 @@ if (-not $kicsInstalled) {
         Write-Host "Por favor, ejecute: .\scripts\install_kics.ps1" -ForegroundColor $Yellow
         exit 1
     }
-    
+
     # Verificar nuevamente si KICS está instalado
     try {
         $kicsInstalled = Get-Command kics -ErrorAction SilentlyContinue
     } catch {
         $kicsInstalled = $null
     }
-    
+
     if (-not $kicsInstalled) {
         Write-Host "No se pudo instalar KICS. Por favor, instálelo manualmente." -ForegroundColor $Red
         exit 1
@@ -101,21 +101,21 @@ Write-Host "Verificando encabezados de seguridad en nginx..." -ForegroundColor $
 $nginxConf = "nginx/conf.d/default.conf"
 if (Test-Path $nginxConf) {
     $content = Get-Content $nginxConf -Raw
-    
+
     $requiredHeaders = @(
         "Strict-Transport-Security",
         "X-Content-Type-Options",
         "X-Frame-Options",
         "Content-Security-Policy"
     )
-    
+
     $missingHeaders = @()
     foreach ($header in $requiredHeaders) {
         if ($content -notmatch "add_header\s+$header") {
             $missingHeaders += $header
         }
     }
-    
+
     if ($missingHeaders.Count -gt 0) {
         Write-Host "Faltan los siguientes encabezados de seguridad en nginx:" -ForegroundColor $Red
         foreach ($header in $missingHeaders) {

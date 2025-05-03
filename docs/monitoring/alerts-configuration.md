@@ -431,7 +431,7 @@ Personalización de plantillas para diferentes canales:
 <body>
   <h2>{{ .CommonLabels.alertname }}</h2>
   <p>Estado: {{ .Status | toUpper }}</p>
-  
+
   {{ range .Alerts }}
   <div class="alert {{ .Labels.severity }}">
     <h3>{{ .Annotations.summary }}</h3>

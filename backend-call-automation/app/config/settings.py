@@ -1,8 +1,9 @@
-import os # Importar os
-from pydantic_settings import BaseSettings
-from typing import Optional
+import os  # Importar os
 from functools import lru_cache
+
 from pydantic import ConfigDict, Field
+from pydantic_settings import BaseSettings
+
 
 class Settings(BaseSettings):
     # Database Configuration
@@ -67,7 +68,7 @@ class Settings(BaseSettings):
 
     # Logging Configuration
     LOG_LEVEL: str = "info"
-    LOG_FILE: Optional[str] = "logs/app.log"
+    LOG_FILE: str | None = "logs/app.log"
     LOG_FORMAT: str = "json"
     LOG_ROTATION: bool = True
     LOG_RETENTION_DAYS: int = 30
@@ -79,19 +80,18 @@ class Settings(BaseSettings):
     AUDIO_CACHE_MAX_SIZE: int = 1073741824  # 1 GB en bytes
 
     # Supabase Authentication Configuration
-    SUPABASE_URL: str = os.getenv("SUPABASE_URL", "")
-    SUPABASE_KEY: str = os.getenv("SUPABASE_KEY", "")
     SUPABASE_JWT_SECRET: str = os.getenv("SUPABASE_JWT_SECRET", "")
     AUTH_ENABLED: bool = os.getenv("AUTH_ENABLED", "true").lower() == "true"
 
     model_config = ConfigDict(
         # env_file=".env", # Se definirá dinámicamente en get_settings
-        env_file_encoding='utf-8',
+        env_file_encoding="utf-8",
         case_sensitive=True,
-        extra='ignore'
+        extra="ignore",
     )
 
-@lru_cache()
+
+@lru_cache
 def get_settings() -> Settings:
     """
     Returns cached settings instance, loading the appropriate .env file.
@@ -107,6 +107,7 @@ def get_settings() -> Settings:
     # Pydantic-settings buscará este archivo
     # Si env_filename tampoco existe, _env_file será None y pydantic-settings buscará variables de entorno
     return Settings(_env_file=env_filename if os.path.exists(env_filename) else None)
+
 
 # Create a global settings instance
 settings = get_settings()

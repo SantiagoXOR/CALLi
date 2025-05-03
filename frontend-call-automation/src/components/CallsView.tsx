@@ -36,7 +36,7 @@ export function CallsView() {
     try {
       // Aquí iría la lógica para cancelar la llamada
       toast.success("Llamada cancelada correctamente");
-      
+
       // Si estamos en la vista de detalle, volvemos a la lista
       if (viewMode === "detail") {
         handleBack();
@@ -63,7 +63,7 @@ export function CallsView() {
       {viewMode === "list" && (
         <>
           <CallFilter onApplyFilters={handleApplyFilters} />
-          <CallList 
+          <CallList
             filters={filters}
             onViewCall={handleViewCall}
             onCancelCall={handleCancelCall}

@@ -1,11 +1,14 @@
 """
 Modelos para la gestión de llamadas.
 """
+
 from datetime import datetime
 from enum import Enum
+from typing import Any
 from uuid import UUID
-from pydantic import BaseModel, Field, ConfigDict
-from typing import Any, Dict, List, Optional, Union
+
+from pydantic import BaseModel, ConfigDict, Field
+
 
 class CallStatus(str, Enum):
     SCHEDULED = "scheduled"
@@ -18,14 +21,15 @@ class CallStatus(str, Enum):
     BUSY = "busy"
     ERROR = "error"
 
+
 class CallBase(BaseModel):
     contact_id: UUID = Field(..., description="ID del contacto")
-    scheduled_time: Optional[datetime] = Field(None, description="Fecha programada para la llamada")
+    scheduled_time: datetime | None = Field(None, description="Fecha programada para la llamada")
     status: CallStatus = Field(..., description="Estado actual de la llamada")
-    duration: Optional[int] = Field(None, description="Duración en segundos")
-    recording_url: Optional[str] = Field(None, description="URL de grabación")
-    notes: Optional[str] = Field(None, description="Notas adicionales")
-    twilio_sid: Optional[str] = Field(None, description="SID de Twilio")
+    duration: int | None = Field(None, description="Duración en segundos")
+    recording_url: str | None = Field(None, description="URL de grabación")
+    notes: str | None = Field(None, description="Notas adicionales")
+    twilio_sid: str | None = Field(None, description="SID de Twilio")
     retry_attempts: int = Field(0, description="Número de intentos")
     max_retries: int = Field(3, description="Máximo de intentos permitidos")
     script_template: str = Field(..., description="Texto para audio")
@@ -33,9 +37,10 @@ class CallBase(BaseModel):
     status_callback_url: str = Field(..., description="URL para callbacks")
     phone_number: str = Field(..., description="Número destino")
     from_number: str = Field(..., description="Número origen")
-    error_message: Optional[str] = Field(None, description="Mensaje de error")
+    error_message: str | None = Field(None, description="Mensaje de error")
 
     model_config = ConfigDict(from_attributes=True)
+
 
 class CallCreate(CallBase):
     campaign_id: str = Field(..., description="ID de la campaña")
@@ -48,38 +53,43 @@ class CallCreate(CallBase):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class CallUpdate(BaseModel):
-    status: Optional[CallStatus] = None
-    duration: Optional[int] = None
-    recording_url: Optional[str] = None
-    error_message: Optional[str] = None
-    retry_attempts: Optional[int] = None
+    status: CallStatus | None = None
+    duration: int | None = None
+    recording_url: str | None = None
+    error_message: str | None = None
+    retry_attempts: int | None = None
 
     model_config = ConfigDict(from_attributes=True)
+
 
 class Call(CallBase):
     id: UUID = Field(..., description="ID único de la llamada")
     created_at: datetime = Field(..., description="Fecha de creación")
     updated_at: datetime = Field(..., description="Fecha de actualización")
     campaign_id: str = Field(..., description="ID de la campaña")
-    interaction_history: Optional[List[Dict[str, Any]]] = Field(
-        None,
-        description="Historial de interacciones"
+    interaction_history: list[dict[str, Any]] | None = Field(
+        None, description="Historial de interacciones"
     )
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class InteractionItem(BaseModel):
     """Representa una interacción individual en una llamada."""
+
     timestamp: datetime = Field(..., description="Momento de la interacción")
     type: str = Field(..., description="Tipo de interacción (user, ai, system)")
     content: str = Field(..., description="Contenido de la interacción")
-    metadata: Dict[str, Any] = Field(default_factory=dict, description="Metadatos adicionales")
+    metadata: dict[str, Any] = Field(default_factory=dict, description="Metadatos adicionales")
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class CallDetail(BaseModel):
     """Modelo detallado de una llamada con información completa."""
+
     id: UUID = Field(..., description="ID único de la llamada")
     contact_id: UUID = Field(..., description="ID del contacto")
     campaign_id: str = Field(..., description="ID de la campaña")
@@ -87,26 +97,24 @@ class CallDetail(BaseModel):
     contact_phone: str = Field(..., description="Teléfono del contacto")
     campaign_name: str = Field(..., description="Nombre de la campaña")
     status: CallStatus = Field(..., description="Estado actual de la llamada")
-    scheduled_time: Optional[datetime] = Field(None, description="Fecha programada")
-    start_time: Optional[datetime] = Field(None, description="Hora de inicio")
-    end_time: Optional[datetime] = Field(None, description="Hora de finalización")
-    duration: Optional[int] = Field(None, description="Duración en segundos")
-    recording_url: Optional[str] = Field(None, description="URL de grabación")
-    notes: Optional[str] = Field(None, description="Notas adicionales")
-    twilio_sid: Optional[str] = Field(None, description="SID de Twilio")
+    scheduled_time: datetime | None = Field(None, description="Fecha programada")
+    start_time: datetime | None = Field(None, description="Hora de inicio")
+    end_time: datetime | None = Field(None, description="Hora de finalización")
+    duration: int | None = Field(None, description="Duración en segundos")
+    recording_url: str | None = Field(None, description="URL de grabación")
+    notes: str | None = Field(None, description="Notas adicionales")
+    twilio_sid: str | None = Field(None, description="SID de Twilio")
     retry_attempts: int = Field(0, description="Número de intentos")
     max_retries: int = Field(3, description="Máximo de intentos permitidos")
-    error_message: Optional[str] = Field(None, description="Mensaje de error")
+    error_message: str | None = Field(None, description="Mensaje de error")
     created_at: datetime = Field(..., description="Fecha de creación")
     updated_at: datetime = Field(..., description="Fecha de actualización")
-    interactions: List[InteractionItem] = Field(
-        default_factory=list,
-        description="Historial de interacciones"
+    interactions: list[InteractionItem] = Field(
+        default_factory=list, description="Historial de interacciones"
     )
-    call_metrics: Dict[str, Any] = Field(
-        default_factory=dict,
-        description="Métricas de la llamada (duración, silencios, etc.)"
+    call_metrics: dict[str, Any] = Field(
+        default_factory=dict, description="Métricas de la llamada (duración, silencios, etc.)"
     )
-    tags: List[str] = Field(default_factory=list, description="Etiquetas de la llamada")
+    tags: list[str] = Field(default_factory=list, description="Etiquetas de la llamada")
 
     model_config = ConfigDict(from_attributes=True)

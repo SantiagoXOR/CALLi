@@ -18,7 +18,7 @@ describe('contactService', () => {
           total: 0,
         },
       };
-      
+
       // @ts-ignore
       axios.get.mockResolvedValueOnce(mockResponse);
 
@@ -56,7 +56,7 @@ describe('contactService', () => {
       const mockResponse = {
         data: mockData,
       };
-      
+
       // @ts-ignore
       axios.get.mockResolvedValueOnce(mockResponse);
 
@@ -74,7 +74,7 @@ describe('contactService', () => {
       const mockResponse = {
         data: {},
       };
-      
+
       // @ts-ignore
       axios.get.mockResolvedValueOnce(mockResponse);
 
@@ -100,7 +100,7 @@ describe('contactService', () => {
       const mockResponse = {
         data: mockContact,
       };
-      
+
       // @ts-ignore
       axios.get.mockResolvedValueOnce(mockResponse);
 
@@ -125,7 +125,7 @@ describe('contactService', () => {
       const mockResponse = {
         data: { id: '3', ...newContact },
       };
-      
+
       // @ts-ignore
       axios.post.mockResolvedValueOnce(mockResponse);
 
@@ -157,7 +157,7 @@ describe('contactService', () => {
       const mockResponse = {
         data: createdContact,
       };
-      
+
       // @ts-ignore
       axios.post.mockResolvedValueOnce(mockResponse);
 
@@ -183,7 +183,7 @@ describe('contactService', () => {
       const mockResponse = {
         data: { id: contactId, ...updatedData },
       };
-      
+
       // @ts-ignore
       axios.put.mockResolvedValueOnce(mockResponse);
 
@@ -215,7 +215,7 @@ describe('contactService', () => {
       const mockResponse = {
         data: updatedContact,
       };
-      
+
       // @ts-ignore
       axios.put.mockResolvedValueOnce(mockResponse);
 
@@ -233,7 +233,7 @@ describe('contactService', () => {
       const mockResponse = {
         data: { success: true },
       };
-      
+
       // @ts-ignore
       axios.delete.mockResolvedValueOnce(mockResponse);
 
@@ -251,7 +251,7 @@ describe('contactService', () => {
       const mockResponse = {
         data: { success: true },
       };
-      
+
       // @ts-ignore
       axios.delete.mockResolvedValueOnce(mockResponse);
 
@@ -267,12 +267,12 @@ describe('contactService', () => {
     it('llama a axios.post con el FormData correcto', async () => {
       // Datos de ejemplo
       const file = new File(['name,phone,email'], 'contacts.csv', { type: 'text/csv' });
-      
+
       // Configurar el mock
       const mockResponse = {
         data: { imported: 5, errors: 1, total: 6 },
       };
-      
+
       // @ts-ignore
       axios.post.mockResolvedValueOnce(mockResponse);
 
@@ -295,12 +295,12 @@ describe('contactService', () => {
       // Datos de ejemplo
       const file = new File(['name,phone,email'], 'contacts.csv', { type: 'text/csv' });
       const importResult = { imported: 5, errors: 1, total: 6 };
-      
+
       // Configurar el mock
       const mockResponse = {
         data: importResult,
       };
-      
+
       // @ts-ignore
       axios.post.mockResolvedValueOnce(mockResponse);
 
@@ -318,7 +318,7 @@ describe('contactService', () => {
       const mockResponse = {
         data: 'csv content',
       };
-      
+
       // @ts-ignore
       axios.get.mockResolvedValueOnce(mockResponse);
 

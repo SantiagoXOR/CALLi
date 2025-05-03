@@ -1,21 +1,24 @@
-import pytest
+import logging
 from datetime import datetime, timedelta
 from enum import Enum
-from unittest.mock import Mock, AsyncMock, MagicMock
-from twilio.rest import Client as TwilioClient
+from unittest.mock import AsyncMock, Mock
+
+import pytest
 from fastapi import HTTPException, status
-from app.models.call import Call, CallCreate, CallStatus, CallUpdate
-from app.models.campaign import Campaign, CampaignBase
+
+from app.models.call import CallCreate, CallStatus, CallUpdate
+from app.models.campaign import Campaign
 from app.services.call_service import CallService
-import logging
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
 
 class MockTwilioCall:
     def __init__(self, sid: str, status: str):
         self.sid = sid
         self.status = status
+
 
 @pytest.fixture
 def test_campaign():
@@ -34,8 +37,9 @@ def test_campaign():
         total_calls=0,
         successful_calls=0,
         failed_calls=0,
-        pending_calls=0
+        pending_calls=0,
     )
+
 
 @pytest.fixture
 def mock_twilio_client():
@@ -46,6 +50,7 @@ def mock_twilio_client():
             self.calls.get = AsyncMock()
 
     return MockTwilio()
+
 
 @pytest.fixture
 def mock_supabase_client():
@@ -62,9 +67,7 @@ def mock_supabase_client():
         def set_responses(self, *responses):
             self.responses = []
             for response in responses:
-                if isinstance(response, dict):
-                    self.responses.append({"data": response, "error": None})
-                elif isinstance(response, list):
+                if isinstance(response, dict | list):
                     self.responses.append({"data": response, "error": None})
                 else:
                     self.responses.append(response)
@@ -98,7 +101,7 @@ def mock_supabase_client():
 
         def eq(self, column, value):
             logger.debug(f"Llamado eq con column: {column}, value: {value}")
-            if not hasattr(self, 'conditions'):
+            if not hasattr(self, "conditions"):
                 self.conditions = []
             self.conditions.append((column, value))
             return self
@@ -109,28 +112,32 @@ def mock_supabase_client():
             return self
 
         async def execute(self):
-            logger.debug(f"Ejecutando con operación: {self.last_operation}, tabla: {self.last_table}")
-            logger.debug(f"Estado actual - is_single: {self.is_single}, current_response: {self.current_response}")
-            
+            logger.debug(
+                f"Ejecutando con operación: {self.last_operation}, tabla: {self.last_table}"
+            )
+            logger.debug(
+                f"Estado actual - is_single: {self.is_single}, current_response: {self.current_response}"
+            )
+
             if not self.responses:
                 logger.debug("No hay respuestas configuradas")
                 return {"data": None, "error": None}
 
             response = self.responses[self.current_response].copy()
             logger.debug(f"Respuesta inicial: {response}")
-            
+
             # Si es una operación de insert o update, actualizar los datos con los valores proporcionados
             if self.last_operation in ["insert", "update"] and self.last_data:
                 logger.debug(f"Actualizando datos para {self.last_operation}")
                 base_data = {}
-                
+
                 # Si hay una respuesta previa, usarla como base
                 if response["data"]:
                     if isinstance(response["data"], list):
                         base_data = response["data"][0].copy()
                     else:
                         base_data = response["data"].copy()
-                
+
                 # Actualizar con los nuevos datos
                 if isinstance(self.last_data, dict):
                     for key, value in self.last_data.items():
@@ -140,10 +147,10 @@ def mock_supabase_client():
                             base_data[key] = value.isoformat()
                         else:
                             base_data[key] = value
-                
+
                 response = {"data": [base_data], "error": None}
                 logger.debug(f"Datos actualizados: {response}")
-            
+
             # Si es single(), devolver solo el primer elemento
             if self.is_single and response["data"] and isinstance(response["data"], list):
                 logger.debug("Convirtiendo respuesta a single")
@@ -153,14 +160,14 @@ def mock_supabase_client():
             # Incrementar el índice de respuesta
             self.current_response = (self.current_response + 1) % len(self.responses)
             logger.debug(f"Índice de respuesta actualizado a: {self.current_response}")
-            
+
             logger.debug(f"Respuesta final: {response}")
             return response
 
     return MockSupabase()
 
-class TestCallService:
 
+class TestCallService:
     @pytest.mark.asyncio
     async def test_handle_webhooks(self, mock_twilio_client, mock_supabase_client, test_campaign):
         """
@@ -172,13 +179,13 @@ class TestCallService:
             - Validaciones de campaña
             - Manejo adecuado de errores
         """
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Test webhook with completed status
         mock_twilio_client.calls.get.return_value = AsyncMock(
-            status="completed",
-            duration=120,
-            recording_url="http://example.com/recording"
+            status="completed", duration=120, recording_url="http://example.com/recording"
         )
         await call_service.handle_call_webhook("TEST_SID_12345")
         call = await call_service.get_call("TEST_SID_12345")
@@ -187,17 +194,13 @@ class TestCallService:
         assert call.recording_url == "http://example.com/recording"
 
         # Test webhook with failed status
-        mock_twilio_client.calls.get.return_value = AsyncMock(
-            status="failed"
-        )
+        mock_twilio_client.calls.get.return_value = AsyncMock(status="failed")
         await call_service.handle_call_webhook("TEST_SID_12345")
         call = await call_service.get_call("TEST_SID_12345")
         assert call.status == CallStatus.FAILED
 
         # Test webhook with invalid status
-        mock_twilio_client.calls.get.return_value = AsyncMock(
-            status="invalid_status"
-        )
+        mock_twilio_client.calls.get.return_value = AsyncMock(status="invalid_status")
         with pytest.raises(ValueError):
             await call_service.handle_call_webhook("TEST_SID_12345")
 
@@ -227,7 +230,9 @@ class TestCallService:
             - Manejo de errores de Twilio
             - Actualización de estado
         """
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Crear datos de prueba
         call_data = CallCreate(
@@ -235,7 +240,7 @@ class TestCallService:
             phone_number="+1234567890",
             from_number="+0987654321",
             webhook_url="http://example.com/webhook",
-            status_callback_url="http://example.com/callback"
+            status_callback_url="http://example.com/callback",
         )
 
         # Crear llamada
@@ -252,13 +257,15 @@ class TestCallService:
             from_=call_data.from_number,
             url=call_data.webhook_url,
             status_callback=call_data.status_callback_url,
-            status_callback_event=['initiated', 'ringing', 'answered', 'completed'],
-            timeout=30
+            status_callback_event=["initiated", "ringing", "answered", "completed"],
+            timeout=30,
         )
 
     @pytest.mark.asyncio
     async def test_get_call(self, mock_twilio_client, mock_supabase_client, test_campaign):
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Crear llamada
         call_data = CallCreate(
@@ -266,7 +273,7 @@ class TestCallService:
             phone_number="+1234567890",
             from_number="+0987654321",
             webhook_url="http://example.com/webhook",
-            status_callback_url="http://example.com/callback"
+            status_callback_url="http://example.com/callback",
         )
         call = await call_service.create_call(call_data)
 
@@ -282,12 +289,12 @@ class TestCallService:
             await call_service.get_call(999)
 
         # Test that all required fields are present
-        assert hasattr(retrieved_call, 'id')
-        assert hasattr(retrieved_call, 'campaign_id')
-        assert hasattr(retrieved_call, 'phone_number')
-        assert hasattr(retrieved_call, 'status')
-        assert hasattr(retrieved_call, 'created_at')
-        assert hasattr(retrieved_call, 'updated_at')
+        assert hasattr(retrieved_call, "id")
+        assert hasattr(retrieved_call, "campaign_id")
+        assert hasattr(retrieved_call, "phone_number")
+        assert hasattr(retrieved_call, "status")
+        assert hasattr(retrieved_call, "created_at")
+        assert hasattr(retrieved_call, "updated_at")
 
     @pytest.mark.asyncio
     async def test_list_calls(self, mock_twilio_client, mock_supabase_client, test_campaign):
@@ -299,7 +306,9 @@ class TestCallService:
         4. Paginación
         5. Filtros combinados
         """
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Create test calls
         call_data1 = CallCreate(
@@ -307,7 +316,7 @@ class TestCallService:
             phone_number="+1234567890",
             from_number="+0987654321",
             webhook_url="http://example.com/webhook",
-            status_callback_url="http://example.com/callback"
+            status_callback_url="http://example.com/callback",
         )
         call1 = await call_service.create_call(call_data1)
 
@@ -319,7 +328,7 @@ class TestCallService:
             phone_number="+0987654321",
             from_number="+1234567890",
             webhook_url="http://example.com/webhook",
-            status_callback_url="http://example.com/callback"
+            status_callback_url="http://example.com/callback",
         )
         call2 = await call_service.create_call(call_data2)
 
@@ -328,7 +337,7 @@ class TestCallService:
             phone_number="+1122334455",
             from_number="+0987654321",
             webhook_url="http://example.com/webhook",
-            status_callback_url="http://example.com/callback"
+            status_callback_url="http://example.com/callback",
         )
         call3 = await call_service.create_call(call_data3)
 
@@ -350,12 +359,18 @@ class TestCallService:
         assert len(paginated_calls) == 1
 
         # Test combined filters
-        combined_filtered_calls = await call_service.list_calls(campaign_id=test_campaign.id, status=CallStatus.PENDING)
+        combined_filtered_calls = await call_service.list_calls(
+            campaign_id=test_campaign.id, status=CallStatus.PENDING
+        )
         assert len(combined_filtered_calls) == 1
 
     @pytest.mark.asyncio
-    async def test_update_call_status(self, mock_twilio_client, mock_supabase_client, test_campaign):
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+    async def test_update_call_status(
+        self, mock_twilio_client, mock_supabase_client, test_campaign
+    ):
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Create test call
         call_data = CallCreate(
@@ -363,7 +378,7 @@ class TestCallService:
             phone_number="+1234567890",
             from_number="+0987654321",
             webhook_url="http://example.com/webhook",
-            status_callback_url="http://example.com/callback"
+            status_callback_url="http://example.com/callback",
         )
         call = await call_service.create_call(call_data)
 
@@ -376,7 +391,7 @@ class TestCallService:
             call.id,
             status=CallStatus.COMPLETED,
             duration=120,
-            recording_url="http://example.com/recording"
+            recording_url="http://example.com/recording",
         )
         assert updated_call.duration == 120
         assert updated_call.recording_url == "http://example.com/recording"
@@ -392,7 +407,9 @@ class TestCallService:
 
     @pytest.mark.asyncio
     async def test_get_call_metrics(self, mock_twilio_client, mock_supabase_client, test_campaign):
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Create test calls
         call_data1 = CallCreate(
@@ -400,7 +417,7 @@ class TestCallService:
             phone_number="+1234567890",
             from_number="+0987654321",
             webhook_url="http://example.com/webhook",
-            status_callback_url="http://example.com/callback"
+            status_callback_url="http://example.com/callback",
         )
         call1 = await call_service.create_call(call_data1)
 
@@ -412,7 +429,7 @@ class TestCallService:
             phone_number="+0987654321",
             from_number="+1234567890",
             webhook_url="http://example.com/webhook",
-            status_callback_url="http://example.com/callback"
+            status_callback_url="http://example.com/callback",
         )
         call2 = await call_service.create_call(call_data2)
 
@@ -421,7 +438,7 @@ class TestCallService:
             phone_number="+1122334455",
             from_number="+0987654321",
             webhook_url="http://example.com/webhook",
-            status_callback_url="http://example.com/callback"
+            status_callback_url="http://example.com/callback",
         )
         call3 = await call_service.create_call(call_data3)
 
@@ -431,17 +448,17 @@ class TestCallService:
 
         # Test metrics without filters
         metrics = await call_service.get_call_metrics()
-        assert metrics['total_calls'] == 3
-        assert metrics['average_duration'] == 150
-        assert metrics['status_counts'][CallStatus.COMPLETED] == 2
-        assert metrics['status_counts'][CallStatus.FAILED] == 1
+        assert metrics["total_calls"] == 3
+        assert metrics["average_duration"] == 150
+        assert metrics["status_counts"][CallStatus.COMPLETED] == 2
+        assert metrics["status_counts"][CallStatus.FAILED] == 1
 
         # Test metrics filtered by campaign
         metrics = await call_service.get_call_metrics(campaign_id=test_campaign.id)
-        assert metrics['total_calls'] == 2
-        assert metrics['average_duration'] == 120
-        assert metrics['status_counts'][CallStatus.COMPLETED] == 1
-        assert metrics['status_counts'][CallStatus.FAILED] == 1
+        assert metrics["total_calls"] == 2
+        assert metrics["average_duration"] == 120
+        assert metrics["status_counts"][CallStatus.COMPLETED] == 1
+        assert metrics["status_counts"][CallStatus.FAILED] == 1
 
     @pytest.mark.asyncio
     async def test_get_call_metrics(self, mock_supabase_client):
@@ -452,22 +469,22 @@ class TestCallService:
                 "campaign_id": 1,
                 "status": CallStatus.COMPLETED.value,
                 "duration": 120,
-                "created_at": datetime.now().isoformat()
+                "created_at": datetime.now().isoformat(),
             },
             {
                 "id": 2,
                 "campaign_id": 1,
                 "status": CallStatus.FAILED.value,
                 "duration": None,
-                "created_at": datetime.now().isoformat()
+                "created_at": datetime.now().isoformat(),
             },
             {
                 "id": 3,
                 "campaign_id": 2,
                 "status": CallStatus.COMPLETED.value,
                 "duration": 180,
-                "created_at": datetime.now().isoformat()
-            }
+                "created_at": datetime.now().isoformat(),
+            },
         ]
 
         # Configurar respuestas del mock
@@ -477,21 +494,21 @@ class TestCallService:
 
         # Obtener métricas globales
         metrics = await call_service.get_call_metrics()
-        assert metrics['total_calls'] == 3
-        assert metrics['average_duration'] == 150
-        assert metrics['status_counts'][CallStatus.COMPLETED] == 2
-        assert metrics['status_counts'][CallStatus.FAILED] == 1
+        assert metrics["total_calls"] == 3
+        assert metrics["average_duration"] == 150
+        assert metrics["status_counts"][CallStatus.COMPLETED] == 2
+        assert metrics["status_counts"][CallStatus.FAILED] == 1
 
         # Obtener métricas filtradas por campaña
         metrics_campaign_1 = await call_service.get_call_metrics(campaign_id=1)
-        assert metrics_campaign_1['total_calls'] == 2
-        assert metrics_campaign_1['status_counts'][CallStatus.COMPLETED] == 1
-        assert metrics_campaign_1['status_counts'][CallStatus.FAILED] == 1
+        assert metrics_campaign_1["total_calls"] == 2
+        assert metrics_campaign_1["status_counts"][CallStatus.COMPLETED] == 1
+        assert metrics_campaign_1["status_counts"][CallStatus.FAILED] == 1
 
         metrics_campaign_2 = await call_service.get_call_metrics(campaign_id=2)
-        assert metrics_campaign_2['total_calls'] == 1
-        assert metrics_campaign_2['status_counts'][CallStatus.COMPLETED] == 1
-        assert metrics_campaign_2['status_counts'][CallStatus.FAILED] == 0
+        assert metrics_campaign_2["total_calls"] == 1
+        assert metrics_campaign_2["status_counts"][CallStatus.COMPLETED] == 1
+        assert metrics_campaign_2["status_counts"][CallStatus.FAILED] == 0
 
     @pytest.mark.asyncio
     async def test_retry_mechanism(self, mock_twilio_client, mock_supabase_client):
@@ -501,45 +518,43 @@ class TestCallService:
             "campaign_id": 1,
             "status": CallStatus.FAILED.value,
             "retry_attempts": 1,
-            "max_retries": 3
+            "max_retries": 3,
         }
 
         # Configurar respuestas del mock
         mock_supabase_client.set_responses(call_data)
 
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Reintento exitoso después de fallo
-        retried_call = await call_service.retry_call(call_data['id'])
+        retried_call = await call_service.retry_call(call_data["id"])
         assert retried_call.retry_attempts == 2
         assert retried_call.status == CallStatus.PENDING
 
         # Límite máximo de reintentos alcanzado
-        call_data['retry_attempts'] = 3
+        call_data["retry_attempts"] = 3
         mock_supabase_client.set_responses(call_data)
         with pytest.raises(ValueError):
-            await call_service.retry_call(call_data['id'])
+            await call_service.retry_call(call_data["id"])
 
         # Actualización correcta del contador de reintentos
-        call_data['retry_attempts'] = 1
+        call_data["retry_attempts"] = 1
         mock_supabase_client.set_responses(call_data)
-        retried_call = await call_service.retry_call(call_data['id'])
+        retried_call = await call_service.retry_call(call_data["id"])
         assert retried_call.retry_attempts == 2
 
         # Estado final después de reintento exitoso/fallido
-        call_data['status'] = CallStatus.COMPLETED.value
+        call_data["status"] = CallStatus.COMPLETED.value
         mock_supabase_client.set_responses(call_data)
-        retried_call = await call_service.retry_call(call_data['id'])
+        retried_call = await call_service.retry_call(call_data["id"])
         assert retried_call.status == CallStatus.COMPLETED
 
     @pytest.mark.asyncio
     async def test_campaign_stats_update(self, mock_supabase_client):
         # Configurar campaña inicial
-        campaign_data = {
-            "id": 1,
-            "total_calls": 10,
-            "successful_calls": 5
-        }
+        campaign_data = {"id": 1, "total_calls": 10, "successful_calls": 5}
 
         # Configurar respuestas del mock
         mock_supabase_client.set_responses(campaign_data)
@@ -569,7 +584,7 @@ class TestCallService:
         await asyncio.gather(
             call_service.update_campaign_stats(1, CallStatus.COMPLETED),
             call_service.update_campaign_stats(1, CallStatus.FAILED),
-            call_service.update_campaign_stats(1, CallStatus.IN_PROGRESS)
+            call_service.update_campaign_stats(1, CallStatus.IN_PROGRESS),
         )
         updated_campaign = await call_service.get_campaign(1)
         assert updated_campaign.total_calls == 16
@@ -579,7 +594,7 @@ class TestCallService:
     async def test_complete_call_flow(self, mock_twilio_client, mock_supabase_client):
         """
         Prueba el flujo completo de una llamada desde su creación hasta su finalización.
-        
+
         Flujo a probar:
         1. Crear llamada
         2. Simular inicio de llamada
@@ -588,18 +603,20 @@ class TestCallService:
         5. Verificar métricas de campaña
         """
         logger.info("Iniciando prueba de flujo completo de llamada")
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
-        
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
+
         # Configurar datos de prueba
         campaign_data = {
             "id": 1,
             "name": "Test Campaign",
             "status": "active",
             "total_calls": 0,
-            "successful_calls": 0
+            "successful_calls": 0,
         }
         logger.debug(f"Datos de campaña configurados: {campaign_data}")
-        
+
         base_call_data = {
             "id": 1,
             "campaign_id": 1,
@@ -616,26 +633,39 @@ class TestCallService:
             "error_message": None,
             "retry_attempts": 0,
             "max_retries": 3,
-            "timeout": 30
+            "timeout": 30,
         }
         logger.debug(f"Datos base de llamada configurados: {base_call_data}")
-        
+
         # Configurar secuencia de respuestas para Supabase
         mock_supabase_client.set_responses(
             campaign_data,  # Para la validación de campaña
             base_call_data,  # Para la inserción inicial
-            {**base_call_data, "status": CallStatus.INITIATED.value, "twilio_sid": "TEST_SID_12345"},  # Para la actualización con Twilio SID
-            {**base_call_data, "status": CallStatus.INITIATED.value, "twilio_sid": "TEST_SID_12345"},  # Para get_call
-            {**base_call_data, "status": CallStatus.COMPLETED.value, "twilio_sid": "TEST_SID_12345", "duration": 120, "recording_url": "http://example.com/recording.mp3"}  # Para la actualización final
+            {
+                **base_call_data,
+                "status": CallStatus.INITIATED.value,
+                "twilio_sid": "TEST_SID_12345",
+            },  # Para la actualización con Twilio SID
+            {
+                **base_call_data,
+                "status": CallStatus.INITIATED.value,
+                "twilio_sid": "TEST_SID_12345",
+            },  # Para get_call
+            {
+                **base_call_data,
+                "status": CallStatus.COMPLETED.value,
+                "twilio_sid": "TEST_SID_12345",
+                "duration": 120,
+                "recording_url": "http://example.com/recording.mp3",
+            },  # Para la actualización final
         )
-        
+
         # Configurar mock de Twilio
         mock_twilio_client.calls.create.return_value = MockTwilioCall(
-            sid="TEST_SID_12345",
-            status="initiated"
+            sid="TEST_SID_12345", status="initiated"
         )
         logger.debug("Mock de Twilio configurado")
-        
+
         # Crear datos de la llamada
         call_data = CallCreate(
             campaign_id=1,
@@ -643,27 +673,27 @@ class TestCallService:
             from_number="+15005550006",
             webhook_url="http://example.com/webhook",
             status_callback_url="http://example.com/callback",
-            timeout=30
+            timeout=30,
         )
         logger.debug(f"Datos de llamada creados: {call_data}")
-        
+
         # Probar creación de llamada
         logger.info("Probando creación de llamada")
         call = await call_service.create_call(call_data)
         logger.debug(f"Llamada creada: {call}")
         assert call.status == CallStatus.INITIATED
         assert call.twilio_sid == "TEST_SID_12345"
-        
+
         # Probar actualización de estado
         logger.info("Probando actualización de estado de llamada")
         updated_call = await call_service.update_call_status(
             call_id=call.id,
             status=CallStatus.COMPLETED,
             duration=120,
-            recording_url="http://example.com/recording.mp3"
+            recording_url="http://example.com/recording.mp3",
         )
         logger.debug(f"Llamada actualizada: {updated_call}")
-        
+
         assert updated_call.status == CallStatus.COMPLETED
         assert updated_call.duration == 120
         assert updated_call.recording_url == "http://example.com/recording.mp3"
@@ -679,7 +709,9 @@ class TestCallService:
             - Incremento correcto del contador
             - Respeto del límite máximo
         """
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Create test call
         call_data = CallCreate(
@@ -687,7 +719,7 @@ class TestCallService:
             phone_number="+1234567890",
             from_number="+0987654321",
             webhook_url="http://example.com/webhook",
-            status_callback_url="http://example.com/callback"
+            status_callback_url="http://example.com/callback",
         )
         call = await call_service.create_call(call_data)
 
@@ -724,7 +756,9 @@ class TestCallService:
             2. Actualización con campaña inactiva
             3. Estados inválidos de Twilio
         """
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Create test call
         call_data = CallCreate(
@@ -732,7 +766,7 @@ class TestCallService:
             phone_number="+1234567890",
             from_number="+0987654321",
             webhook_url="http://example.com/webhook",
-            status_callback_url="http://example.com/callback"
+            status_callback_url="http://example.com/callback",
         )
         call = await call_service.create_call(call_data)
 
@@ -753,7 +787,9 @@ class TestCallService:
     @pytest.mark.asyncio
     async def test_handle_webhook_error(self, mock_twilio_client, mock_supabase_client):
         """Test handling Twilio webhook errors"""
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Mock Twilio error
         mock_twilio_client.calls.get = AsyncMock(side_effect=Exception("Twilio API error"))
@@ -767,7 +803,9 @@ class TestCallService:
     @pytest.mark.asyncio
     async def test_handle_webhook_not_found(self, mock_twilio_client, mock_supabase_client):
         """Test handling webhook for non-existent call"""
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Mock no data returned from Supabase
         mock_supabase_client.chain.data = {"data": []}
@@ -779,15 +817,19 @@ class TestCallService:
         assert "Llamada no encontrada" in str(exc_info.value.detail)
 
     @pytest.mark.asyncio
-    async def test_update_call_status(self, mock_twilio_client, mock_supabase_client, test_campaign):
+    async def test_update_call_status(
+        self, mock_twilio_client, mock_supabase_client, test_campaign
+    ):
         """Prueba la actualización de estados de llamada"""
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Caso 1: Actualización exitosa
         call_update = CallUpdate(
             status=CallStatus.COMPLETED,
             duration=120,
-            recording_url="http://example.com/recording.mp3"
+            recording_url="http://example.com/recording.mp3",
         )
 
         updated_call = await call_service.update_call_status("TEST_SID_12345", call_update)
@@ -808,20 +850,20 @@ class TestCallService:
     @pytest.mark.asyncio
     async def test_get_call_metrics(self, mock_twilio_client, mock_supabase_client, test_campaign):
         """Prueba la obtención de métricas de llamadas"""
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Preparar datos de prueba con diferentes estados
         test_calls = [
             {"status": CallStatus.COMPLETED, "duration": 120},
             {"status": CallStatus.FAILED, "duration": 0},
             {"status": CallStatus.NO_ANSWER, "duration": 30},
-            {"status": CallStatus.COMPLETED, "duration": 180}
+            {"status": CallStatus.COMPLETED, "duration": 180},
         ]
 
         # Configurar mock_supabase_client para retornar los datos de prueba
-        mock_supabase_client.table().select().execute.return_value = {
-            "data": test_calls
-        }
+        mock_supabase_client.table().select().execute.return_value = {"data": test_calls}
 
         # Obtener métricas
         metrics = await call_service.get_call_metrics()
@@ -834,9 +876,13 @@ class TestCallService:
         assert metrics.average_duration == 150  # (120 + 180) / 2
 
     @pytest.mark.asyncio
-    async def test_campaign_validation(self, mock_twilio_client, mock_supabase_client, test_campaign):
+    async def test_campaign_validation(
+        self, mock_twilio_client, mock_supabase_client, test_campaign
+    ):
         """Prueba la validación de campaña al crear llamadas"""
-        call_service = CallService(twilio_client=mock_twilio_client, supabase_client=mock_supabase_client)
+        call_service = CallService(
+            twilio_client=mock_twilio_client, supabase_client=mock_supabase_client
+        )
 
         # Caso 1: Campaña activa
         test_campaign.status = "active"
@@ -844,10 +890,7 @@ class TestCallService:
             "data": test_campaign.dict()
         }
 
-        call_data = CallCreate(
-            campaign_id=test_campaign.id,
-            phone_number="+1234567890"
-        )
+        call_data = CallCreate(campaign_id=test_campaign.id, phone_number="+1234567890")
         call = await call_service.create_call(call_data)
         assert call.campaign_id == test_campaign.id
 

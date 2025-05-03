@@ -1,10 +1,12 @@
 """Servicio de monitoreo para registrar métricas y trazas del sistema de llamadas automatizadas."""
 
-from typing import Any
 import logging
-from prometheus_client import Counter, Histogram, Gauge, Summary
 import time
-from app.config.metrics_config import get_metrics_settings, MetricNames
+from typing import Any
+
+from prometheus_client import Counter, Gauge, Histogram, Summary
+
+from app.config.metrics_config import MetricNames, get_metrics_settings
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +30,7 @@ class MetricsClient:
     utilizando la biblioteca prometheus_client.
     """
 
-    def histogram(self, name: str, value: float, labels: dict[str, str] | None = None):
+    def histogram(self, name: str, value: float, labels: dict[str, str] | None = None) -> None:
         """Registra un valor en un histograma.
 
         Args:
@@ -44,7 +46,7 @@ class MetricsClient:
                 CALL_LATENCY.observe(value)
         logger.debug(f"Prometheus histogram: {name}={value} {labels}")
 
-    def gauge(self, name: str, value: float, labels: dict[str, str] | None = None):
+    def gauge(self, name: str, value: float, labels: dict[str, str] | None = None) -> None:
         """Registra un valor en un gauge.
 
         Args:
@@ -60,7 +62,7 @@ class MetricsClient:
                 AUDIO_QUALITY.set(value)
         logger.debug(f"Prometheus gauge: {name}={value} {labels}")
 
-    def counter(self, name: str):
+    def counter(self, name: str) -> "CounterWrapper":
         """Devuelve un contador que puede incrementarse.
 
         Args:
@@ -71,7 +73,7 @@ class MetricsClient:
         """
 
         class CounterWrapper:
-            def inc(self, labels: dict[str, str] | None = None):
+            def inc(self, labels: dict[str, str] | None = None) -> None:
                 """Incrementa el contador.
 
                 Args:
@@ -91,11 +93,11 @@ class OpenTelemetryClient:
     distribuida utilizando OpenTelemetry.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         # En un entorno real, aquí se inicializaría la conexión con OpenTelemetry
         pass
 
-    def start_span(self, name: str):
+    def start_span(self, name: str) -> "Span":
         """Inicia un span de trazabilidad.
 
         Args:
@@ -106,16 +108,16 @@ class OpenTelemetryClient:
         """
 
         class Span:
-            def __enter__(self):
+            def __enter__(self) -> None:
                 """Método para iniciar el span al entrar en el contexto."""
                 logger.info(f"OpenTelemetry: Starting span {name}")
                 return self
 
-            def __exit__(self, exc_type, exc_val, exc_tb):
+            def __exit__(self, exc_type, exc_val, exc_tb) -> None:
                 """Método para finalizar el span al salir del contexto."""
                 logger.info(f"OpenTelemetry: Ending span {name}")
 
-            def set_attribute(self, key: str, value: Any):
+            def set_attribute(self, key: str, value: Any) -> None:
                 """Establece un atributo en el span.
 
                 Args:
@@ -135,12 +137,12 @@ class MonitoringService:
     crear trazas distribuidas para seguir el flujo de ejecución de las llamadas.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Inicializa el servicio de monitoreo con clientes para métricas y trazas."""
         self.metrics_client = MetricsClient()
         self.tracing_client = OpenTelemetryClient()
 
-    async def record_call_metrics(self, call_id: str, metrics: dict[str, float]):
+    async def record_call_metrics(self, call_id: str, metrics: dict[str, float]) -> None:
         """Registra métricas de llamada en Prometheus.
 
         Args:
@@ -162,7 +164,7 @@ class MonitoringService:
             **metrics,
         }
 
-    async def trace_call_flow(self, call_id: str, context: dict[str, Any]):
+    async def trace_call_flow(self, call_id: str, context: dict[str, Any]) -> None:
         """Implementa trazabilidad distribuida para seguir el flujo de una llamada.
 
         Args:

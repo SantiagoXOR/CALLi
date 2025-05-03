@@ -15,41 +15,41 @@
         }
     </style>
 </head>
-    
+
 <body>
 <div class='wrapper'>
     <div class='pad1'>
         <h1><a href="../index.html">All files</a> / <a href="index.html">components</a> ContactForm.tsx</h1>
         <div class='clearfix'>
-            
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">61.7% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>29/47</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">51.61% </span>
                 <span class="quiet">Branches</span>
                 <span class='fraction'>16/31</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">55.55% </span>
                 <span class="quiet">Functions</span>
                 <span class='fraction'>5/9</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">60.86% </span>
                 <span class="quiet">Lines</span>
                 <span class='fraction'>28/46</span>
             </div>
-        
-            
+
+
         </div>
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
@@ -558,13 +558,13 @@ import * as z from 'zod';
 import { Contact, ContactCreate, ContactUpdate } from '../types/contact';
 import { useCreateContact, useUpdateContact } from '../services/contactService';
 import { toast } from 'sonner';
-import { 
-  Form, 
-  FormControl, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
 } from './ui/form';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
@@ -589,18 +589,18 @@ interface ContactFormProps {
   onSuccess: () =&gt; void;
 }
 &nbsp;
-export const ContactForm: React.FC&lt;ContactFormProps&gt; = ({ 
-  contact, 
+export const ContactForm: React.FC&lt;ContactFormProps&gt; = ({
+  contact,
   onCancel,
   onSuccess
 }) =&gt; {
   const isEditing = !!contact;
   const createContact = useCreateContact();
   const updateContact = useUpdateContact(contact?.id || '');
-  
+
   // Estado para manejar las etiquetas como strings
   const [tagInput, setTagInput] = React.useState('');
-  
+
   // Configurar el formulario
   const form = useForm&lt;z.infer&lt;typeof formSchema&gt;&gt;({
     resolver: zodResolver(formSchema),
@@ -612,7 +612,7 @@ export const ContactForm: React.FC&lt;ContactFormProps&gt; = ({
       tags: [],
     },
   });
-  
+
   // Cargar datos del contacto si estamos editando
   useEffect(() =&gt; {
     if (contact) {
@@ -625,7 +625,7 @@ export const ContactForm: React.FC&lt;ContactFormProps&gt; = ({
       });
     }
   }, [contact, form]);
-  
+
   // Manejar envío del formulario
   const onSubmit = <span class="fstat-no" title="function not covered" >async (v</span>alues: z.infer&lt;typeof formSchema&gt;) =&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
@@ -644,7 +644,7 @@ export const ContactForm: React.FC&lt;ContactFormProps&gt; = ({
 <span class="cstat-no" title="statement not covered" >      toast.error(`Error al ${isEditing ? 'actualizar' : 'crear'} el contacto`);</span>
     }
   };
-  
+
   // Manejar adición de etiquetas
   const handleAddTag = (e: React.KeyboardEvent&lt;HTMLInputElement&gt;) =&gt; {
     <span class="missing-if-branch" title="if path not taken" >I</span>if (e.key === 'Enter' &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >tagInput.trim()) {</span>
@@ -656,7 +656,7 @@ export const ContactForm: React.FC&lt;ContactFormProps&gt; = ({
 <span class="cstat-no" title="statement not covered" >      setTagInput('');</span>
     }
   };
-  
+
   // Eliminar etiqueta
   const handleRemoveTag = <span class="fstat-no" title="function not covered" >(t</span>agToRemove: string) =&gt; {
     const currentTags = <span class="cstat-no" title="statement not covered" >form.getValues('tags') || [];</span>
@@ -665,7 +665,7 @@ export const ContactForm: React.FC&lt;ContactFormProps&gt; = ({
       currentTags.filter(<span class="fstat-no" title="function not covered" >tag =&gt; <span class="cstat-no" title="statement not covered" >t</span>ag !== tagToRemove)</span>
     );
   };
-  
+
   return (
     &lt;Card className="w-full max-w-2xl mx-auto"&gt;
       &lt;CardHeader&gt;
@@ -687,7 +687,7 @@ export const ContactForm: React.FC&lt;ContactFormProps&gt; = ({
                 &lt;/FormItem&gt;
               )}
             /&gt;
-            
+
             &lt;FormField
               control={form.control}
               name="phone_number"
@@ -695,16 +695,16 @@ export const ContactForm: React.FC&lt;ContactFormProps&gt; = ({
                 &lt;FormItem&gt;
                   &lt;FormLabel&gt;Número de Teléfono&lt;/FormLabel&gt;
                   &lt;FormControl&gt;
-                    &lt;Input 
-                      placeholder="+123456789" 
-                      {...field} 
+                    &lt;Input
+                      placeholder="+123456789"
+                      {...field}
                     /&gt;
                   &lt;/FormControl&gt;
                   &lt;FormMessage /&gt;
                 &lt;/FormItem&gt;
               )}
             /&gt;
-            
+
             &lt;FormField
               control={form.control}
               name="email"
@@ -712,17 +712,17 @@ export const ContactForm: React.FC&lt;ContactFormProps&gt; = ({
                 &lt;FormItem&gt;
                   &lt;FormLabel&gt;Email&lt;/FormLabel&gt;
                   &lt;FormControl&gt;
-                    &lt;Input 
-                      placeholder="email@ejemplo.com" 
+                    &lt;Input
+                      placeholder="email@ejemplo.com"
                       type="email"
-                      {...field} 
+                      {...field}
                     /&gt;
                   &lt;/FormControl&gt;
                   &lt;FormMessage /&gt;
                 &lt;/FormItem&gt;
               )}
             /&gt;
-            
+
             &lt;FormField
               control={form.control}
               name="notes"
@@ -730,21 +730,21 @@ export const ContactForm: React.FC&lt;ContactFormProps&gt; = ({
                 &lt;FormItem&gt;
                   &lt;FormLabel&gt;Notas&lt;/FormLabel&gt;
                   &lt;FormControl&gt;
-                    &lt;Textarea 
-                      placeholder="Notas adicionales sobre el contacto" 
-                      {...field} 
+                    &lt;Textarea
+                      placeholder="Notas adicionales sobre el contacto"
+                      {...field}
                     /&gt;
                   &lt;/FormControl&gt;
                   &lt;FormMessage /&gt;
                 &lt;/FormItem&gt;
               )}
             /&gt;
-            
+
             &lt;div className="space-y-2"&gt;
               &lt;FormLabel&gt;Etiquetas&lt;/FormLabel&gt;
               &lt;div className="flex flex-wrap gap-2 mb-2"&gt;
                 {form.watch('tags')?.map((tag, index) =&gt; (
-                  &lt;div 
+                  &lt;div
                     key={index}
                     className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm flex items-center"
                   &gt;
@@ -768,16 +768,16 @@ export const ContactForm: React.FC&lt;ContactFormProps&gt; = ({
                 onKeyDown={handleAddTag}
               /&gt;
             &lt;/div&gt;
-            
+
             &lt;CardFooter className="flex justify-end space-x-2 px-0 pt-4"&gt;
-              &lt;Button 
-                type="button" 
-                variant="outline" 
+              &lt;Button
+                type="button"
+                variant="outline"
                 onClick={onCancel}
               &gt;
                 Cancelar
               &lt;/Button&gt;
-              &lt;Button 
+              &lt;Button
                 type="submit"
                 disabled={createContact.isPending || updateContact.isPending}
               &gt;
@@ -811,4 +811,3 @@ export const ContactForm: React.FC&lt;ContactFormProps&gt; = ({
         <script src="../block-navigation.js"></script>
     </body>
 </html>
-    

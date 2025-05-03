@@ -161,4 +161,3 @@ Este roadmap será revisado y actualizado trimestralmente para reflejar el progr
 ---
 
 Última actualización: Mayo 2025
-

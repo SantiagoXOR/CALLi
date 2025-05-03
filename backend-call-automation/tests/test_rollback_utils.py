@@ -3,9 +3,8 @@ import json
 import os
 from unittest.mock import AsyncMock, MagicMock, call, patch
 
-import pytest
 # Importamos prometheus_client directamente en lugar de Collector
-import prometheus_client
+import pytest
 
 # Importamos directamente desde rollback_utils
 from rollback_utils import (
@@ -23,13 +22,14 @@ def manage_snapshot_file(tmp_path):
     """Asegura que el directorio y archivo snapshot se manejen en tmp_path"""
     test_snapshot_dir = tmp_path / "snapshots"
     test_snapshot_file = test_snapshot_dir / "elevenlabs_config_snapshot.json"
-    with patch("rollback_utils.SNAPSHOT_DIR", test_snapshot_dir), patch(
-        "rollback_utils.SNAPSHOT_FILE", test_snapshot_file
+    with (
+        patch("rollback_utils.SNAPSHOT_DIR", test_snapshot_dir),
+        patch("rollback_utils.SNAPSHOT_FILE", test_snapshot_file),
     ):
         yield test_snapshot_file
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_redis_sync():
     """Mock para cliente Redis síncrono"""
     mock = MagicMock(spec=["scan_iter", "delete"])
@@ -47,7 +47,7 @@ def mock_redis_sync():
         monkeypatch.undo()
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_redis_async():
     """Mock para cliente Redis asíncrono"""
     mock = AsyncMock(spec_set=["scan_iter", "delete"])
@@ -62,7 +62,7 @@ def mock_redis_async():
         yield patched_mock
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_connection_pool():
     """Mock para ConnectionPool"""
     mock_pool_instance = AsyncMock(
@@ -78,7 +78,7 @@ def mock_connection_pool():
         yield mock_pool_instance
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_prometheus_registry():
     """Mock para prometheus_client.REGISTRY"""
     mock_registry = MagicMock(spec_set=["unregister", "_names_to_collectors"])
@@ -87,7 +87,7 @@ def mock_prometheus_registry():
         yield mock_registry
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_settings_object():
     """Mock para el objeto settings"""
     settings_obj = type("MockSettings", (), {})()
@@ -99,7 +99,7 @@ def mock_settings_object():
         yield settings_obj
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 class TestRollbackUtils:
     async def test_take_config_snapshot_success(self, mock_settings_object, manage_snapshot_file):
         os.environ["ELEVENLABS_API_KEY"] = "test_api_key"

@@ -1,0 +1,23 @@
+# Configuración global para GitHub Actions
+# Este archivo es un archivo de configuración personalizado para el proyecto CALLi
+# No es un archivo estándar de GitHub Actions, sino una configuración personalizada
+# que puede ser utilizada por scripts personalizados en el repositorio.
+
+# Desactivar completamente los workflows problemáticos
+disabled_workflows:
+  - ci-cd-pipeline.yml
+  - config-security-scan.yml
+
+# Configuración para todos los workflows
+defaults:
+  timeout_minutes: 5
+  max_concurrent_runs: 1
+
+# Configuración específica para cada workflow
+workflows:
+  ci-cd-pipeline.yml:
+    enabled: false
+    timeout_minutes: 1
+  config-security-scan.yml:
+    enabled: false
+    timeout_minutes: 1

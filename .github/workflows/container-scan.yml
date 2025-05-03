@@ -2,17 +2,17 @@ name: "Container Security Scan"
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
     paths:
-      - '**/Dockerfile'
-      - '**/docker-compose.yml'
+      - "**/Dockerfile"
+      - "**/docker-compose.yml"
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
     paths:
-      - '**/Dockerfile'
-      - '**/docker-compose.yml'
+      - "**/Dockerfile"
+      - "**/docker-compose.yml"
   schedule:
-    - cron: '0 0 * * 5'  # Ejecutar cada viernes a medianoche
+    - cron: "0 0 * * 5" # Ejecutar cada viernes a medianoche
 
 jobs:
   scan-frontend:
@@ -29,16 +29,16 @@ jobs:
       - name: Scan frontend image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'calli-frontend:${{ github.sha }}'
-          format: 'sarif'
-          output: 'trivy-frontend-results.sarif'
-          severity: 'CRITICAL,HIGH'
+          image-ref: "calli-frontend:${{ github.sha }}"
+          format: "sarif"
+          output: "trivy-frontend-results.sarif"
+          severity: "CRITICAL,HIGH"
 
       - name: Upload Trivy scan results
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'trivy-frontend-results.sarif'
-          category: 'trivy-frontend'
+          sarif_file: "trivy-frontend-results.sarif"
+          category: "trivy-frontend"
 
   scan-backend:
     name: Scan Backend Container
@@ -54,13 +54,13 @@ jobs:
       - name: Scan backend image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'calli-backend:${{ github.sha }}'
-          format: 'sarif'
-          output: 'trivy-backend-results.sarif'
-          severity: 'CRITICAL,HIGH'
+          image-ref: "calli-backend:${{ github.sha }}"
+          format: "sarif"
+          output: "trivy-backend-results.sarif"
+          severity: "CRITICAL,HIGH"
 
       - name: Upload Trivy scan results
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'trivy-backend-results.sarif'
-          category: 'trivy-backend'
+          sarif_file: "trivy-backend-results.sarif"
+          category: "trivy-backend"

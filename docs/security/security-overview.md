@@ -25,20 +25,20 @@ graph TD
     B -->|HTTPS| C[Load Balancer]
     C -->|HTTPS| D[Frontend Next.js]
     D -->|HTTPS| E[Backend FastAPI]
-    
+
     E -->|TLS| F[Supabase Auth]
     E -->|TLS| G[Supabase Database]
     E -->|TLS| H[Redis Cache]
     E -->|TLS| I[Twilio API]
     E -->|TLS| J[ElevenLabs API]
     E -->|TLS| K[OpenAI API]
-    
+
     L[Vault] -->|Secrets| E
-    
+
     M[WAF Rules] -->|Config| B
     N[Network ACLs] -->|Config| B
     O[Rate Limiting] -->|Config| C
-    
+
     P[Security Monitoring] -->|Logs| Q[SIEM]
     E -->|Logs| P
     D -->|Logs| P
@@ -130,13 +130,13 @@ async def get_admin_user(user = Depends(get_current_user)):
     """
     # Obtener rol del usuario
     result = supabase_client.from_("users").select("role").eq("id", user.id).execute()
-    
+
     if not result.data or result.data[0]["role"] != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Insufficient permissions",
         )
-    
+
     return user
 ```
 
@@ -183,7 +183,7 @@ class SecretsManager:
     """
     Gestor de secretos utilizando HashiCorp Vault.
     """
-    
+
     def __init__(self):
         """
         Inicializa el cliente de Vault.
@@ -194,7 +194,7 @@ class SecretsManager:
         )
         self.mount_point = os.getenv("VAULT_MOUNT_POINT", "kv")
         self.path = os.getenv("VAULT_PATH", "call-automation")
-    
+
     def _get_vault_token(self) -> str:
         """
         Obtiene el token de Vault desde un archivo o variable de entorno.
@@ -204,7 +204,7 @@ class SecretsManager:
             with open(token_file, "r") as f:
                 return f.read().strip()
         return os.getenv("VAULT_TOKEN", "")
-    
+
     async def get_secret(self, key: str) -> Dict[str, Any]:
         """
         Obtiene un secreto de Vault.
@@ -218,19 +218,19 @@ class SecretsManager:
         except Exception as e:
             logger.error(f"Error al obtener secreto {key}: {str(e)}")
             return {}
-    
+
     async def get_twilio_credentials(self) -> Dict[str, str]:
         """
         Obtiene las credenciales de Twilio.
         """
         return await self.get_secret("twilio")
-    
+
     async def get_elevenlabs_credentials(self) -> Dict[str, str]:
         """
         Obtiene las credenciales de ElevenLabs.
         """
         return await self.get_secret("elevenlabs")
-    
+
     async def get_openai_credentials(self) -> Dict[str, str]:
         """
         Obtiene las credenciales de OpenAI.
@@ -291,41 +291,41 @@ class RateLimiter:
     """
     Implementación de rate limiting utilizando el algoritmo de ventana deslizante.
     """
-    
+
     def __init__(self, requests_per_minute: int = 60):
         """
         Inicializa el rate limiter.
-        
+
         Args:
             requests_per_minute: Número máximo de solicitudes por minuto
         """
         self.requests_per_minute = requests_per_minute
         self.window_size = 60  # segundos
-    
+
     async def is_rate_limited(self, key: str) -> Tuple[bool, int]:
         """
         Verifica si una clave está limitada por tasa.
-        
+
         Args:
             key: Clave única para identificar al cliente
-            
+
         Returns:
             Tuple[bool, int]: (está_limitado, límite_restante)
         """
         current_time = int(time.time())
         window_key = f"rate_limit:{key}:{current_time // self.window_size}"
-        
+
         # Incrementar contador en la ventana actual
         count = redis_client.incr(window_key)
-        
+
         # Establecer TTL si es la primera solicitud en esta ventana
         if count == 1:
             redis_client.expire(window_key, self.window_size * 2)
-        
+
         # Verificar si se ha superado el límite
         if count > self.requests_per_minute:
             return True, 0
-        
+
         return False, self.requests_per_minute - count
 
 # Middleware de FastAPI para rate limiting
@@ -337,30 +337,30 @@ async def rate_limit_middleware(request: Request, call_next):
     client_key = request.client.host
     if "Authorization" in request.headers:
         client_key = request.headers["Authorization"]
-    
+
     # Diferentes límites según la ruta
     if request.url.path.startswith("/api/v1/calls"):
         limiter = RateLimiter(requests_per_minute=30)
     else:
         limiter = RateLimiter(requests_per_minute=60)
-    
+
     # Verificar límite
     is_limited, remaining = await limiter.is_rate_limited(client_key)
-    
+
     if is_limited:
         raise HTTPException(
             status_code=429,
             detail="Too many requests",
             headers={"Retry-After": "60", "X-RateLimit-Remaining": "0"}
         )
-    
+
     # Continuar con la solicitud
     response = await call_next(request)
-    
+
     # Añadir cabeceras de rate limiting
     response.headers["X-RateLimit-Limit"] = str(limiter.requests_per_minute)
     response.headers["X-RateLimit-Remaining"] = str(remaining)
-    
+
     return response
 ```
 

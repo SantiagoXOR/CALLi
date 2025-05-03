@@ -1,7 +1,7 @@
 @startuml
 package "Backend (FastAPI)" {
     [API Routes] as routes
-    
+
     package "Services" {
         [CallService] as call_service
         [ContactService] as contact_service
@@ -11,13 +11,13 @@ package "Backend (FastAPI)" {
         [ElevenLabsService] as tts_service
         [CacheService] as cache_service
     }
-    
+
     package "Models" {
         [Call] as call_model
         [Contact] as contact_model
         [Campaign] as campaign_model
     }
-    
+
     package "Config" {
         [Supabase Client] as supabase_config
         [Twilio Client] as twilio_config

@@ -102,10 +102,10 @@ create table if not exists calls (
 async def get_campaign(campaign_id: str) -> Campaign:
     """Obtiene una campaña por su ID."""
     response = supabase_client.table("campaigns").select("*").eq("id", campaign_id).execute()
-    
+
     if not response.data:
         raise HTTPException(status_code=404, detail="Campaign not found")
-    
+
     return Campaign.model_validate(response.data[0])
 ```
 
@@ -115,10 +115,10 @@ async def get_campaign(campaign_id: str) -> Campaign:
 async def create_campaign(campaign: CampaignCreate) -> Campaign:
     """Crea una nueva campaña."""
     response = supabase_client.table("campaigns").insert(campaign.model_dump()).execute()
-    
+
     if not response.data:
         raise HTTPException(status_code=500, detail="Failed to create campaign")
-    
+
     return Campaign.model_validate(response.data[0])
 ```
 
@@ -129,12 +129,12 @@ async def update_campaign(campaign_id: str, campaign: CampaignUpdate) -> Campaig
     """Actualiza una campaña existente."""
     # Filtrar campos None para no sobrescribir con valores nulos
     update_data = {k: v for k, v in campaign.model_dump().items() if v is not None}
-    
+
     response = supabase_client.table("campaigns").update(update_data).eq("id", campaign_id).execute()
-    
+
     if not response.data:
         raise HTTPException(status_code=404, detail="Campaign not found")
-    
+
     return Campaign.model_validate(response.data[0])
 ```
 
@@ -144,10 +144,10 @@ async def update_campaign(campaign_id: str, campaign: CampaignUpdate) -> Campaig
 async def delete_campaign(campaign_id: str) -> bool:
     """Elimina una campaña."""
     response = supabase_client.table("campaigns").delete().eq("id", campaign_id).execute()
-    
+
     if not response.data:
         raise HTTPException(status_code=404, detail="Campaign not found")
-    
+
     return True
 ```
 
@@ -159,7 +159,7 @@ async def delete_campaign(campaign_id: str) -> bool:
 async def get_campaigns_by_status(status: CampaignStatus) -> list[Campaign]:
     """Obtiene campañas por estado."""
     response = supabase_client.table("campaigns").select("*").eq("status", status).execute()
-    
+
     return [Campaign.model_validate(item) for item in response.data]
 ```
 
@@ -169,7 +169,7 @@ async def get_campaigns_by_status(status: CampaignStatus) -> list[Campaign]:
 async def get_recent_campaigns(limit: int = 10) -> list[Campaign]:
     """Obtiene las campañas más recientes."""
     response = supabase_client.table("campaigns").select("*").order("created_at", desc=True).limit(limit).execute()
-    
+
     return [Campaign.model_validate(item) for item in response.data]
 ```
 
@@ -179,9 +179,9 @@ async def get_recent_campaigns(limit: int = 10) -> list[Campaign]:
 async def get_campaigns_paginated(page: int = 1, page_size: int = 20) -> list[Campaign]:
     """Obtiene campañas con paginación."""
     offset = (page - 1) * page_size
-    
+
     response = supabase_client.table("campaigns").select("*").range(offset, offset + page_size - 1).execute()
-    
+
     return [Campaign.model_validate(item) for item in response.data]
 ```
 
@@ -191,12 +191,12 @@ async def get_campaigns_paginated(page: int = 1, page_size: int = 20) -> list[Ca
 async def get_campaign_with_calls(campaign_id: str) -> dict:
     """Obtiene una campaña con sus llamadas."""
     campaign_response = supabase_client.table("campaigns").select("*").eq("id", campaign_id).execute()
-    
+
     if not campaign_response.data:
         raise HTTPException(status_code=404, detail="Campaign not found")
-    
+
     calls_response = supabase_client.table("calls").select("*").eq("campaign_id", campaign_id).execute()
-    
+
     return {
         "campaign": Campaign.model_validate(campaign_response.data[0]),
         "calls": [Call.model_validate(item) for item in calls_response.data]
@@ -224,7 +224,7 @@ begin
     into result
     from calls
     where campaign_id = $1;
-    
+
     return result;
 end;
 $$ language plpgsql;
@@ -236,10 +236,10 @@ Llamada desde Python:
 async def get_campaign_stats(campaign_id: str) -> dict:
     """Obtiene estadísticas de una campaña."""
     response = supabase_client.rpc("get_campaign_stats", {"campaign_id": campaign_id}).execute()
-    
+
     if not response.data:
         raise HTTPException(status_code=500, detail="Failed to get campaign stats")
-    
+
     return response.data
 ```
 

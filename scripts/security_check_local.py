@@ -12,10 +12,13 @@ import subprocess
 import sys
 
 # Intentar importar la función mejorada de enmascaramiento de secretos
+# Ya no necesitamos importar o definir mask_secret porque no lo usamos más
+# Simplemente intentamos importar el módulo improved_security_utils para usarlo más adelante
 try:
     # Verificar si el módulo improved_security_utils existe
     if importlib.util.find_spec("scripts.improved_security_utils"):
-        from scripts.improved_security_utils import secure_mask_secret as mask_secret
+        # No importamos nada aquí, lo haremos directamente en check_secrets_in_code
+        pass
     else:
         # Intentar importar desde la ruta relativa
         spec = importlib.util.spec_from_file_location(
@@ -25,67 +28,9 @@ try:
         if spec and spec.loader:
             improved_security = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(improved_security)
-            mask_secret = improved_security.secure_mask_secret
-        else:
-            # Definir la función original si no se puede importar la mejorada
-            def mask_secret(secret: str) -> str:
-                """
-                Enmascara un secreto para evitar mostrarlo en texto claro.
-
-                Args:
-                    secret: El secreto a enmascarar
-
-                Returns:
-                    El secreto enmascarado, mostrando solo los primeros 4 caracteres
-                """
-                if not secret or len(secret) < 8:
-                    return "[SECRETO REDACTADO]"
-
-                # Extraer solo la parte del valor después del signo igual
-                if "=" in secret:
-                    parts = secret.split("=", 1)
-                    if len(parts) == 2:
-                        key, value = parts
-                        # Limpiar comillas
-                        value = value.strip()
-                        if value.startswith(("'", '"')) and value.endswith(("'", '"')):
-                            value = value[1:-1]
-                        # Enmascarar completamente el valor sin mostrar ninguna parte
-                        masked_value = "*" * len(value)
-                        return f"{key}= [VALOR SENSIBLE: {masked_value}]"
-
-                # Si no se puede separar, enmascarar todo el string completamente
-                return f"[SECRETO REDACTADO: {'*' * len(secret)}]"
 except Exception:
-    # Si hay algún error, usar la función original
-    def mask_secret(secret: str) -> str:
-        """
-        Enmascara un secreto para evitar mostrarlo en texto claro.
-
-        Args:
-            secret: El secreto a enmascarar
-
-        Returns:
-            El secreto enmascarado, mostrando solo los primeros 4 caracteres
-        """
-        if not secret or len(secret) < 8:
-            return "[SECRETO REDACTADO]"
-
-        # Extraer solo la parte del valor después del signo igual
-        if "=" in secret:
-            parts = secret.split("=", 1)
-            if len(parts) == 2:
-                key, value = parts
-                # Limpiar comillas
-                value = value.strip()
-                if value.startswith(("'", '"')) and value.endswith(("'", '"')):
-                    value = value[1:-1]
-                # Enmascarar completamente el valor sin mostrar ninguna parte
-                masked_value = "*" * len(value)
-                return f"{key}= [VALOR SENSIBLE: {masked_value}]"
-
-        # Si no se puede separar, enmascarar todo el string completamente
-        return f"[SECRETO REDACTADO: {'*' * len(secret)}]"
+    # Si hay algún error, continuaremos con la implementación original en check_secrets_in_code
+    pass
 
 
 # Colores para la salida en terminal
@@ -505,13 +450,10 @@ def check_secrets_in_code() -> tuple[bool, list[str]]:
                                     # Obtener el número de línea
                                     line_number = content[: match.start()].count("\n") + 1
 
-                                    # Almacenar la ubicación del secreto pero enmascarar el valor
-                                    masked_value = mask_secret(value)
-                                    found_secrets.append(
-                                        f"{file_path}:{line_number}: {masked_value}"
-                                    )
+                                    # Almacenar solo la ubicación del secreto sin el valor
+                                    found_secrets.append(f"{file_path}:{line_number}")
                                     print(
-                                        f"  Se encontró un posible secreto en {file_path}:{line_number}: {masked_value}"
+                                        f"  Se encontró un posible secreto en {file_path}:{line_number}"
                                     )
                     except (UnicodeDecodeError, IsADirectoryError, PermissionError):
                         continue
@@ -568,8 +510,9 @@ def main() -> int:
     if not secrets_check:
         # No marcamos como fallo crítico si se encuentran secretos
         # critical_passed = False
-        for secret in found_secrets:
-            print(f"  {YELLOW}{secret}{RESET}")
+        print(
+            f"  {YELLOW}Se encontraron {len(found_secrets)} posibles secretos. Revise los archivos manualmente.{RESET}"
+        )
 
     print_header("Resultado Final")
     if critical_passed:

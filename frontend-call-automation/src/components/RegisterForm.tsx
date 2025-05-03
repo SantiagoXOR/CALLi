@@ -22,27 +22,27 @@ export function RegisterForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterFormData>();
   const password = watch("password");
-  
+
   const onSubmit = async (data: RegisterFormData) => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       if (data.password !== data.confirmPassword) {
         setError("Las contraseñas no coinciden");
         setIsLoading(false);
         return;
       }
-      
+
       const success = await registerUser({
         name: data.name,
         email: data.email,
         password: data.password
       });
-      
+
       if (success) {
         router.push("/dashboard");
       } else {
@@ -55,7 +55,7 @@ export function RegisterForm() {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
@@ -84,7 +84,7 @@ export function RegisterForm() {
               <p className="text-red-500 text-sm">{errors.name.message}</p>
             )}
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="email">Correo Electrónico</Label>
             <Input
@@ -104,7 +104,7 @@ export function RegisterForm() {
               <p className="text-red-500 text-sm">{errors.email.message}</p>
             )}
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="password">Contraseña</Label>
             <Input
@@ -124,7 +124,7 @@ export function RegisterForm() {
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">Confirmar Contraseña</Label>
             <Input
@@ -141,13 +141,13 @@ export function RegisterForm() {
               <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>
             )}
           </div>
-          
+
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
               {error}
             </div>
           )}
-          
+
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
               <>

@@ -117,7 +117,7 @@ type Campaign = Database["public"]["Tables"]["campaigns"]["Row"];
 
 function CampaignList() {
   const campaignsData = useSupabaseMCPData<Campaign>("campaigns");
-  
+
   // Obtener todas las campañas
   const loadCampaigns = async () => {
     const campaigns = await campaignsData.getAll({
@@ -125,7 +125,7 @@ function CampaignList() {
     });
     // Hacer algo con las campañas
   };
-  
+
   // Crear una nueva campaña
   const createCampaign = async (data) => {
     const newCampaign = await campaignsData.create(data);
@@ -143,18 +143,18 @@ import { useSupabaseMCP } from "@/lib/supabase-mcp";
 
 function MyComponent() {
   const supabaseMCP = useSupabaseMCP();
-  
+
   async function fetchData() {
     const { data, error } = await supabaseMCP.select("campaigns", {
       order: { column: "created_at", ascending: false },
       limit: 10,
     });
-    
+
     if (error) {
       console.error("Error:", error.message);
       return;
     }
-    
+
     // Hacer algo con los datos
   }
 }
@@ -169,18 +169,18 @@ import { useSupabaseMCP } from "@/lib/supabase-mcp";
 
 function MyComponent() {
   const supabaseMCP = useSupabaseMCP();
-  
+
   async function runCustomQuery() {
     const { data, error } = await supabaseMCP.query(
       "SELECT * FROM campaigns WHERE status = $1 ORDER BY created_at DESC LIMIT 5",
       ["active"]
     );
-    
+
     if (error) {
       console.error("Error:", error.message);
       return;
     }
-    
+
     // Hacer algo con los datos
   }
 }

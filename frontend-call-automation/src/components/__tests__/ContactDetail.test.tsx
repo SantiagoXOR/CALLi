@@ -48,10 +48,10 @@ describe("ContactDetail Component", () => {
 
   it("renderiza correctamente y muestra los detalles del contacto", () => {
     renderContactDetail();
-    
+
     // Verificar que se muestre el título
     expect(screen.getByText("Detalles del Contacto")).toBeInTheDocument();
-    
+
     // Verificar que se muestren los detalles del contacto
     expect(screen.getByText("Juan Pérez")).toBeInTheDocument();
     expect(screen.getByText("+1234567890")).toBeInTheDocument();
@@ -62,7 +62,7 @@ describe("ContactDetail Component", () => {
 
   it("muestra los botones de acción (editar y eliminar)", () => {
     renderContactDetail();
-    
+
     // Verificar que se muestren los botones
     expect(screen.getByRole("button", { name: /Editar/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Eliminar/i })).toBeInTheDocument();
@@ -70,11 +70,11 @@ describe("ContactDetail Component", () => {
 
   it("llama a la función onEdit al hacer clic en el botón de editar", async () => {
     renderContactDetail();
-    
+
     // Hacer clic en el botón de editar
     const editButton = screen.getByRole("button", { name: /Editar/i });
     await userEvent.click(editButton);
-    
+
     // Verificar que se haya llamado a la función con el ID correcto
     expect(mockOnEdit).toHaveBeenCalledTimes(1);
     expect(mockOnEdit).toHaveBeenCalledWith("1");
@@ -82,22 +82,22 @@ describe("ContactDetail Component", () => {
 
   it("llama a la función onBack al hacer clic en el botón de volver", async () => {
     renderContactDetail();
-    
+
     // Hacer clic en el botón de volver
     const backButton = screen.getByRole("button", { name: /Volver a la lista/i });
     await userEvent.click(backButton);
-    
+
     // Verificar que se haya llamado a la función
     expect(mockOnBack).toHaveBeenCalledTimes(1);
   });
 
   it("muestra el diálogo de confirmación al hacer clic en eliminar", async () => {
     renderContactDetail();
-    
+
     // Hacer clic en el botón de eliminar
     const deleteButton = screen.getByRole("button", { name: /Eliminar/i });
     await userEvent.click(deleteButton);
-    
+
     // Verificar que se muestre el diálogo de confirmación
     expect(screen.getByText("¿Estás seguro?")).toBeInTheDocument();
   });
@@ -115,9 +115,9 @@ describe("ContactDetail Component", () => {
         isPending: false,
       })),
     }));
-    
+
     renderContactDetail();
-    
+
     // Verificar que se muestre el indicador de carga
     expect(screen.getByText("Cargando detalles del contacto...")).toBeInTheDocument();
   });

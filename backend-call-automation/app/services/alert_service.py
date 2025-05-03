@@ -2,7 +2,7 @@
 
 import logging
 from datetime import datetime, timedelta
-from typing import Dict, Any, List
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -18,15 +18,17 @@ class AlertService:
         settings (Dict): Configuración de umbrales y parámetros para las alertas
     """
 
-    def __init__(self):
-        self.alerts_history = []
+    def __init__(self) -> None:
+        self.alerts_history: list[dict] = []
         self.settings = {
             "MAX_LATENCY_MS": 500,  # Umbral máximo de latencia en ms
             "MAX_ERROR_RATE": 5.0,  # Tasa máxima de error en porcentaje
             "ERROR_WINDOW_MINUTES": 5,  # Ventana de tiempo para calcular tasa de error
         }
 
-    async def send_alert(self, level: str, message: str, context: Dict[str, Any] = None):
+    async def send_alert(
+        self, level: str, message: str, context: dict[str, Any] | None = None
+    ) -> None:
         """
         Envía una alerta al sistema de monitoreo
 
@@ -56,7 +58,7 @@ class AlertService:
         # En un entorno real, aquí se enviaría la alerta a un sistema externo
         # como PagerDuty, Slack, correo electrónico, etc.
 
-    async def correlate_alerts(self, window_minutes: int = 5) -> List[Dict]:
+    async def correlate_alerts(self, window_minutes: int = 5) -> list[dict]:
         """
         Correlaciona alertas para detectar patrones
 
@@ -85,7 +87,7 @@ class AlertService:
 
         return patterns
 
-    def _get_affected_calls(self, alerts: List[Dict]) -> List[str]:
+    def _get_affected_calls(self, alerts: list[dict]) -> list[str]:
         """
         Extrae los IDs de llamadas afectadas de las alertas
 
@@ -102,7 +104,7 @@ class AlertService:
                 call_ids.append(context["call_id"])
         return call_ids
 
-    async def check_quality_thresholds(self, metrics: Dict[str, float]):
+    async def check_quality_thresholds(self, metrics: dict[str, float]) -> None:
         """
         Verifica umbrales de calidad y envía alertas
 
@@ -158,7 +160,7 @@ class AlertService:
             return (error_count / total_requests) * 100.0
         return 0.0
 
-    async def monitor_error_rates(self, window_minutes: int = 5):
+    async def monitor_error_rates(self, window_minutes: int = 5) -> None:
         """
         Monitorea tasas de error y alerta si superan umbrales
 

@@ -114,7 +114,7 @@ export const useGetCallDetail = (callId: string) => {
 
 export const useCancelCall = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: (callId: string) => cancelCall(callId),
     onSuccess: () => {
@@ -125,7 +125,7 @@ export const useCancelCall = () => {
 
 export const useRescheduleCall = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: ({ callId, scheduledTime }: { callId: string; scheduledTime: Date }) =>
       rescheduleCall(callId, scheduledTime),

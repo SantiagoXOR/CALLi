@@ -37,7 +37,7 @@ graph TD
     A[Master Key] -->|Encrypts| B[Key Encryption Keys]
     B -->|Encrypt| C[Data Encryption Keys]
     C -->|Encrypt| D[Sensitive Data]
-    
+
     E[Hardware Security Module] -->|Stores| A
     F[Key Management Service] -->|Manages| B
     G[Application] -->|Uses| C
@@ -64,33 +64,33 @@ import os
 class EncryptionService:
     def __init__(self, key_management_service):
         self.kms = key_management_service
-        
+
     def encrypt_sensitive_data(self, data, data_type):
         # Get the appropriate DEK for the data type
         dek = self.kms.get_current_dek(data_type)
-        
+
         # Create a Fernet cipher with the DEK
         cipher = Fernet(dek)
-        
+
         # Encrypt the data
         encrypted_data = cipher.encrypt(data.encode())
-        
+
         return {
             "encrypted_data": encrypted_data,
             "key_id": self.kms.get_current_dek_id(data_type),
             "encryption_date": datetime.now().isoformat()
         }
-    
+
     def decrypt_sensitive_data(self, encrypted_data_obj):
         # Get the DEK used for encryption
         dek = self.kms.get_dek_by_id(encrypted_data_obj["key_id"])
-        
+
         # Create a Fernet cipher with the DEK
         cipher = Fernet(dek)
-        
+
         # Decrypt the data
         decrypted_data = cipher.decrypt(encrypted_data_obj["encrypted_data"]).decode()
-        
+
         return decrypted_data
 ```
 
@@ -122,9 +122,9 @@ DECLARE
 BEGIN
     -- Get the encryption key from the keys table
     SELECT key_value INTO encryption_key FROM encryption_keys WHERE id = key_id;
-    
+
     -- Return encrypted data and key ID
-    RETURN QUERY SELECT 
+    RETURN QUERY SELECT
         pgp_sym_encrypt(phone, encryption_key)::BYTEA,
         key_id;
 END;
@@ -139,10 +139,10 @@ DECLARE
 BEGIN
     -- Get the encryption key from the keys table
     SELECT key_value INTO encryption_key FROM encryption_keys WHERE id = key_id;
-    
+
     -- Decrypt the phone number
     decrypted_phone := pgp_sym_decrypt(encrypted_data, encryption_key);
-    
+
     RETURN decrypted_phone;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
@@ -158,14 +158,14 @@ class ContactService:
     def __init__(self, db_session, encryption_service):
         self.db = db_session
         self.encryption_service = encryption_service
-    
+
     async def create_contact(self, contact_data):
         # Encrypt sensitive data
         encrypted_phone = self.encryption_service.encrypt_sensitive_data(
-            contact_data.phone_number, 
+            contact_data.phone_number,
             "phone_number"
         )
-        
+
         # Create new contact with encrypted data
         new_contact = Contact(
             name=contact_data.name,
@@ -173,23 +173,23 @@ class ContactService:
             phone_number_key_id=encrypted_phone["key_id"],
             # Other fields...
         )
-        
+
         self.db.add(new_contact)
         await self.db.commit()
         await self.db.refresh(new_contact)
-        
+
         return new_contact
-    
+
     async def get_contact(self, contact_id):
         contact = await self.db.get(Contact, contact_id)
-        
+
         # Decrypt sensitive data
         contact_dict = contact.__dict__
         contact_dict["phone_number"] = self.encryption_service.decrypt_sensitive_data({
             "encrypted_data": contact.phone_number_encrypted,
             "key_id": contact.phone_number_key_id
         })
-        
+
         return contact_dict
 ```
 
@@ -209,34 +209,34 @@ class CallRecordingService:
         self.twilio_client = twilio_client
         self.encryption_service = encryption_service
         self.storage_service = storage_service
-    
+
     async def process_new_recording(self, recording_sid):
         # Retrieve recording from Twilio
         recording_url = self.twilio_client.get_recording_url(recording_sid)
         recording_binary = await self.twilio_client.download_recording(recording_url)
-        
+
         # Encrypt the recording
         encrypted_recording = self.encryption_service.encrypt_sensitive_data(
             recording_binary,
             "call_recording"
         )
-        
+
         # Store encrypted recording
         storage_path = f"recordings/{recording_sid}"
         await self.storage_service.store_file(
             storage_path,
             encrypted_recording["encrypted_data"]
         )
-        
+
         # Store metadata for later decryption
         metadata = {
             "key_id": encrypted_recording["key_id"],
             "encryption_date": encrypted_recording["encryption_date"],
             "original_recording_sid": recording_sid
         }
-        
+
         await self.storage_service.store_metadata(storage_path, metadata)
-        
+
         return {
             "storage_path": storage_path,
             "metadata": metadata
@@ -265,21 +265,21 @@ class KeyRotationService:
     def __init__(self, kms, db_session):
         self.kms = kms
         self.db = db_session
-    
+
     async def rotate_data_encryption_keys(self):
         # Get all active DEKs
         active_deks = await self.kms.get_all_active_deks()
-        
+
         for dek_info in active_deks:
             # Generate new DEK
             new_dek_id = await self.kms.generate_new_dek(dek_info["data_type"])
-            
+
             # Re-encrypt data with new DEK
             await self.reencrypt_data(dek_info["id"], new_dek_id, dek_info["data_type"])
-            
+
             # Deactivate old DEK (but keep it for historical data)
             await self.kms.deactivate_dek(dek_info["id"])
-    
+
     async def reencrypt_data(self, old_key_id, new_key_id, data_type):
         # Implementation depends on data type
         if data_type == "phone_number":
@@ -303,7 +303,7 @@ class EncryptionMonitor:
     def __init__(self, logging_service, alert_service):
         self.logging_service = logging_service
         self.alert_service = alert_service
-    
+
     async def log_encryption_operation(self, operation_type, data_type, success, error=None):
         log_entry = {
             "timestamp": datetime.now().isoformat(),
@@ -312,9 +312,9 @@ class EncryptionMonitor:
             "success": success,
             "error": str(error) if error else None
         }
-        
+
         await self.logging_service.log("encryption_operations", log_entry)
-        
+
         # Alert on failures
         if not success:
             await self.alert_service.send_alert(
