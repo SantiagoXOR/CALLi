@@ -158,7 +158,7 @@ class ErrorHandlerMiddleware:
         if request_id:
             error_response["request_id"] = request_id
 
-        # Loguear error
+        # Loguear error (solo para uso interno, no se expone al usuario)
         self.logger.error(
             f"Unhandled exception: {exc!s}",
             extra={
@@ -166,6 +166,7 @@ class ErrorHandlerMiddleware:
                     "request_id": request_id,
                     "path": request.url.path,
                     "method": request.method,
+                    # Registrar el error completo solo en logs internos
                     "exception": str(exc),
                     "traceback": traceback.format_exc(),
                 }

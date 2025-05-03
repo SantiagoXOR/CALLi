@@ -109,10 +109,12 @@ class AuthMiddleware(BaseHTTPMiddleware):
             return JSONResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED, content={"detail": "Token expirado"}
             )
-        except jwt.InvalidTokenError as e:
+        except jwt.InvalidTokenError:
+            # No exponer detalles específicos del error para evitar fugas de información
+            logger.warning("Token inválido recibido en la solicitud")
             return JSONResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                content={"detail": f"Token inválido: {e!s}"},
+                content={"detail": "Token inválido"},
             )
         except Exception as e:
             logger.error(f"Error en middleware de autenticación: {e!s}")

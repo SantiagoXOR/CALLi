@@ -132,18 +132,23 @@ def run_safety():
 
 def mask_secret(secret: str) -> str:
     """
-    Enmascara un secreto para evitar mostrarlo en texto claro.
+    Enmascara un secreto de manera segura para evitar mostrarlo en texto claro.
+    Esta versión mejorada no muestra ninguna parte del secreto original.
 
     Args:
         secret: El secreto a enmascarar
 
     Returns:
-        El secreto enmascarado, mostrando solo los primeros 4 caracteres
+        El secreto enmascarado de forma segura
     """
-    if not secret or len(secret) < 8:
-        return "[SECRETO REDACTADO]"
+    import hashlib
+
+    if not secret:
+        return "[SECRETO VACÍO]"
 
     # Extraer solo la parte del valor después del signo igual
+    key = None
+    value = secret
     if "=" in secret:
         parts = secret.split("=", 1)
         if len(parts) == 2:
@@ -152,16 +157,19 @@ def mask_secret(secret: str) -> str:
             value = value.strip()
             if value.startswith(("'", '"')) and value.endswith(("'", '"')):
                 value = value[1:-1]
-            # Enmascarar solo el valor
-            if len(value) > 8:
-                masked_value = value[:4] + "*" * (len(value) - 4)
-            else:
-                masked_value = "****"
-            return f"{key}= [VALOR SENSIBLE: {masked_value}]"
 
-    # Si no se puede separar, enmascarar todo el string
-    visible_part = secret[:4]
-    return f"{visible_part}{'*' * (len(secret) - 4)}"
+    # Generar un hash del secreto para referencia (solo para fines de identificación)
+    # Esto no revela el contenido pero permite identificar secretos duplicados
+    hash_id = hashlib.sha256(value.encode()).hexdigest()[:8]
+
+    # Determinar la longitud aproximada para dar una idea del tamaño sin revelar el contenido exacto
+    length_category = "corto" if len(value) < 16 else "medio" if len(value) < 32 else "largo"
+
+    if key:
+        return f"{key}= [VALOR SENSIBLE: longitud={length_category}, id={hash_id}]"
+
+    # Si no hay clave, solo devolver información sobre el secreto
+    return f"[SECRETO REDACTADO: longitud={length_category}, id={hash_id}]"
 
 
 def check_hardcoded_secrets():
@@ -253,12 +261,14 @@ def check_hardcoded_secrets():
 
     if found_secrets:
         print(f"⚠️ Se encontraron {len(found_secrets)} posibles secretos hardcodeados:")
-        for secret in found_secrets[:5]:  # Mostrar solo los primeros 5 para no exponer todos
-            # Los secretos ya están enmascarados por la función mask_secret
-            print(f"  - {secret}")
+        # No mostrar los secretos específicos, solo la cantidad y ubicaciones
+        for i, secret in enumerate(found_secrets[:5]):  # Mostrar solo las primeras 5 ubicaciones
+            # Extraer solo la ubicación del archivo, no el contenido del secreto
+            file_location = secret.split(": ")[0] if ": " in secret else "ubicación desconocida"
+            print(f"  - Secreto #{i+1} encontrado en: {file_location}")
 
         if len(found_secrets) > 5:
-            print(f"  ... y {len(found_secrets) - 5} más")
+            print(f"  ... y {len(found_secrets) - 5} ubicaciones más")
 
         return False
 

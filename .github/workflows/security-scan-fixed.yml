@@ -3,6 +3,12 @@ name: "Configuration Security Scan (Disabled)"
 on:
   workflow_dispatch:
 
+# Limitar permisos del token GITHUB_TOKEN
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
 jobs:
   security-scan:
     name: Configuration Security Scan
