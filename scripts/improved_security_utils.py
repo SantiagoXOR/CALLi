@@ -54,7 +54,7 @@ def secure_mask_secret(secret: str, show_prefix: bool = False) -> str:
         return f"{key}= [VALOR SENSIBLE: longitud={length_category}, id={hash_id}]"
 
     # Si no hay clave, solo devolver información sobre el secreto
-    return f"[SECRETO: longitud={length_category}, id={hash_id}]"
+    return f"[SECRETO REDACTADO: longitud={length_category}, id={hash_id}]"
 
 
 def find_secrets(
