@@ -259,12 +259,9 @@ def main() -> int:
     )
 
     if not secrets_check:
-        print(f"\n{Colors.YELLOW}Posibles secretos encontrados:{Colors.ENDC}")
-        for secret in found_secrets[:10]:  # Mostrar solo los primeros 10
-            # Los secretos ya están enmascarados por la función mask_secret
-            print(f"  - {secret}")
-        if len(found_secrets) > 10:
-            print(f"  ... y {len(found_secrets) - 10} más")
+        print(f"\n{Colors.YELLOW}Posibles secretos encontrados. Detalles no mostrados por razones de seguridad.{Colors.ENDC}")
+        print(f"Se encontraron {len(found_secrets)} posibles secretos en el código.")
+        print("Por favor, revise los archivos afectados manualmente para más detalles.")
 
     if all_passed and secrets_check:
         print(
