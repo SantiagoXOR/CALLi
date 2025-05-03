@@ -569,8 +569,7 @@ def main() -> int:
         # No marcamos como fallo crítico si se encuentran secretos
         # critical_passed = False
         for secret in found_secrets:
-            masked_secret = mask_secret(secret)
-            print(f"  {YELLOW}{masked_secret}{RESET}")
+            print(f"  {YELLOW}[SENSITIVE DATA DETECTED]{RESET}")
 
     print_header("Resultado Final")
     if critical_passed:
