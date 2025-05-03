@@ -49,7 +49,7 @@ def secure_mask_secret(secret: str, show_prefix: bool = False) -> str:
     if key:
         if show_prefix and len(value) > 4:
             # Crear un hash del prefijo en lugar de mostrar los caracteres reales
-            prefix_hash = hashlib.md5(value[:4].encode()).hexdigest()[:6]
+            prefix_hash = hashlib.sha256(value[:4].encode()).hexdigest()[:6]
             return f"{key}= [VALOR SENSIBLE: longitud={length_category}, id={hash_id}, prefijo-hash={prefix_hash}]"
         return f"{key}= [VALOR SENSIBLE: longitud={length_category}, id={hash_id}]"
 
