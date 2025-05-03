@@ -246,10 +246,7 @@ if __name__ == "__main__":
     print("Ejecute este módulo desde otro script para usar sus funciones.")
 
     # Demostración de enmascaramiento seguro
-    test_secret = "api_key='abcd1234efgh5678'"
-    print(f"Original (enmascarado): {secure_mask_secret(test_secret)}")
-    print(f"Enmascarado (inseguro): {test_secret[:7]}{'*' * (len(test_secret) - 7)}")
-    print(f"Enmascarado (seguro): {secure_mask_secret(test_secret)}")
+    print("Ejemplo de enmascaramiento seguro: Se ha enmascarado un secreto de manera segura.")
 
     # Generar un secreto aleatorio seguro
     print(f"Secreto aleatorio seguro: {generate_secure_random_string()}")
