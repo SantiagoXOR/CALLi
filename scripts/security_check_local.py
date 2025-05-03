@@ -511,7 +511,7 @@ def check_secrets_in_code() -> tuple[bool, list[str]]:
                                         f"{file_path}:{line_number}: {masked_value}"
                                     )
                                     print(
-                                        f"  Se encontró un posible secreto en {file_path}:{line_number}: {masked_value}"
+                                        f"  Se encontró un posible secreto en {file_path}:{line_number}"
                                     )
                     except (UnicodeDecodeError, IsADirectoryError, PermissionError):
                         continue
