@@ -247,7 +247,7 @@ if __name__ == "__main__":
 
     # Demostración de enmascaramiento seguro
     test_secret = "api_key='abcd1234efgh5678'"
-    print(f"Original: {test_secret}")
+    print(f"Original (enmascarado): {secure_mask_secret(test_secret)}")
     print(f"Enmascarado (inseguro): {test_secret[:7]}{'*' * (len(test_secret) - 7)}")
     print(f"Enmascarado (seguro): {secure_mask_secret(test_secret)}")
 
