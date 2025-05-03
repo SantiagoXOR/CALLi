@@ -49,12 +49,12 @@ def secure_mask_secret(secret: str, show_prefix: bool = False) -> str:
     if key:
         if show_prefix and len(value) > 4:
             # Crear un hash del prefijo en lugar de mostrar los caracteres reales
-            prefix_hash = hashlib.md5(value[:4].encode()).hexdigest()[:6]
+            prefix_hash = hashlib.sha256(value[:4].encode()).hexdigest()[:6]
             return f"{key}= [VALOR SENSIBLE: longitud={length_category}, id={hash_id}, prefijo-hash={prefix_hash}]"
         return f"{key}= [VALOR SENSIBLE: longitud={length_category}, id={hash_id}]"
 
     # Si no hay clave, solo devolver información sobre el secreto
-    return f"[SECRETO: longitud={length_category}, id={hash_id}]"
+    return f"[SECRETO REDACTADO: longitud={length_category}, id={hash_id}]"
 
 
 def find_secrets(
@@ -246,10 +246,7 @@ if __name__ == "__main__":
     print("Ejecute este módulo desde otro script para usar sus funciones.")
 
     # Demostración de enmascaramiento seguro
-    print("Ejemplo de enmascaramiento seguro:")
-    print("Original: [SECRETO DE EJEMPLO NO MOSTRADO]")
-    print("Enmascarado (inseguro): [MÉTODO INSEGURO NO RECOMENDADO]")
-    print("Enmascarado (seguro): [SECRETO ENMASCARADO]")
+    print("Ejemplo de enmascaramiento seguro: Se ha enmascarado un secreto de manera segura.")
 
     # Generar un secreto aleatorio seguro
     print(f"Secreto aleatorio seguro: {generate_secure_random_string()}")

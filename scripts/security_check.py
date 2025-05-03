@@ -259,9 +259,7 @@ def main() -> int:
     )
 
     if not secrets_check:
-        print(
-            f"\n{Colors.YELLOW}Posibles secretos encontrados. Detalles no mostrados por razones de seguridad.{Colors.ENDC}"
-        )
+        print(f"\n{Colors.YELLOW}Posibles secretos encontrados. Detalles no mostrados por razones de seguridad.{Colors.ENDC}")
         print(f"Se encontraron {len(found_secrets)} posibles secretos en el código.")
         print("Por favor, revise los archivos afectados manualmente para más detalles.")
 

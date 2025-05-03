@@ -510,9 +510,9 @@ def main() -> int:
     if not secrets_check:
         # No marcamos como fallo crítico si se encuentran secretos
         # critical_passed = False
-        print(
-            f"  {YELLOW}Se encontraron {len(found_secrets)} posibles secretos. Revise los archivos manualmente.{RESET}"
-        )
+        print(f"  {YELLOW}Se encontraron {len(found_secrets)} posibles secretos. Revise los archivos manualmente.{RESET}")
+        for secret in found_secrets:
+            print(f"  {YELLOW}[SENSITIVE DATA DETECTED]{RESET}")
 
     print_header("Resultado Final")
     if critical_passed:
