@@ -180,6 +180,8 @@ jobs:
     needs: deploy
     if: failure()
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Rollback deployment
         uses: appleboy/ssh-action@master
