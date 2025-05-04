@@ -77,7 +77,7 @@ jobs:
           fi
 
       - name: Upload npm audit results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: frontend-security-report
           path: |
@@ -154,7 +154,7 @@ jobs:
           fi
 
       - name: Upload backend security results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: backend-security-report
           path: |
@@ -206,7 +206,7 @@ jobs:
           fi
 
       - name: Upload KICS results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: config-security-report
           path: |
@@ -251,7 +251,7 @@ jobs:
           fi
 
       - name: Upload gitleaks results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: secret-scan-report
           path: |
@@ -313,7 +313,7 @@ jobs:
           fi
 
       - name: Upload comprehensive report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: comprehensive-security-report
           path: comprehensive-security-report.md

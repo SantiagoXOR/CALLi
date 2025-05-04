@@ -62,7 +62,7 @@ jobs:
 
       - name: Upload documentation report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: documentation-report
           path: backend-call-automation/docs/doc_report.md

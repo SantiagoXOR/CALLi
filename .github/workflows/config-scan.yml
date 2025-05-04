@@ -47,7 +47,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload security reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: kics-security-reports
           path: security-reports/
@@ -68,6 +68,25 @@ jobs:
         with:
           languages: javascript, python
           config-file: ./.github/codeql/codeql-config.yml
+          # Desactivar el setup automático para evitar conflictos
+          setup-python-dependencies: false
+
+      # Configurar manualmente el entorno Python para CodeQL
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies and setup environment
+        run: |
+          # Dar permisos de ejecución al script de inicialización
+          chmod +x .github/codeql/codeql-init.sh
+          # Ejecutar script de inicialización
+          ./.github/codeql/codeql-init.sh
+
+          # Establecer PYTHONPATH para resolver importaciones
+          echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
+          echo "PYTHONPATH=$PYTHONPATH:$(pwd)/backend-call-automation" >> $GITHUB_ENV
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
