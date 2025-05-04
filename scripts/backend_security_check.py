@@ -265,7 +265,7 @@ def check_hardcoded_secrets():
         for i, secret in enumerate(found_secrets[:5]):  # Mostrar solo las primeras 5 ubicaciones
             # Extraer solo la ubicación del archivo, no el contenido del secreto
             file_location = secret.split(": ")[0] if ": " in secret else "ubicación desconocida"
-            print(f"  - Secreto #{i+1} encontrado en: {file_location}")
+            print(f"  - Secreto #{i + 1} encontrado en: {file_location}")
 
         if len(found_secrets) > 5:
             print(f"  ... y {len(found_secrets) - 5} ubicaciones más")
