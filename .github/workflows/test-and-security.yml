@@ -30,6 +30,7 @@ jobs:
           pip install -r requirements.txt
           # Instalar dependencias del backend
           pip install -r backend-call-automation/requirements.txt || echo "Advertencia: Algunos paquetes no pudieron instalarse, pero continuamos"
+          pip install pytest pytest-asyncio pytest-cov pytest-mock respx email-validator prometheus-client
 
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV

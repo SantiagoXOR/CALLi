@@ -16,7 +16,6 @@ from rollback_utils import (
     take_config_snapshot,
 )
 
-
 @pytest.fixture(autouse=True)
 def manage_snapshot_file(tmp_path):
     """Asegura que el directorio y archivo snapshot se manejen en tmp_path"""
