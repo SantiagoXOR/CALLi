@@ -1,4 +1,3 @@
-import pytest
 from app.config.settings import get_settings
 
 """
@@ -10,10 +9,11 @@ Las pruebas aseguran que los valores de configuración críticos estén disponib
 y tengan los valores esperados durante la ejecución de pruebas.
 """
 
+
 def test_settings_loaded():
     """
     Verifica que la configuración básica de la aplicación se cargue correctamente.
-    
+
     Esta prueba asegura que los parámetros fundamentales de la aplicación como
     el nombre, el entorno y el modo de depuración tengan los valores esperados
     durante la ejecución de pruebas.
@@ -23,10 +23,11 @@ def test_settings_loaded():
     assert settings.ENVIRONMENT == "testing"
     assert settings.DEBUG is True
 
+
 def test_database_config():
     """
     Verifica que la configuración de la base de datos se cargue correctamente.
-    
+
     Esta prueba asegura que la URL de conexión a la base de datos tenga el valor
     esperado durante la ejecución de pruebas, lo que es esencial para garantizar
     que la aplicación pueda conectarse a la base de datos de prueba.
@@ -34,10 +35,11 @@ def test_database_config():
     settings = get_settings()
     assert settings.DATABASE_URL == "test_database_url"
 
+
 def test_supabase_config():
     """
     Verifica que la configuración de Supabase se cargue correctamente.
-    
+
     Esta prueba asegura que los parámetros de conexión a Supabase (URL, clave de API
     y clave de servicio) tengan los valores esperados durante la ejecución de pruebas.
     Estos parámetros son esenciales para la autenticación y el acceso a los servicios
@@ -48,10 +50,11 @@ def test_supabase_config():
     assert settings.SUPABASE_KEY == "test_supabase_key"
     assert settings.SUPABASE_SERVICE_KEY == "test_supabase_service_key"
 
+
 def test_twilio_config():
     """
     Verifica que la configuración de Twilio se cargue correctamente.
-    
+
     Esta prueba asegura que los parámetros de conexión a Twilio (SID de cuenta,
     token de autenticación y número de teléfono) tengan los valores esperados
     durante la ejecución de pruebas. Estos parámetros son esenciales para la

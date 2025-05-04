@@ -15,41 +15,41 @@
         }
     </style>
 </head>
-    
+
 <body>
 <div class='wrapper'>
     <div class='pad1'>
         <h1><a href="../index.html">All files</a> / <a href="index.html">components</a> RegisterForm.tsx</h1>
         <div class='clearfix'>
-            
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>0/33</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
                 <span class='fraction'>0/20</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
                 <span class='fraction'>0/4</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
                 <span class='fraction'>0/33</span>
             </div>
-        
-            
+
+
         </div>
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
@@ -433,27 +433,27 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   const router = <span class="cstat-no" title="statement not covered" >useRouter();</span>
   const [isLoading, setIsLoading] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
   const [error, setError] = <span class="cstat-no" title="statement not covered" >useState&lt;string | null&gt;(null);</span>
-  
+
   const { register, handleSubmit, watch, formState: { errors } } = <span class="cstat-no" title="statement not covered" >useForm&lt;RegisterFormData&gt;();</span>
   const password = <span class="cstat-no" title="statement not covered" >watch("password");</span>
-  
+
   const onSubmit = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (d</span>ata: RegisterFormData) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setIsLoading(true);</span>
 <span class="cstat-no" title="statement not covered" >    setError(null);</span>
-    
+
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (data.password !== data.confirmPassword) {</span>
 <span class="cstat-no" title="statement not covered" >        setError("Las contraseñas no coinciden");</span>
 <span class="cstat-no" title="statement not covered" >        setIsLoading(false);</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
-      
+
       const success = <span class="cstat-no" title="statement not covered" >await registerUser({</span>
         name: data.name,
         email: data.email,
         password: data.password
       });
-      
+
 <span class="cstat-no" title="statement not covered" >      if (success) {</span>
 <span class="cstat-no" title="statement not covered" >        router.push("/dashboard");</span>
       } else {
@@ -466,7 +466,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >      setIsLoading(false);</span>
     }
   };
-  
+
   return (
     &lt;Card className="w-full max-w-md mx-auto"&gt;
       &lt;CardHeader&gt;
@@ -495,7 +495,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               &lt;p className="text-red-500 text-sm"&gt;{errors.name.message}&lt;/p&gt;
             )}
           &lt;/div&gt;
-          
+
           &lt;div className="space-y-2"&gt;
             &lt;Label htmlFor="email"&gt;Correo Electrónico&lt;/Label&gt;
             &lt;Input
@@ -515,7 +515,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               &lt;p className="text-red-500 text-sm"&gt;{errors.email.message}&lt;/p&gt;
             )}
           &lt;/div&gt;
-          
+
           &lt;div className="space-y-2"&gt;
             &lt;Label htmlFor="password"&gt;Contraseña&lt;/Label&gt;
             &lt;Input
@@ -535,7 +535,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               &lt;p className="text-red-500 text-sm"&gt;{errors.password.message}&lt;/p&gt;
             )}
           &lt;/div&gt;
-          
+
           &lt;div className="space-y-2"&gt;
             &lt;Label htmlFor="confirmPassword"&gt;Confirmar Contraseña&lt;/Label&gt;
             &lt;Input
@@ -552,13 +552,13 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               &lt;p className="text-red-500 text-sm"&gt;{errors.confirmPassword.message}&lt;/p&gt;
             )}
           &lt;/div&gt;
-          
+
           {<span class="branch-0 cbranch-no" title="branch not covered" >error &amp;&amp; (</span>
             &lt;div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"&gt;
               {error}
             &lt;/div&gt;
           )}
-          
+
           &lt;Button type="submit" className="w-full" disabled={isLoading}&gt;
             {isLoading ? (
               &lt;&gt;
@@ -601,4 +601,3 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         <script src="../block-navigation.js"></script>
     </body>
 </html>
-    

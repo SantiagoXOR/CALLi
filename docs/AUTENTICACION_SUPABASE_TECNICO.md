@@ -80,22 +80,22 @@ El servicio `AuthService` proporciona métodos para gestionar usuarios, roles y 
 class AuthService:
     def __init__(self, supabase_client: SupabaseClient):
         self.supabase = supabase_client
-    
+
     async def get_user(self, user_id: str) -> Dict[str, Any]:
         # Obtener información de un usuario
-    
+
     async def get_user_roles(self, user_id: str) -> List[str]:
         # Obtener roles de un usuario
-    
+
     async def check_permission(self, user_id: str, permission: str) -> bool:
         # Verificar si un usuario tiene un permiso específico
-    
+
     async def create_user(self, email: str, password: str, user_metadata: Dict[str, Any] = None) -> Dict[str, Any]:
         # Crear un nuevo usuario
-    
+
     async def assign_role(self, user_id: str, role: str) -> bool:
         # Asignar un rol a un usuario
-    
+
     async def remove_role(self, user_id: str, role: str) -> bool:
         # Eliminar un rol de un usuario
 ```

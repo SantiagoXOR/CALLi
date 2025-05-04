@@ -9,28 +9,24 @@ on:
   push:
     branches: [ "master" ]
     paths:
-      - '**/*.json'
-      - '**/*.yaml'
       - '**/*.yml'
+      - '**/*.yaml'
+      - '**/*.json'
+      - '**/*.tf'
+      - '**/*.toml'
       - '**/*.xml'
-      - '**/*.ini'
-      - '**/*.conf'
+      - '.github/workflows/config-scan.yml'
   pull_request:
     branches: [ "master" ]
-    paths:
-      - '**/*.json'
-      - '**/*.yaml'
-      - '**/*.yml'
-      - '**/*.xml'
-      - '**/*.ini'
-      - '**/*.conf'
-  schedule:
-    - cron: '0 0 * * 2'  # Ejecutar cada martes a medianoche
+  workflow_dispatch:
 
 jobs:
   config-scan:
     name: Configuration Security Scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -38,17 +34,59 @@ jobs:
       - name: Install KICS
         run: |
           curl -L -o kics.tar.gz https://github.com/Checkmarx/kics/releases/download/v1.6.1/kics_1.6.1_linux_x64.tar.gz
-          tar -xzf kics.tar.gz || (echo "Fallo al descomprimir KICS" && exit 1)
-          chmod +x kics || (echo "No se pudo hacer ejecutable KICS" && exit 1)
+          if file kics.tar.gz | grep -q gzip; then
+              tar -xzf kics.tar.gz || (echo "Fallo al descomprimir KICS" && exit 1)
+              chmod +x kics || (echo "No se pudo hacer ejecutable KICS" && exit 1)
+          else
+              echo "El archivo descargado no es un archivo gzip válido" && exit 1
+          fi
 
       - name: Run KICS scan
         run: |
-          ./kics scan -p . -o kics-results.json --report-formats json,sarif --exclude-severities info,low --exclude-paths ".github/workflows"
-
-      - name: Upload KICS scan results
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: results.sarif
-          category: kics
-        if: always()
+          ./kics scan -p . --config .kics.config -o security-reports
         continue-on-error: true
+
+      - name: Upload security reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: kics-security-reports
+          path: security-reports/
+
+  codeql-scan:
+    name: CodeQL Security Scan
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript, python
+          config-file: ./.github/codeql/codeql-config.yml
+          # Desactivar el setup automático para evitar conflictos
+          setup-python-dependencies: false
+
+      # Configurar manualmente el entorno Python para CodeQL
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies and setup environment
+        run: |
+          # Dar permisos de ejecución al script de inicialización
+          chmod +x .github/codeql/codeql-init.sh
+          # Ejecutar script de inicialización
+          ./.github/codeql/codeql-init.sh
+
+          # Establecer PYTHONPATH para resolver importaciones
+          echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
+          echo "PYTHONPATH=$PYTHONPATH:$(pwd)/backend-call-automation" >> $GITHUB_ENV
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3

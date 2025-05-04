@@ -1,8 +1,8 @@
 from pydantic_settings import BaseSettings
-from typing import Dict, List, Optional
 
 # Importar los prompts optimizados
-from app.config.campaign_prompts import CAMPAIGN_PROMPTS, REQUIRED_VARIABLES, DEFAULT_VALUES
+from app.config.campaign_prompts import CAMPAIGN_PROMPTS, DEFAULT_VALUES, REQUIRED_VARIABLES
+
 
 class AISettings(BaseSettings):
     # API Keys
@@ -25,13 +25,13 @@ class AISettings(BaseSettings):
     MEMORY_TTL: int = 86400  # 24 horas
 
     # Prompts predefinidos por tipo de campaña
-    CAMPAIGN_PROMPTS: Dict[str, str] = CAMPAIGN_PROMPTS
+    CAMPAIGN_PROMPTS: dict[str, str] = CAMPAIGN_PROMPTS
 
     # Variables requeridas por tipo de campaña
-    REQUIRED_VARIABLES: Dict[str, List[str]] = REQUIRED_VARIABLES
+    REQUIRED_VARIABLES: dict[str, list[str]] = REQUIRED_VARIABLES
 
     # Valores por defecto para variables opcionales
-    DEFAULT_VALUES: Dict[str, str] = DEFAULT_VALUES
+    DEFAULT_VALUES: dict[str, str] = DEFAULT_VALUES
 
     # Configuración de caché
     CACHE_ENABLED: bool = True

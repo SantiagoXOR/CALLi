@@ -15,41 +15,41 @@
         }
     </style>
 </head>
-    
+
 <body>
 <div class='wrapper'>
     <div class='pad1'>
         <h1><a href="../index.html">All files</a> / <a href="index.html">components</a> ReportsView.tsx</h1>
         <div class='clearfix'>
-            
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>0/39</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
                 <span class='fraction'>0/5</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
                 <span class='fraction'>0/4</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
                 <span class='fraction'>0/39</span>
             </div>
-        
-            
+
+
         </div>
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
@@ -501,29 +501,29 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Build query parameters
       const params = <span class="cstat-no" title="statement not covered" >new URLSearchParams();</span>
-      
+
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.campaign_id) {</span>
 <span class="cstat-no" title="statement not covered" >        params.append("campaign_id", filters.campaign_id);</span>
       }
-      
+
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.start_date) {</span>
 <span class="cstat-no" title="statement not covered" >        params.append("start_date", filters.start_date.toISOString());</span>
       }
-      
+
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.end_date) {</span>
 <span class="cstat-no" title="statement not covered" >        params.append("end_date", filters.end_date.toISOString());</span>
       }
-      
+
       // Format (csv or excel)
 <span class="cstat-no" title="statement not covered" >      params.append("format", "excel");</span>
-      
+
       // Create URL
       const API_URL = <span class="cstat-no" title="statement not covered" >process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";</span>
       const url = <span class="cstat-no" title="statement not covered" >`${API_URL}/api/reports/export/calls?${params.toString()}`;</span>
-      
+
       // Open in new tab
 <span class="cstat-no" title="statement not covered" >      window.open(url, "_blank");</span>
-      
+
 <span class="cstat-no" title="statement not covered" >      toast.success("Exportación iniciada");</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      toast.error("Error al exportar los datos");</span>
@@ -569,7 +569,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             isLoading={isLoadingMetrics}
             isError={isErrorMetrics}
           /&gt;
-          
+
           &lt;div className="grid grid-cols-1 md:grid-cols-2 gap-6"&gt;
             &lt;Card&gt;
               &lt;CardHeader&gt;
@@ -586,7 +586,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                 /&gt;
               &lt;/CardContent&gt;
             &lt;/Card&gt;
-            
+
             &lt;Card&gt;
               &lt;CardHeader&gt;
                 &lt;CardTitle&gt;Actividad reciente&lt;/CardTitle&gt;
@@ -664,4 +664,3 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         <script src="../block-navigation.js"></script>
     </body>
 </html>
-    

@@ -32,8 +32,8 @@ export default function CampaignCreate({ onSuccess, onCancel }: CampaignCreatePr
       await createCampaignMutation.mutateAsync({
         ...data,
         status: "draft",
-        start_date: "",  
-        end_date: ""    
+        start_date: "",
+        end_date: ""
       });
       onSuccess();
     } catch (error) {
@@ -84,7 +84,7 @@ export default function CampaignCreate({ onSuccess, onCancel }: CampaignCreatePr
               <Input
                 id="maxReintentos"
                 type="number"
-                {...register("maxReintentos", { 
+                {...register("maxReintentos", {
                   valueAsNumber: true,
                   min: { value: 0, message: "Debe ser mayor o igual a 0" }
                 })}
@@ -100,7 +100,7 @@ export default function CampaignCreate({ onSuccess, onCancel }: CampaignCreatePr
               <Input
                 id="delayReintentos"
                 type="number"
-                {...register("delayReintentos", { 
+                {...register("delayReintentos", {
                   valueAsNumber: true,
                   min: { value: 1, message: "Debe ser mayor a 0" }
                 })}

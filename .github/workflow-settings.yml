@@ -10,7 +10,7 @@ disabled_workflows:
 defaults:
   timeout_minutes: 5
   max_concurrent_runs: 1
-  
+
 # Configuración específica para cada workflow
 workflows:
   ci-cd-pipeline.yml:

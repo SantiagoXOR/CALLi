@@ -2,16 +2,12 @@
 
 import asyncio
 import logging
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional
+from datetime import datetime
 
 from app.config.redis_client import (
-    get_from_cache,
-    set_in_cache,
-    delete_from_cache,
+    clear_cache,
     get_cache_metrics,
     sync_to_supabase,
-    clear_cache,
 )
 from app.models.cache_metrics import CacheMetrics
 
@@ -21,14 +17,14 @@ logger = logging.getLogger(__name__)
 class CacheService:
     """Servicio para gestionar la caché y su sincronización con Supabase."""
 
-    def __init__(self, sync_interval: int = 300):
+    def __init__(self, sync_interval: int = 300) -> None:
         """Inicializa el servicio de caché.
 
         Args:
             sync_interval: Intervalo de sincronización en segundos (por defecto: 300)
         """
         self.sync_interval = sync_interval
-        self.sync_task = None
+        self.sync_task: asyncio.Task | None = None
         self._running = False
         self.settings = {
             "USAGE_THRESHOLD": 50,  # Umbral de uso para considerar hora pico
@@ -37,9 +33,9 @@ class CacheService:
             "DEFAULT_CACHE_SIZE": 1000,  # Tamaño predeterminado
             "PEAK_CACHE_SIZE": 2000,  # Tamaño para horas pico
         }
-        self.hourly_access_stats = []  # Estadísticas de acceso por hora
+        self.hourly_access_stats: list[dict[str, float]] = []  # Estadísticas de acceso por hora
 
-    async def start_sync_task(self):
+    async def start_sync_task(self) -> None:
         """Inicia la tarea de sincronización periódica."""
         if self.sync_task is None or self.sync_task.done():
             self._running = True
@@ -48,7 +44,7 @@ class CacheService:
                 f"Tarea de sincronización iniciada con intervalo de {self.sync_interval} segundos"
             )
 
-    async def stop_sync_task(self):
+    async def stop_sync_task(self) -> None:
         """Detiene la tarea de sincronización periódica."""
         if self.sync_task and not self.sync_task.done():
             self._running = False
@@ -59,7 +55,7 @@ class CacheService:
                 pass
             logger.info("Tarea de sincronización detenida")
 
-    async def _sync_loop(self):
+    async def _sync_loop(self) -> None:
         """Bucle de sincronización periódica."""
         while self._running:
             try:
@@ -71,7 +67,7 @@ class CacheService:
             except asyncio.CancelledError:
                 break
             except Exception as e:
-                logger.error(f"Error en bucle de sincronización: {str(e)}")
+                logger.error(f"Error en bucle de sincronización: {e!s}")
                 # Esperar un poco antes de reintentar
                 await asyncio.sleep(10)
 
@@ -83,7 +79,7 @@ class CacheService:
         """
         return await get_cache_metrics()
 
-    async def predict_usage_patterns(self) -> Dict[str, float]:
+    async def predict_usage_patterns(self) -> dict[str, float]:
         """Predice patrones de uso para optimización proactiva
 
         Returns:
@@ -94,9 +90,7 @@ class CacheService:
 
         for hour in range(24):
             # Análisis de series temporales simple
-            recent_stats = [
-                stats.get(str(hour), 0) for stats in hourly_stats[-7:]
-            ]  # Última semana
+            recent_stats = [stats.get(str(hour), 0) for stats in hourly_stats[-7:]]  # Última semana
             if recent_stats:
                 predictions[str(hour)] = sum(recent_stats) / len(recent_stats)
             else:
@@ -104,7 +98,7 @@ class CacheService:
 
         return predictions
 
-    async def _get_hourly_access_stats(self) -> List[Dict[str, float]]:
+    async def _get_hourly_access_stats(self) -> list[dict[str, float]]:
         """Obtiene estadísticas de acceso por hora de los últimos días
 
         Returns:
@@ -118,13 +112,13 @@ class CacheService:
             for hour in range(24):
                 # Simular mayor uso en horas laborales (9-18)
                 if 9 <= hour <= 18:
-                    day_stats[str(hour)] = 50 + (day % 3) * 10  # Valor alto para horas pico
+                    day_stats[str(hour)] = float(50 + (day % 3) * 10)  # Valor alto para horas pico
                 else:
-                    day_stats[str(hour)] = 10 + (day % 3) * 5  # Valor bajo para horas valle
+                    day_stats[str(hour)] = float(10 + (day % 3) * 5)  # Valor bajo para horas valle
             simulated_data.append(day_stats)
         return simulated_data
 
-    async def optimize_cache_usage(self):
+    async def optimize_cache_usage(self) -> None:
         """Optimización proactiva basada en predicciones"""
         patterns = await self.predict_usage_patterns()
         current_hour = str(datetime.now().hour)
@@ -138,24 +132,24 @@ class CacheService:
             await self.normalize_cache_settings()
             logger.info(f"Normalizando configuración de caché para hora valle ({current_hour}h)")
 
-    async def expand_cache_size(self):
+    async def expand_cache_size(self) -> None:
         """Expande el tamaño de la caché para horas pico"""
         # En un entorno real, esto ajustaría la configuración de Redis
         logger.info(f"Expandiendo tamaño de caché a {self.settings['PEAK_CACHE_SIZE']}")
 
-    async def reduce_ttl(self):
+    async def reduce_ttl(self) -> None:
         """Reduce el TTL para horas pico para mantener datos más frescos"""
         # En un entorno real, esto ajustaría la configuración de TTL en Redis
         logger.info(f"Reduciendo TTL a {self.settings['PEAK_TTL']} segundos")
 
-    async def normalize_cache_settings(self):
+    async def normalize_cache_settings(self) -> None:
         """Restaura configuración normal de caché"""
         # En un entorno real, esto restauraría la configuración predeterminada
         logger.info(
             f"Restaurando configuración normal: TTL={self.settings['DEFAULT_TTL']}, tamaño={self.settings['DEFAULT_CACHE_SIZE']}"
         )
 
-    async def force_sync(self, table_name: str, key_prefix: Optional[str] = None) -> bool:
+    async def force_sync(self, table_name: str, key_prefix: str | None = None) -> bool:
         """Fuerza una sincronización inmediata con Supabase.
 
         Args:
@@ -185,8 +179,8 @@ class CacheService:
             bool: True si se precargó correctamente, False en caso contrario
         """
         try:
+            from app.config.redis_client import generate_conversation_cache_key, set_in_cache
             from app.config.supabase import supabase_client
-            from app.config.redis_client import generate_conversation_cache_key
 
             # Buscar en Supabase
             result = (
@@ -206,7 +200,7 @@ class CacheService:
 
             return False
         except Exception as e:
-            logger.error(f"Error al precargar conversación: {str(e)}")
+            logger.error(f"Error al precargar conversación: {e!s}")
             return False
 
 

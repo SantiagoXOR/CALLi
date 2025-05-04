@@ -39,18 +39,18 @@ describe('ComponentName', () => {
 
   it('renderiza correctamente', () => {
     render(<ComponentName />);
-    
+
     // Verificar que el componente se renderice correctamente
     expect(screen.getByRole('heading', { name: /título/i })).toBeInTheDocument();
   });
 
   it('maneja interacciones del usuario', async () => {
     render(<ComponentName />);
-    
+
     // Simular interacción del usuario
     const button = screen.getByRole('button', { name: /acción/i });
     await userEvent.click(button);
-    
+
     // Verificar el resultado de la interacción
     expect(screen.getByText(/resultado/i)).toBeInTheDocument();
   });
@@ -93,15 +93,15 @@ jest.mock('@/services/someService', () => ({
 describe('ParentComponent Integration', () => {
   it('integra correctamente con sus componentes hijos', async () => {
     render(<ParentComponent />);
-    
+
     // Verificar que los componentes se rendericen correctamente
     expect(screen.getByText(/componente padre/i)).toBeInTheDocument();
     expect(screen.getByText(/componente hijo/i)).toBeInTheDocument();
-    
+
     // Simular interacción que afecta a múltiples componentes
     const button = screen.getByRole('button', { name: /acción/i });
     await userEvent.click(button);
-    
+
     // Verificar que los componentes se actualicen correctamente
     await waitFor(() => {
       expect(screen.getByText(/resultado en componente hijo/i)).toBeInTheDocument();
@@ -121,7 +121,7 @@ describe('Flujo de Usuario', () => {
   beforeEach(() => {
     // Visitar la página inicial
     cy.visit('/');
-    
+
     // Esperar a que la página cargue completamente
     cy.get('h1').contains('Título').should('be.visible');
   });
@@ -130,11 +130,11 @@ describe('Flujo de Usuario', () => {
     // Paso 1: Navegar a una página
     cy.get('a').contains('Ir a Página').click();
     cy.url().should('include', '/pagina');
-    
+
     // Paso 2: Interactuar con un formulario
     cy.get('input[name="campo"]').type('valor');
     cy.get('button').contains('Enviar').click();
-    
+
     // Paso 3: Verificar el resultado
     cy.contains('Éxito').should('be.visible');
   });
@@ -246,10 +246,10 @@ it('ejemplo de estructura', async () => {
   // Arrange
   render(<Component />);
   const button = screen.getByRole('button', { name: /acción/i });
-  
+
   // Act
   await userEvent.click(button);
-  
+
   // Assert
   expect(screen.getByText(/resultado/i)).toBeInTheDocument();
 });
@@ -314,10 +314,10 @@ Asegúrate de que las pruebas cubran:
 it('maneja el caso exitoso', async () => {
   // Configurar mock para éxito
   mockFunction.mockResolvedValueOnce({ success: true });
-  
+
   // Realizar acción
   await someFunction();
-  
+
   // Verificar resultado
   expect(screen.getByText(/éxito/i)).toBeInTheDocument();
 });
@@ -326,10 +326,10 @@ it('maneja el caso exitoso', async () => {
 it('maneja el caso de error', async () => {
   // Configurar mock para error
   mockFunction.mockRejectedValueOnce(new Error('Error'));
-  
+
   // Realizar acción
   await someFunction();
-  
+
   // Verificar resultado
   expect(screen.getByText(/error/i)).toBeInTheDocument();
 });

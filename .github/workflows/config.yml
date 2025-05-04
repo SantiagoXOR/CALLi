@@ -19,14 +19,14 @@ jobs:
           echo "    \"config-security-scan.yml\"" >> .github/workflows/config.json
           echo "  ]" >> .github/workflows/config.json
           echo "}" >> .github/workflows/config.json
-          
+
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .github/workflows/config.json
           git commit -m "Configurar workflows deshabilitados" || echo "No changes to commit"
-          
+
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:

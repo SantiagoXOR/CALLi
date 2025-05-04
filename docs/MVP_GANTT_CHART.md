@@ -6,20 +6,20 @@ gantt
     dateFormat  YYYY-MM-DD
     axisFormat %d/%m
     todayMarker off
-    
+
     section Semana 1: Backend Core
     Endpoints gestión de contactos (1.1.1)       :a1, 2025-05-01, 3d
     Refinar endpoints de llamadas (1.1.2)        :a2, after a1, 2d
     Endpoints para reportes básicos (1.1.3)      :a3, 2025-05-01, 3d
     Sistema de logging estructurado (1.3.1)      :a4, after a3, 2d
     Middleware para manejo de errores (1.3.2)    :a5, after a2, 2d
-    
+
     section Semana 2: Frontend Core
     Vista de llamadas (1.4.2)                    :b1, 2025-05-08, 3d
     Vista de reportes básicos (1.4.3)            :b2, 2025-05-08, 3d
     Sistema de notificaciones (1.5.2)            :b3, after b1, 2d
     Validaciones de formularios (1.5.3)          :b4, after b2, 2d
-    
+
     section Semana 3: Integración y Autenticación
     Callbacks de estado Twilio (1.6.2)           :c1, 2025-05-15, 2d
     Caché de audio ElevenLabs (1.7.1)            :c2, 2025-05-15, 2d
@@ -27,7 +27,7 @@ gantt
     Roles y permisos (3.1.2)                     :c4, after c3, 2d
     Middleware de autenticación (3.1.3)          :c5, after c3, 2d
     Páginas de login/registro (3.2.1)            :c6, after c3, 3d
-    
+
     section Semana 4: Despliegue y Pruebas
     Configurar entorno de producción (4.1)       :d1, 2025-05-22, 2d
     Implementar CI/CD básico (4.2)               :d2, after d1, 2d

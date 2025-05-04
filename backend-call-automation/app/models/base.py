@@ -1,6 +1,7 @@
 from datetime import datetime
-from typing import Optional
-from pydantic import BaseModel, EmailStr, UUID4, ConfigDict
+
+from pydantic import UUID4, BaseModel, ConfigDict
+
 
 class BaseDBModel(BaseModel):
     id: UUID4

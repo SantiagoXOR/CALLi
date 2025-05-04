@@ -1,9 +1,7 @@
 import pytest
-from app.config.redis_client import (
-    generate_conversation_cache_key,
-    set_in_cache,
-    get_from_cache
-)
+
+from app.config.redis_client import generate_conversation_cache_key, get_from_cache, set_in_cache
+
 
 @pytest.mark.asyncio
 class TestRedisClient:
@@ -18,16 +16,17 @@ class TestRedisClient:
         """Prueba operaciones básicas de caché."""
         test_key = "test-key"
         test_data = {"message": "test", "timestamp": "2023-01-01"}
-        
+
         # Guardar en caché
         await set_in_cache(test_key, test_data, expire=60)
-        
+
         # Recuperar de caché
         cached_data = await get_from_cache(test_key)
         assert cached_data == test_data
-        
+
         # Verificar expiración
         import asyncio
+
         await asyncio.sleep(61)
         expired_data = await get_from_cache(test_key)
         assert expired_data is None

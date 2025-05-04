@@ -19,13 +19,13 @@ jobs:
       - name: Create requirements file
         run: |
           cat > backend-call-automation/requirements.txt << 'EOF'
-pytest==7.3.1
-EOF
+          pytest==7.3.1
+          EOF
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install safety
         run: |

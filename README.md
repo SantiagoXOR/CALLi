@@ -199,17 +199,73 @@ Por favor, asegúrate de seguir nuestras [guías de contribución](./CONTRIBUTIN
 Este proyecto utiliza pre-commit para verificar el código antes de hacer commits. Para configurarlo:
 
 ```bash
-# Instalar pre-commit
-pip install pre-commit
+# Método 1: Usando nuestros scripts de instalación (recomendado)
+# Windows
+.\scripts\install_precommit_deps.ps1
 
-# Instalar los hooks de pre-commit
+# Linux/macOS
+./scripts/install_precommit_deps.sh
+
+# Método 2: Instalación manual
+pip install pre-commit
 pre-commit install
 
 # Ejecutar pre-commit en todos los archivos (opcional)
 pre-commit run --all-files
 ```
 
-Los hooks de pre-commit verificarán automáticamente tu código cada vez que hagas un commit, asegurando que cumpla con los estándares del proyecto.
+Los hooks de pre-commit verificarán automáticamente tu código cada vez que hagas un commit, asegurando que cumpla con los estándares del proyecto y detectando problemas de seguridad como:
+
+- Secretos hardcodeados (con gitleaks)
+- Vulnerabilidades de seguridad (con bandit)
+- Problemas de configuración (con KICS)
+- Vulnerabilidades en dependencias (con safety)
+
+### Scripts de Verificación de Calidad
+
+El proyecto incluye varios scripts para verificar y mejorar la calidad del código:
+
+```bash
+# Verificar y corregir formato con Ruff
+.\scripts\run_ruff.ps1 --fix
+
+# Verificar tipos con MyPy
+.\scripts\run_mypy.ps1
+
+# Verificar y generar docstrings
+.\scripts\run_docstring_check.ps1
+.\scripts\run_docstring_fix.ps1
+
+# Corregir errores de tipo comunes
+.\scripts\run_type_fixes.ps1
+
+# Verificar y corregir problemas de seguridad
+.\scripts\run_security_checks.ps1
+.\scripts\fix_security_issues.ps1
+
+# Ejecutar todas las verificaciones de calidad
+.\scripts\run_all_quality_checks.ps1 [--fix]
+```
+
+Para más detalles sobre las mejoras de calidad implementadas, consulta [QUALITY_IMPROVEMENTS.md](./QUALITY_IMPROVEMENTS.md).
+
+#### Solución de problemas comunes con pre-commit
+
+Si encuentras errores al ejecutar pre-commit, prueba lo siguiente:
+
+1. **Comando `check` obsoleto**: Si ves un error sobre el comando `check` obsoleto, actualiza pre-commit:
+   ```bash
+   pip install --upgrade pre-commit
+   ```
+
+2. **Herramientas faltantes**: Si faltan herramientas como `gitleaks` o `kics`, usa nuestro script:
+   ```bash
+   python scripts/install_precommit_deps.py
+   ```
+
+3. **Errores de manejo de excepciones**: Asegúrate de usar `logging.exception` en lugar de `logging.error` cuando captures excepciones, y usa `raise ... from err` para preservar el contexto de la excepción.
+
+4. **Problemas con MyPy**: Si MyPy reporta errores sobre archivos duplicados, asegúrate de que todos los directorios de paquetes tengan un archivo `__init__.py`.
 
 ## 📚 Documentación
 
@@ -247,8 +303,42 @@ CALLi toma muy en serio la seguridad de los datos. Implementamos:
 - Autenticación multifactor para acceso administrativo
 - Auditoría completa de acciones de usuario
 - Cumplimiento con regulaciones de protección de datos
+- Verificación automática de seguridad con pre-commit
+- Detección de secretos con gitleaks
+- Análisis de vulnerabilidades en dependencias
+- Verificación de encabezados HTTP de seguridad
 
-Para reportar vulnerabilidades de seguridad, por favor contacta a [security@example.com](mailto:security@example.com).
+### Herramientas de Seguridad
+
+El proyecto incluye varias herramientas para verificar y mejorar la seguridad:
+
+```bash
+# Windows
+.\scripts\run_security_checks.ps1
+.\scripts\verify_config_security.ps1
+.\scripts\run_security_headers_check.ps1
+.\scripts\run_gitleaks.ps1
+
+# Linux/macOS
+./scripts/run_security_checks.sh
+./scripts/verify_config_security.sh
+./scripts/check_security_headers.py
+./scripts/run_gitleaks.sh
+```
+
+Para configurar pre-commit con todas las verificaciones de seguridad:
+
+```bash
+# Windows
+.\scripts\install_precommit_deps.ps1
+
+# Linux/macOS
+./scripts/install_precommit_deps.sh
+```
+
+Para más detalles sobre las herramientas de seguridad, consulta [docs/SECURITY_TOOLS_GUIDE.md](./docs/SECURITY_TOOLS_GUIDE.md) y [docs/SECURITY.md](./docs/SECURITY.md).
+
+Para reportar vulnerabilidades de seguridad, por favor contacta a [santiago@xor.com.ar](mailto:santiago@xor.com.ar).
 
 ## 📊 Estado del Proyecto
 

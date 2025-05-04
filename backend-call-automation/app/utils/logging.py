@@ -10,9 +10,9 @@ import logging
 import sys
 import time
 import uuid
+from collections.abc import Callable
 from datetime import datetime
 from functools import wraps
-from typing import Any, Callable, Dict, Optional, Union
 
 from fastapi import FastAPI, Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -24,8 +24,9 @@ LOG_LEVEL_MAP = {
     "info": logging.INFO,
     "warning": logging.WARNING,
     "error": logging.ERROR,
-    "critical": logging.CRITICAL
+    "critical": logging.CRITICAL,
 }
+
 
 class JsonFormatter(logging.Formatter):
     """
@@ -49,7 +50,7 @@ class JsonFormatter(logging.Formatter):
             "module": record.module,
             "function": record.funcName,
             "line": record.lineno,
-            "process": record.process
+            "process": record.process,
         }
 
         # Añadir contexto adicional si existe
@@ -61,16 +62,14 @@ class JsonFormatter(logging.Formatter):
             log_data["exception"] = {
                 "type": record.exc_info[0].__name__,
                 "message": str(record.exc_info[1]),
-                "traceback": self.formatException(record.exc_info)
+                "traceback": self.formatException(record.exc_info),
             }
 
         return json.dumps(log_data)
 
+
 def setup_logging(
-    app_name: str,
-    level: str = "info",
-    log_file: Optional[str] = None,
-    console: bool = True
+    app_name: str, level: str = "info", log_file: str | None = None, console: bool = True
 ) -> logging.Logger:
     """
     Configura el sistema de logging.
@@ -96,17 +95,35 @@ def setup_logging(
 
     # Añadir handler de archivo si se especifica
     if log_file:
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setFormatter(formatter)
-        logger.addHandler(file_handler)
+        try:
+            # Asegurarse de que el directorio del archivo de log existe
+            log_dir = os.path.dirname(log_file)
+            if log_dir:
+                os.makedirs(log_dir, exist_ok=True)
 
-    # Añadir handler de consola si se solicita
-    if console:
+            file_handler = logging.FileHandler(log_file)
+            file_handler.setFormatter(formatter)
+            logger.addHandler(file_handler)
+        except Exception as e:
+            # Si hay un error al configurar el handler de archivo, loguear a consola
+            console_handler = logging.StreamHandler(sys.stdout)
+            console_handler.setFormatter(formatter)
+            logger.addHandler(console_handler)
+
+            # Usar el logger recién configurado para reportar el error
+            logger.warning(
+                f"No se pudo configurar el logging a archivo '{log_file}': {e}. "
+                "Se usará solo logging a consola."
+            )
+
+    # Añadir handler de consola si se solicita o si no se pudo configurar el archivo
+    if console or not logger.handlers:
         console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setFormatter(formatter)
         logger.addHandler(console_handler)
 
     return logger
+
 
 class LoggingMiddleware(BaseHTTPMiddleware):
     """
@@ -114,11 +131,8 @@ class LoggingMiddleware(BaseHTTPMiddleware):
     """
 
     def __init__(
-        self,
-        app: ASGIApp,
-        logger: logging.Logger,
-        exclude_paths: Optional[list] = None
-    ):
+        self, app: ASGIApp, logger: logging.Logger, exclude_paths: list | None = None
+    ) -> None:
         """
         Inicializa el middleware.
 
@@ -131,11 +145,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         self.logger = logger
         self.exclude_paths = exclude_paths or []
 
-    async def dispatch(
-        self,
-        request: Request,
-        call_next: Callable
-    ) -> Response:
+    async def dispatch(self, request: Request, call_next: Callable) -> Response:
         """
         Procesa una solicitud HTTP y registra información de logging.
 
@@ -178,9 +188,9 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                         "status_code": response.status_code,
                         "process_time_ms": round(process_time * 1000, 2),
                         "client_ip": request.client.host if request.client else None,
-                        "user_agent": request.headers.get("user-agent")
+                        "user_agent": request.headers.get("user-agent"),
                     }
-                }
+                },
             )
 
             # Añadir request_id a la respuesta
@@ -198,14 +208,15 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                         "method": request.method,
                         "path": path,
                         "client_ip": request.client.host if request.client else None,
-                        "error": str(e)
+                        "error": str(e),
                     }
                 },
-                exc_info=True
+                exc_info=True,
             )
             raise
 
-def log_function_call(logger: logging.Logger):
+
+def log_function_call(logger: logging.Logger) -> None:
     """
     Decorador para loguear llamadas a funciones.
 
@@ -215,6 +226,7 @@ def log_function_call(logger: logging.Logger):
     Returns:
         Decorador configurado
     """
+
     def decorator(func: Callable):
         @wraps(func)
         async def async_wrapper(*args, **kwargs):
@@ -231,9 +243,9 @@ def log_function_call(logger: logging.Logger):
                         "function": func.__name__,
                         "module": func.__module__,
                         "args": str(args),
-                        "kwargs": str(kwargs)
+                        "kwargs": str(kwargs),
                     }
-                }
+                },
             )
 
             try:
@@ -251,9 +263,9 @@ def log_function_call(logger: logging.Logger):
                             "operation_id": operation_id,
                             "function": func.__name__,
                             "execution_time_ms": round(execution_time * 1000, 2),
-                            "success": True
+                            "success": True,
                         }
-                    }
+                    },
                 )
 
                 return result
@@ -264,17 +276,17 @@ def log_function_call(logger: logging.Logger):
 
                 # Registrar error
                 logger.error(
-                    f"Error in {func.__name__}: {str(e)}",
+                    f"Error in {func.__name__}: {e!s}",
                     extra={
                         "context": {
                             "operation_id": operation_id,
                             "function": func.__name__,
                             "execution_time_ms": round(execution_time * 1000, 2),
                             "success": False,
-                            "error": str(e)
+                            "error": str(e),
                         }
                     },
-                    exc_info=True
+                    exc_info=True,
                 )
                 raise
 
@@ -293,9 +305,9 @@ def log_function_call(logger: logging.Logger):
                         "function": func.__name__,
                         "module": func.__module__,
                         "args": str(args),
-                        "kwargs": str(kwargs)
+                        "kwargs": str(kwargs),
                     }
-                }
+                },
             )
 
             try:
@@ -313,9 +325,9 @@ def log_function_call(logger: logging.Logger):
                             "operation_id": operation_id,
                             "function": func.__name__,
                             "execution_time_ms": round(execution_time * 1000, 2),
-                            "success": True
+                            "success": True,
                         }
-                    }
+                    },
                 )
 
                 return result
@@ -326,29 +338,31 @@ def log_function_call(logger: logging.Logger):
 
                 # Registrar error
                 logger.error(
-                    f"Error in {func.__name__}: {str(e)}",
+                    f"Error in {func.__name__}: {e!s}",
                     extra={
                         "context": {
                             "operation_id": operation_id,
                             "function": func.__name__,
                             "execution_time_ms": round(execution_time * 1000, 2),
                             "success": False,
-                            "error": str(e)
+                            "error": str(e),
                         }
                     },
-                    exc_info=True
+                    exc_info=True,
                 )
                 raise
 
         # Usar el wrapper adecuado según si la función es asíncrona o no
         if asyncio.iscoroutinefunction(func):
             return async_wrapper
-        else:
-            return sync_wrapper
+        return sync_wrapper
 
     return decorator
 
-def setup_app_logging(app: FastAPI, logger: logging.Logger, exclude_paths: Optional[list] = None) -> None:
+
+def setup_app_logging(
+    app: FastAPI, logger: logging.Logger, exclude_paths: list | None = None
+) -> None:
     """
     Configura el logging para una aplicación FastAPI.
 
@@ -359,9 +373,7 @@ def setup_app_logging(app: FastAPI, logger: logging.Logger, exclude_paths: Optio
     """
     # Añadir middleware de logging
     app.add_middleware(
-        LoggingMiddleware,
-        logger=logger,
-        exclude_paths=exclude_paths or ["/health", "/metrics"]
+        LoggingMiddleware, logger=logger, exclude_paths=exclude_paths or ["/health", "/metrics"]
     )
 
     # Añadir evento de inicio
@@ -370,12 +382,8 @@ def setup_app_logging(app: FastAPI, logger: logging.Logger, exclude_paths: Optio
         logger.info(
             "Application startup",
             extra={
-                "context": {
-                    "event": "startup",
-                    "app_name": app.title,
-                    "app_version": app.version
-                }
-            }
+                "context": {"event": "startup", "app_name": app.title, "app_version": app.version}
+            },
         )
 
     # Añadir evento de cierre
@@ -384,24 +392,20 @@ def setup_app_logging(app: FastAPI, logger: logging.Logger, exclude_paths: Optio
         logger.info(
             "Application shutdown",
             extra={
-                "context": {
-                    "event": "shutdown",
-                    "app_name": app.title,
-                    "app_version": app.version
-                }
-            }
+                "context": {"event": "shutdown", "app_name": app.title, "app_version": app.version}
+            },
         )
+
 
 # Crear logger global
 import asyncio
 import os
 
+# from typing import Optional, Any  # No se utilizan
+
 # Asegurarse de que el directorio de logs existe
 os.makedirs("logs", exist_ok=True)
 
 app_logger = setup_logging(
-    app_name="call-automation",
-    level="info",
-    log_file="logs/app.log",
-    console=True
+    app_name="call-automation", level="info", log_file="logs/app.log", console=True
 )

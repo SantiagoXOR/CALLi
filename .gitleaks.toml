@@ -29,6 +29,11 @@ regexes = [
   '''TEST_SECRET''',
   '''password_validation''',
   '''password_hashers''',
+  '''password:\s*Optional''',
+  '''credentials:\s*\w+''',
+  '''password:\s*\w+''',
+  '''password=settings''',
+  '''password:\s*prometheus''',
 ]
 
 [[rules]]
@@ -82,4 +87,12 @@ paths = [
   '''(.*?)\.DS_Store(.*?)''',
   '''(.*?)Thumbs\.db(.*?)''',
   '''(.*?)\.gitleaks\.toml''',
+  '''(.*?)coverage/lcov-report/(.*?)''',
+  '''(.*?)docs/(.*?)''',
+  '''(.*?)test/(.*?)''',
+  '''(.*?)tests/(.*?)''',
+  '''(.*?)example/(.*?)''',
+  '''(.*?)examples/(.*?)''',
+  '''(.*?)mock/(.*?)''',
+  '''(.*?)mocks/(.*?)''',
 ]

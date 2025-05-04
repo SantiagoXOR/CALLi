@@ -1,8 +1,10 @@
-import { Contact } from "@/types/contact";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import { render } from "../../__tests__/utils";
 import { ContactForm } from "../ContactForm";
+
+import { Contact } from "@/types/contact";
 
 // Mock de las funciones de callback
 const mockOnSubmit = jest.fn();
@@ -146,10 +148,20 @@ describe("ContactForm Component", () => {
       await userEvent.type(tagInput, "nueva-etiqueta");
 
       // Hacer clic en el botón de añadir (buscando por texto o aria-label)
-      const addButton =
-        screen.getByRole("button", {
-          name: /agregar/i,
-        }) || screen.getByLabelText(/agregar etiqueta/i);
+      // Intentar encontrar el botón de diferentes maneras para mayor robustez
+      let addButton;
+      try {
+        addButton = screen.getByRole("button", { name: /agregar/i });
+      } catch (error) {
+        try {
+          addButton = screen.getByLabelText(/agregar etiqueta/i);
+        } catch (error) {
+          // Si no se encuentra por role o aria-label, buscar por test-id
+          addButton = screen.getByTestId("add-tag-button"); // Using explicit data-testid for reliability
+        }
+      }
+
+      expect(addButton).toBeDefined();
       await userEvent.click(addButton);
 
       // Verificar que se haya agregado la etiqueta
@@ -182,10 +194,20 @@ describe("ContactForm Component", () => {
 
     if (tagInput) {
       await userEvent.type(tagInput, "test-tag");
-      const addButton =
-        screen.getByRole("button", {
-          name: /agregar/i,
-        }) || screen.getByLabelText(/agregar etiqueta/i);
+      // Intentar encontrar el botón de diferentes maneras para mayor robustez
+      let addButton;
+      try {
+        addButton = screen.getByRole("button", { name: /agregar/i });
+      } catch (error) {
+        try {
+          addButton = screen.getByLabelText(/agregar etiqueta/i);
+        } catch (error) {
+          // Si no se encuentra por role o aria-label, buscar por test-id
+          addButton = screen.getByTestId("add-tag-button");
+        }
+      }
+
+      expect(addButton).toBeDefined();
       await userEvent.click(addButton);
     }
 

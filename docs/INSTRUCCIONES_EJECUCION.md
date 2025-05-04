@@ -70,7 +70,7 @@ Después de preparar el entorno, sigue el plan de pruebas de usuario en `docs/te
 Para implementar un despliegue gradual, sigue estos pasos:
 
 1. **Configurar Feature Flags**:
-   
+
    Añade un sistema de feature flags al backend y frontend para controlar el acceso a las funcionalidades:
 
    ```bash
@@ -80,7 +80,7 @@ Para implementar un despliegue gradual, sigue estos pasos:
    ```
 
 2. **Definir Grupos de Usuarios**:
-   
+
    Crea grupos de usuarios para el despliegue gradual:
    - Grupo 1: 10% de usuarios (equipo interno)
    - Grupo 2: 25% de usuarios (beta testers)
@@ -88,20 +88,20 @@ Para implementar un despliegue gradual, sigue estos pasos:
    - Grupo 4: 100% de usuarios
 
 3. **Configurar Despliegue por Fases**:
-   
+
    Utiliza el siguiente comando para desplegar cada fase:
 
    ```bash
    # Fase 1: 10% de usuarios
    docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-   
+
    # Actualizar feature flags para la Fase 1
    # Monitorear y evaluar
-   
+
    # Fase 2: 25% de usuarios
    # Actualizar feature flags para la Fase 2
    # Monitorear y evaluar
-   
+
    # Y así sucesivamente...
    ```
 
@@ -133,7 +133,7 @@ Después de configurar el monitoreo, accede a los dashboards:
 Para priorizar y corregir problemas:
 
 1. **Recopilar Feedback**:
-   
+
    Utiliza los siguientes canales para recopilar feedback:
    - Formularios de feedback de usuario
    - Alertas del sistema de monitoreo
@@ -141,27 +141,27 @@ Para priorizar y corregir problemas:
    - Métricas de rendimiento
 
 2. **Clasificar Problemas**:
-   
+
    Clasifica los problemas según:
    - Severidad (crítico, alto, medio, bajo)
    - Impacto (número de usuarios afectados)
    - Esfuerzo de corrección (alto, medio, bajo)
 
 3. **Implementar Correcciones**:
-   
+
    Para implementar correcciones rápidas:
 
    ```bash
    # Crear rama para la corrección
    git checkout -b hotfix/nombre-del-problema
-   
+
    # Implementar corrección
    # Ejecutar pruebas
-   
+
    # Fusionar con la rama principal
    git checkout main
    git merge hotfix/nombre-del-problema
-   
+
    # Desplegar la corrección
    docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
    ```

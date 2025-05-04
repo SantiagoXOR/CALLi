@@ -202,9 +202,9 @@ Para utilizar los estados de carga en un componente:
    ```tsx
    function MyComponent() {
      const { data, isLoading } = useMyData();
-     
+
      if (isLoading) return <MyComponentSkeleton />;
-     
+
      return (
        <div>
          <h1>{data.title}</h1>

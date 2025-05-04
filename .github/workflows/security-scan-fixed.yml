@@ -1,0 +1,103 @@
+name: "Configuration Security Scan (Disabled)"
+
+on:
+  workflow_dispatch:
+
+# Limitar permisos del token GITHUB_TOKEN
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
+jobs:
+  security-scan:
+    name: Configuration Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Crear directorios necesarios
+      - name: Create necessary directories
+        run: |
+          mkdir -p backend-call-automation
+          mkdir -p frontend-call-automation
+          mkdir -p logs
+
+          # Crear requirements.txt básico si no existe
+          if [ ! -f "backend-call-automation/requirements.txt" ]; then
+            cat > backend-call-automation/requirements.txt << 'EOF'
+            pytest==7.3.1
+            pytest-cov==4.1.0
+            EOF
+          fi
+
+          # Crear package.json básico si no existe
+          if [ ! -f "frontend-call-automation/package.json" ]; then
+            cat > frontend-call-automation/package.json << 'EOF'
+            {
+              "name": "frontend-call-automation",
+              "version": "1.0.0",
+              "scripts": {
+                "test": "echo 'No tests specified yet' && exit 0"
+              }
+            }
+            EOF
+          fi
+
+      # Escaneo de seguridad para Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f backend-call-automation/requirements.txt ]; then
+            pip install -r backend-call-automation/requirements.txt || echo "Error en la instalación de dependencias, pero continuamos"
+          fi
+          pip install bandit safety || echo "Error en la instalación de herramientas de seguridad, pero continuamos"
+
+      - name: Run Bandit (Python security scanner)
+        run: |
+          touch logs/bandit-results.log
+          bandit -r backend-call-automation -f txt -o logs/bandit-results.log || echo "Advertencias de seguridad encontradas, pero continuamos"
+
+      - name: Run Safety (Python dependency scanner)
+        run: |
+          touch logs/safety-results.log
+          safety check -r backend-call-automation/requirements.txt --output text > logs/safety-results.log || echo "Vulnerabilidades encontradas, pero continuamos"
+
+      # Escaneo de seguridad para JavaScript
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install JavaScript dependencies
+        run: |
+          if [ -f frontend-call-automation/package.json ]; then
+            cd frontend-call-automation && npm install || echo "Error en la instalación de dependencias, pero continuamos"
+          fi
+
+      - name: Run npm audit
+        run: |
+          mkdir -p logs
+          touch logs/npm-audit-results.log
+          if [ -f frontend-call-automation/package.json ]; then
+            cd frontend-call-automation && npm audit --json > ../logs/npm-audit-results.log || echo "Vulnerabilidades encontradas, pero continuamos"
+          else
+            echo "No se encontró package.json" > logs/npm-audit-results.log
+          fi
+
+      # Publicar resultados
+      - name: Upload security scan logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-scan-logs
+          path: |
+            logs/bandit-results.log
+            logs/safety-results.log
+            logs/npm-audit-results.log
+        if: always()

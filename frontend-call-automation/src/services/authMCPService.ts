@@ -116,13 +116,13 @@ export const authMCPService = {
   async logout(): Promise<boolean> {
     try {
       const { error } = await supabaseMCPClient.auth.signOut();
-      
+
       if (error) {
         console.error('Error al cerrar sesión:', error.message);
         toast.error(`Error al cerrar sesión: ${error.message}`);
         return false;
       }
-      
+
       toast.success('Sesión cerrada correctamente');
       return true;
     } catch (error) {
@@ -136,7 +136,7 @@ export const authMCPService = {
   async getCurrentUser(): Promise<AuthUser | null> {
     try {
       const { data, error } = await supabaseMCPClient.auth.getUser();
-      
+
       if (error || !data || !data.user) {
         return null;
       }

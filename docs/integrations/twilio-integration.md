@@ -55,15 +55,15 @@ class TwilioService:
         self.account_sid = settings.TWILIO_ACCOUNT_SID
         self.auth_token = settings.TWILIO_AUTH_TOKEN
         self.client = Client(self.account_sid, self.auth_token)
-        
-    async def make_call(self, to: str, from_: str, url: str, 
-                        status_callback: Optional[str] = None, 
+
+    async def make_call(self, to: str, from_: str, url: str,
+                        status_callback: Optional[str] = None,
                         timeout: int = 30) -> Dict[str, Any]:
         # Implementación para realizar llamadas
-        
+
     async def get_call_status(self, call_sid: str) -> Dict[str, Any]:
         # Implementación para obtener estado de llamada
-        
+
     async def end_call(self, call_sid: str) -> bool:
         # Implementación para finalizar llamada
 ```
@@ -89,7 +89,7 @@ sequenceDiagram
     participant App as Sistema
     participant Twilio as Twilio API
     participant Contact as Contacto
-    
+
     App->>Twilio: Solicitud de llamada (make_call)
     Twilio-->>App: Confirmación (SID)
     Twilio->>Contact: Llamada telefónica
@@ -129,7 +129,7 @@ sequenceDiagram
     participant Webhook as Webhook Endpoint
     participant Processor as CallProcessor
     participant DB as Base de Datos
-    
+
     Twilio->>Webhook: Evento de llamada
     Webhook->>Processor: Procesar evento
     Processor->>DB: Actualizar estado
@@ -145,12 +145,12 @@ async def call_status_webhook(request: Request):
     form_data = await request.form()
     call_sid = form_data.get("CallSid")
     call_status = form_data.get("CallStatus")
-    
+
     # Buscar llamada por SID
     call = await call_repository.find_by_twilio_sid(call_sid)
     if not call:
         raise HTTPException(status_code=404, detail="Call not found")
-    
+
     # Actualizar estado
     if call_status == "completed":
         call.status = CallStatus.COMPLETED
@@ -160,9 +160,9 @@ async def call_status_webhook(request: Request):
         call.status = CallStatus.FAILED
         call.error_message = form_data.get("ErrorMessage")
     # ... otros estados
-    
+
     await call_repository.update(call)
-    
+
     return {"success": True}
 ```
 
@@ -174,7 +174,7 @@ sequenceDiagram
     participant Webhook as Webhook Endpoint
     participant TTS as ElevenLabsService
     participant AI as AIConversationService
-    
+
     Twilio->>Webhook: Solicitud de instrucciones
     Webhook->>AI: Generar respuesta
     AI-->>Webhook: Texto de respuesta
@@ -190,15 +190,15 @@ sequenceDiagram
 async def twilio_webhook(request: Request):
     form_data = await request.form()
     call_sid = form_data.get("CallSid")
-    
+
     # Obtener información de la llamada
     call = await call_repository.find_by_twilio_sid(call_sid)
     if not call:
         raise HTTPException(status_code=404, detail="Call not found")
-    
+
     # Obtener contacto
     contact = await contact_repository.find_by_id(call.contact_id)
-    
+
     # Generar respuesta con IA
     ai_response = await ai_conversation_service.generate_response(
         conversation_id=str(call.id),
@@ -209,23 +209,23 @@ async def twilio_webhook(request: Request):
             "script_template": call.script_template
         }
     )
-    
+
     # Generar audio con ElevenLabs
     audio_url = await elevenlabs_service.generate_audio(ai_response["response"])
-    
+
     # Crear respuesta TwiML
     response = VoiceResponse()
     response.play(audio_url)
-    
+
     # Añadir opciones de interacción
     gather = Gather(input='dtmf speech', timeout=3, action=f"{settings.TWILIO_WEBHOOK_BASE_URL}/api/webhooks/twilio/gather")
     gather.say("Presiona 1 para más información, o di 'interesado' si quieres que te contactemos.")
     response.append(gather)
-    
+
     # Fallback si no hay respuesta
     response.say("No hemos recibido respuesta. Gracias por tu tiempo.")
     response.hangup()
-    
+
     return Response(content=str(response), media_type="application/xml")
 ```
 
@@ -303,14 +303,14 @@ Para garantizar que las solicitudes provienen realmente de Twilio:
        twilio_signature = request.headers.get("X-Twilio-Signature")
        if not twilio_signature:
            return False
-       
+
        # Construir la URL completa
        url = str(request.url)
-       
+
        # Obtener los parámetros de la solicitud
        form_data = await request.form()
        params = dict(form_data)
-       
+
        # Validar la firma
        validator = RequestValidator(settings.TWILIO_AUTH_TOKEN)
        return validator.validate(url, params, twilio_signature)
@@ -346,7 +346,7 @@ async def retry_call(call_id: str, retry_delay: int = 60):
     if not call:
         logger.error(f"Call not found for retry: {call_id}")
         return
-    
+
     # Verificar límite de reintentos
     if call.retry_attempts >= call.max_retries:
         logger.info(f"Max retries reached for call: {call_id}")
@@ -354,14 +354,14 @@ async def retry_call(call_id: str, retry_delay: int = 60):
         call.error_message = "Max retries reached"
         await call_repository.update(call)
         return
-    
+
     # Incrementar contador de reintentos
     call.retry_attempts += 1
     await call_repository.update(call)
-    
+
     # Programar reintento
     scheduled_time = datetime.now() + timedelta(minutes=retry_delay)
-    
+
     # Crear tarea programada
     await scheduler.schedule_task(
         task_name="make_call",
@@ -372,7 +372,7 @@ async def retry_call(call_id: str, retry_delay: int = 60):
             "contact_id": call.contact_id
         }
     )
-    
+
     logger.info(f"Call {call_id} scheduled for retry at {scheduled_time}")
 ```
 
@@ -444,12 +444,12 @@ async def retry_call(call_id: str, retry_delay: int = 60):
 logger = logging.getLogger("twilio_service")
 
 # Ejemplo de logging en TwilioService
-async def make_call(self, to: str, from_: str, url: str, 
-                    status_callback: Optional[str] = None, 
+async def make_call(self, to: str, from_: str, url: str,
+                    status_callback: Optional[str] = None,
                     timeout: int = 30) -> Dict[str, Any]:
     try:
         logger.info(f"Initiating call to {to} from {from_}")
-        
+
         # Realizar llamada con Twilio
         call = self.client.calls.create(
             to=to,
@@ -458,9 +458,9 @@ async def make_call(self, to: str, from_: str, url: str,
             status_callback=status_callback,
             timeout=timeout
         )
-        
+
         logger.info(f"Call initiated successfully: {call.sid}")
-        
+
         return {
             'sid': call.sid,
             'status': call.status,
@@ -494,23 +494,23 @@ def test_make_call():
         from_="+12025550142",
         to="+34600123456"
     )
-    
+
     # Inyectar mock en servicio
     twilio_service = TwilioService()
     twilio_service.client = MagicMock()
     twilio_service.client.calls = mock_calls
-    
+
     # Ejecutar función
     result = await twilio_service.make_call(
         to="+34600123456",
         from_="+12025550142",
         url="https://example.com/webhook"
     )
-    
+
     # Verificar resultado
     assert result["sid"] == "CA123456789"
     assert result["status"] == "queued"
-    
+
     # Verificar que se llamó a Twilio con los parámetros correctos
     mock_calls.create.assert_called_once_with(
         to="+34600123456",
@@ -532,21 +532,21 @@ def test_twilio_webhook():
         "Called": "+34600123456",
         "Caller": "+12025550142"
     }
-    
+
     # Simular firma de Twilio
     signature = generate_twilio_signature(
         settings.TWILIO_AUTH_TOKEN,
         "https://example.com/api/webhooks/twilio",
         form_data
     )
-    
+
     # Realizar solicitud
     response = client.post(
         "/api/webhooks/twilio",
         data=form_data,
         headers={"X-Twilio-Signature": signature}
     )
-    
+
     # Verificar respuesta
     assert response.status_code == 200
     assert "<?xml" in response.text

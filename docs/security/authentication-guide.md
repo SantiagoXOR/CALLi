@@ -14,13 +14,13 @@ sequenceDiagram
     participant Frontend
     participant Backend
     participant Supabase
-    
+
     User->>Frontend: Ingresa credenciales
     Frontend->>Supabase: Solicita autenticación
     Supabase->>Supabase: Verifica credenciales
     Supabase-->>Frontend: Devuelve token JWT
     Frontend->>Frontend: Almacena token
-    
+
     User->>Frontend: Solicita recurso protegido
     Frontend->>Backend: Solicitud con token JWT
     Backend->>Supabase: Verifica token
@@ -45,11 +45,11 @@ async function signInWithEmail(email, password) {
     email,
     password,
   });
-  
+
   if (error) {
     throw error;
   }
-  
+
   return data;
 }
 ```
@@ -67,11 +67,11 @@ async function signInWithGoogle() {
       redirectTo: `${window.location.origin}/auth/callback`,
     },
   });
-  
+
   if (error) {
     throw error;
   }
-  
+
   return data;
 }
 ```
@@ -88,11 +88,11 @@ async function signInWithEmail(email, password) {
     email,
     password,
   });
-  
+
   if (error) {
     throw error;
   }
-  
+
   return data;
 }
 
@@ -103,11 +103,11 @@ async function verifyOTP(email, token) {
     token,
     type: 'totp',
   });
-  
+
   if (error) {
     throw error;
   }
-  
+
   return data;
 }
 ```
@@ -125,11 +125,11 @@ async function signInWithMagicLink(email) {
       emailRedirectTo: `${window.location.origin}/auth/callback`,
     },
   });
-  
+
   if (error) {
     throw error;
   }
-  
+
   return data;
 }
 ```
@@ -159,11 +159,11 @@ supabase.auth.onAuthStateChange((event, session) => {
 // Renovación manual si es necesario
 async function refreshToken() {
   const { data, error } = await supabase.auth.refreshSession();
-  
+
   if (error) {
     throw error;
   }
-  
+
   return data;
 }
 ```
@@ -176,7 +176,7 @@ import { supabase } from '@/lib/supabase-client';
 
 async function signOut() {
   const { error } = await supabase.auth.signOut();
-  
+
   if (error) {
     throw error;
   }
@@ -242,10 +242,10 @@ async def get_user_role(user_id: str) -> str:
     Obtiene el rol de un usuario.
     """
     result = supabase_client.from_("users").select("role").eq("id", user_id).execute()
-    
+
     if not result.data:
         return "viewer"  # Rol por defecto
-    
+
     return result.data[0]["role"]
 
 async def require_role(required_roles: list[str]):
@@ -254,15 +254,15 @@ async def require_role(required_roles: list[str]):
     """
     async def dependency(user = Depends(get_current_user)):
         user_role = await get_user_role(user.id)
-        
+
         if user_role not in required_roles:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Insufficient permissions",
             )
-        
+
         return user
-    
+
     return dependency
 
 # Uso en endpoints
@@ -363,11 +363,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      
+
       if (session?.user) {
         fetchUserRole(session.user.id);
       }
-      
+
       setLoading(false);
     });
 
@@ -376,13 +376,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        
+
         if (session?.user) {
           fetchUserRole(session.user.id);
         } else {
           setUserRole(null);
         }
-        
+
         setLoading(false);
       }
     );
@@ -398,7 +398,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .select('role')
       .eq('id', userId)
       .single();
-    
+
     if (!error && data) {
       setUserRole(data.role);
     }
@@ -409,7 +409,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       email,
       password,
     });
-    
+
     if (error) {
       throw error;
     }
@@ -417,7 +417,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function signOut() {
     const { error } = await supabase.auth.signOut();
-    
+
     if (error) {
       throw error;
     }
@@ -437,11 +437,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  
+
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
-  
+
   return context;
 }
 ```
@@ -470,7 +470,7 @@ export function ProtectedRoute({ children, requiredRoles = [] }: ProtectedRouteP
         router.push('/login');
         return;
       }
-      
+
       // Verificar rol si se requiere
       if (requiredRoles.length > 0 && userRole && !requiredRoles.includes(userRole)) {
         router.push('/unauthorized');
@@ -482,7 +482,7 @@ export function ProtectedRoute({ children, requiredRoles = [] }: ProtectedRouteP
   if (loading || !user || (requiredRoles.length > 0 && !userRole)) {
     return <div>Loading...</div>;
   }
-  
+
   // Verificar permisos
   if (requiredRoles.length > 0 && userRole && !requiredRoles.includes(userRole)) {
     return null;
@@ -536,21 +536,21 @@ export async function createUser(email: string, password: string, role: string =
     email,
     password,
   });
-  
+
   if (signUpError || !user) {
     throw signUpError || new Error('Failed to create user');
   }
-  
+
   // Asignar rol al usuario
   const { error: updateError } = await supabase
     .from('users')
     .update({ role })
     .eq('id', user.id);
-  
+
   if (updateError) {
     throw updateError;
   }
-  
+
   return user;
 }
 ```
@@ -566,7 +566,7 @@ export async function updateUserRole(userId: string, role: string) {
     .from('users')
     .update({ role })
     .eq('id', userId);
-  
+
   if (error) {
     throw error;
   }
@@ -578,11 +578,11 @@ export async function getUserRole(userId: string) {
     .select('role')
     .eq('id', userId)
     .single();
-  
+
   if (error) {
     throw error;
   }
-  
+
   return data.role;
 }
 ```
@@ -599,7 +599,7 @@ export async function deactivateUser(userId: string) {
     .from('users')
     .update({ is_active: false })
     .eq('id', userId);
-  
+
   if (error) {
     throw error;
   }
@@ -619,7 +619,7 @@ export function middleware(request: NextRequest) {
   // Verificar origen para protección CSRF
   const origin = request.headers.get('origin');
   const allowedOrigins = ['https://example.com', 'https://www.example.com'];
-  
+
   if (request.method !== 'GET' && origin && !allowedOrigins.includes(origin)) {
     return new NextResponse(null, {
       status: 403,
@@ -629,7 +629,7 @@ export function middleware(request: NextRequest) {
       },
     });
   }
-  
+
   return NextResponse.next();
 }
 
@@ -656,13 +656,13 @@ const LOCKOUT_TIME = 15 * 60; // 15 minutos en segundos
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const supabase = createMiddlewareSupabaseClient({ req, res });
-  
+
   // Implementar rate limiting para intentos de inicio de sesión
   if (req.method === 'POST' && req.body?.email) {
     const email = req.body.email;
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const key = `auth:${email}:${ip}`;
-    
+
     // Verificar si está bloqueado
     const lockUntil = await redis.get(`${key}:lockUntil`);
     if (lockUntil && parseInt(lockUntil as string) > Math.floor(Date.now() / 1000)) {
@@ -670,23 +670,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         error: 'Too many login attempts. Please try again later.',
       });
     }
-    
+
     // Incrementar contador de intentos
     const attempts = await redis.incr(key);
     await redis.expire(key, 60 * 60); // Expirar en 1 hora
-    
+
     // Bloquear después de demasiados intentos
     if (attempts > MAX_ATTEMPTS) {
       const lockUntil = Math.floor(Date.now() / 1000) + LOCKOUT_TIME;
       await redis.set(`${key}:lockUntil`, lockUntil.toString());
       await redis.expire(`${key}:lockUntil`, LOCKOUT_TIME);
-      
+
       return res.status(429).json({
         error: 'Too many login attempts. Please try again later.',
       });
     }
   }
-  
+
   // Continuar con la autenticación normal
   // ...
 }

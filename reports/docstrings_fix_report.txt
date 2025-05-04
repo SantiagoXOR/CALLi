@@ -1,0 +1,3659 @@
+Docstring Check Report - 345 issues found
+================================================================================
+
+File: AIConversationService
+--------------------------------------------------------------------------------
+Line 24: Missing docstring for ClassDef 'AIConversationService' in backend-call-automation\app\services\ai_conversation_service.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: AISettings
+--------------------------------------------------------------------------------
+Line 9: Missing docstring for ClassDef 'AISettings' in backend-call-automation\app\config\ai_config.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: BaseDBModel
+--------------------------------------------------------------------------------
+Line 8: Missing docstring for ClassDef 'BaseDBModel' in backend-call-automation\app\models\base.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: Call
+--------------------------------------------------------------------------------
+Line 67: Missing docstring for ClassDef 'Call' in backend-call-automation\app\models\call.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: CallBase
+--------------------------------------------------------------------------------
+Line 25: Missing docstring for ClassDef 'CallBase' in backend-call-automation\app\models\call.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: CallCreate
+--------------------------------------------------------------------------------
+Line 8: Missing docstring for ClassDef 'CallCreate' in backend-call-automation\app\schemas\call.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+Line 45: Missing docstring for ClassDef 'CallCreate' in backend-call-automation\app\models\call.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: CallStatus
+--------------------------------------------------------------------------------
+Line 13: Missing docstring for ClassDef 'CallStatus' in backend-call-automation\app\models\call.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: CallUpdate
+--------------------------------------------------------------------------------
+Line 21: Missing docstring for ClassDef 'CallUpdate' in backend-call-automation\app\schemas\call.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+Line 57: Missing docstring for ClassDef 'CallUpdate' in backend-call-automation\app\models\call.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: Campaign
+--------------------------------------------------------------------------------
+Line 145: Missing docstring for ClassDef 'Campaign' in backend-call-automation\app\models\campaign.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: CampaignBase
+--------------------------------------------------------------------------------
+Line 42: Missing docstring for ClassDef 'CampaignBase' in backend-call-automation\app\models\campaign.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: CampaignCreate
+--------------------------------------------------------------------------------
+Line 11: Missing docstring for ClassDef 'CampaignCreate' in backend-call-automation\app\schemas\campaign.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+Line 92: Missing docstring for ClassDef 'CampaignCreate' in backend-call-automation\app\models\campaign.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: CampaignStatus
+--------------------------------------------------------------------------------
+Line 10: Missing docstring for ClassDef 'CampaignStatus' in backend-call-automation\app\models\campaign.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: CampaignType
+--------------------------------------------------------------------------------
+Line 18: Missing docstring for ClassDef 'CampaignType' in backend-call-automation\app\models\campaign.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: CampaignUpdate
+--------------------------------------------------------------------------------
+Line 46: Missing docstring for ClassDef 'CampaignUpdate' in backend-call-automation\app\schemas\campaign.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+Line 96: Missing docstring for ClassDef 'CampaignUpdate' in backend-call-automation\app\models\campaign.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: Client
+--------------------------------------------------------------------------------
+Line 27: Missing docstring for ClassDef 'Client' in backend-call-automation\app\schemas\client.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: ClientBase
+--------------------------------------------------------------------------------
+Line 9: Missing docstring for ClassDef 'ClientBase' in backend-call-automation\app\schemas\client.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: ClientCreate
+--------------------------------------------------------------------------------
+Line 16: Missing docstring for ClassDef 'ClientCreate' in backend-call-automation\app\schemas\client.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: ClientUpdate
+--------------------------------------------------------------------------------
+Line 20: Missing docstring for ClassDef 'ClientUpdate' in backend-call-automation\app\schemas\client.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: Config
+--------------------------------------------------------------------------------
+Line 32: Missing docstring for ClassDef 'Config' in backend-call-automation\app\schemas\client.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+Line 42: Missing docstring for ClassDef 'Config' in backend-call-automation\app\config\ai_config.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+Line 48: Missing docstring for ClassDef 'Config' in backend-call-automation\app\config\metrics_config.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: Contact
+--------------------------------------------------------------------------------
+Line 30: Missing docstring for ClassDef 'Contact' in backend-call-automation\app\models\contact.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: ContactBase
+--------------------------------------------------------------------------------
+Line 8: Missing docstring for ClassDef 'ContactBase' in backend-call-automation\app\models\contact.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: ContactCreate
+--------------------------------------------------------------------------------
+Line 18: Missing docstring for ClassDef 'ContactCreate' in backend-call-automation\app\models\contact.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: ContactList
+--------------------------------------------------------------------------------
+Line 43: Missing docstring for ClassDef 'ContactList' in backend-call-automation\app\models\contact.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: ContactListBase
+--------------------------------------------------------------------------------
+Line 34: Missing docstring for ClassDef 'ContactListBase' in backend-call-automation\app\models\contact.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: ContactListCreate
+--------------------------------------------------------------------------------
+Line 39: Missing docstring for ClassDef 'ContactListCreate' in backend-call-automation\app\models\contact.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: ContactUpdate
+--------------------------------------------------------------------------------
+Line 22: Missing docstring for ClassDef 'ContactUpdate' in backend-call-automation\app\models\contact.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: CounterWrapper
+--------------------------------------------------------------------------------
+Line 75: Missing docstring for ClassDef 'CounterWrapper' in backend-call-automation\app\services\monitoring_service.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: MockSupabase
+--------------------------------------------------------------------------------
+Line 57: Missing docstring for ClassDef 'MockSupabase' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: MockTwilio
+--------------------------------------------------------------------------------
+Line 46: Missing docstring for ClassDef 'MockTwilio' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: MockTwilioCall
+--------------------------------------------------------------------------------
+Line 17: Missing docstring for ClassDef 'MockTwilioCall' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: Settings
+--------------------------------------------------------------------------------
+Line 10: Missing docstring for ClassDef 'Settings' in backend-call-automation\app\config\settings.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: Span
+--------------------------------------------------------------------------------
+Line 110: Missing docstring for ClassDef 'Span' in backend-call-automation\app\services\monitoring_service.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: TestAIConversationService
+--------------------------------------------------------------------------------
+Line 30: Missing docstring for ClassDef 'TestAIConversationService' in backend-call-automation\tests\app\services\test_ai_conversation_service.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: TestCallService
+--------------------------------------------------------------------------------
+Line 170: Missing docstring for ClassDef 'TestCallService' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: TestElevenLabsService
+--------------------------------------------------------------------------------
+Line 17: Missing docstring for ClassDef 'TestElevenLabsService' in backend-call-automation\tests\app\services\test_elevenlabs_service.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: TestRedisClient
+--------------------------------------------------------------------------------
+Line 7: Missing docstring for ClassDef 'TestRedisClient' in backend-call-automation\tests\app\config\test_redis_client.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: TestRollbackUtils
+--------------------------------------------------------------------------------
+Line 103: Missing docstring for ClassDef 'TestRollbackUtils' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: TokenResponse
+--------------------------------------------------------------------------------
+Line 42: Missing docstring for ClassDef 'TokenResponse' in backend-call-automation\app\routers\auth_router.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: User
+--------------------------------------------------------------------------------
+Line 35: Missing docstring for ClassDef 'User' in backend-call-automation\app\models\user.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: UserBase
+--------------------------------------------------------------------------------
+Line 16: Missing docstring for ClassDef 'UserBase' in backend-call-automation\app\models\user.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: UserCreate
+--------------------------------------------------------------------------------
+Line 23: Missing docstring for ClassDef 'UserCreate' in backend-call-automation\app\models\user.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: UserLogin
+--------------------------------------------------------------------------------
+Line 23: Missing docstring for ClassDef 'UserLogin' in backend-call-automation\app\routers\auth_router.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: UserRegister
+--------------------------------------------------------------------------------
+Line 28: Missing docstring for ClassDef 'UserRegister' in backend-call-automation\app\routers\auth_router.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: UserResponse
+--------------------------------------------------------------------------------
+Line 35: Missing docstring for ClassDef 'UserResponse' in backend-call-automation\app\routers\auth_router.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: UserRole
+--------------------------------------------------------------------------------
+Line 10: Missing docstring for ClassDef 'UserRole' in backend-call-automation\app\models\user.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: UserUpdate
+--------------------------------------------------------------------------------
+Line 27: Missing docstring for ClassDef 'UserUpdate' in backend-call-automation\app\models\user.py
+Suggested template:
+    """Descripción de la clase."""
+
+
+
+File: __init__
+--------------------------------------------------------------------------------
+Line 12: Missing docstring for FunctionDef '__init__' in backend-call-automation\app\utils\connection_pool.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        max_size: Descripción del parámetro
+        timeout: Descripción del parámetro
+        max_retries: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+Line 17: Missing docstring for FunctionDef '__init__' in backend-call-automation\app\utils\logging_config.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        logger_name: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+Line 18: Missing docstring for FunctionDef '__init__' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        sid: Descripción del parámetro
+        status: Descripción del parámetro
+
+    """
+
+Line 20: Function '__init__' in backend-call-automation\app\config\secrets.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 21: Missing docstring for FunctionDef '__init__' in backend-call-automation\app\services\alert_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+Line 21: Function '__init__' in backend-call-automation\app\services\cache_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 22: Function '__init__' in backend-call-automation\app\services\twilio_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 23: Function '__init__' in backend-call-automation\app\services\campaign_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 25: Function '__init__' in backend-call-automation\app\middleware\error_handler.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 25: Missing docstring for FunctionDef '__init__' in backend-call-automation\app\services\ai_conversation_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        model_name: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+Line 25: Function '__init__' in backend-call-automation\app\services\fallback_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 27: Function '__init__' in backend-call-automation\app\services\auth_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 32: Function '__init__' in backend-call-automation\app\services\enhanced_ai_conversation_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 33: Function '__init__' in backend-call-automation\app\middleware\auth_middleware.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 36: Function '__init__' in backend-call-automation\app\services\campaign_scheduler.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 38: Function '__init__' in backend-call-automation\app\services\call_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 39: Function '__init__' in backend-call-automation\app\services\contact_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 40: Function '__init__' in backend-call-automation\app\services\elevenlabs_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 42: Function '__init__' in backend-call-automation\app\services\audio_cache_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 47: Missing docstring for FunctionDef '__init__' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+
+    """
+
+Line 58: Missing docstring for FunctionDef '__init__' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+
+    """
+
+Line 96: Missing docstring for FunctionDef '__init__' in backend-call-automation\app\services\monitoring_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+Line 116: Function '__init__' in backend-call-automation\app\utils\logging.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 140: Function '__init__' in backend-call-automation\app\services\monitoring_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: acquire
+--------------------------------------------------------------------------------
+Line 20: Function 'acquire' in backend-call-automation\app\utils\connection_pool.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: add_client_to_campaign_endpoint
+--------------------------------------------------------------------------------
+Line 67: Missing docstring for AsyncFunctionDef 'add_client_to_campaign_endpoint' in backend-call-automation\app\api\campaigns.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_id: Descripción del parámetro
+        client_id: Descripción del parámetro
+        db: Descripción del parámetro
+
+    """
+
+
+File: ai_service
+--------------------------------------------------------------------------------
+Line 24: Missing docstring for AsyncFunctionDef 'ai_service' in backend-call-automation\tests\app\services\test_ai_conversation_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_llm: Descripción del parámetro
+        mock_redis: Descripción del parámetro
+
+    """
+
+
+File: analyze_sentiment
+--------------------------------------------------------------------------------
+Line 107: Function 'analyze_sentiment' in backend-call-automation\app\services\ai_conversation_service.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        text: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: async_wrapper
+--------------------------------------------------------------------------------
+Line 215: Missing docstring for AsyncFunctionDef 'async_wrapper' in backend-call-automation\app\utils\logging.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: audio_websocket_endpoint
+--------------------------------------------------------------------------------
+Line 46: Function 'audio_websocket_endpoint' in backend-call-automation\app\api\endpoints\calls.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: backend-call-automation\api\routes.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\api\routes.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\__init__.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\__init__.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\api\campaigns.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\api\campaigns.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\api\endpoints\cache.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\api\endpoints\cache.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\api\endpoints\calls.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\api\endpoints\calls.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\config\ai_config.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\config\ai_config.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\config\campaign_prompts.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\config\campaign_prompts.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\config\dependencies.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\config\dependencies.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\config\redis_client.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\config\redis_client.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\config\secrets.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\config\secrets.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\config\settings.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\config\settings.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\main.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\main.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\models\__init__.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\models\__init__.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\models\base.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\models\base.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\models\campaign.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\models\campaign.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\models\contact.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\models\contact.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\models\user.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\models\user.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\routers\cache_router.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\routers\cache_router.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\routers\call_router.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\routers\call_router.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\routers\call_webhook.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\routers\call_webhook.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\routers\campaign_router.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\routers\campaign_router.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\schemas\call.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\schemas\call.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\schemas\campaign.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\schemas\campaign.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\schemas\client.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\schemas\client.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\services\campaign_scheduler.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\services\campaign_scheduler.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\services\metrics_service.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\services\metrics_service.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\utils\__init__.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\utils\__init__.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\utils\connection_pool.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\utils\connection_pool.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\utils\decorators.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\utils\decorators.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\app\utils\logging_config.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\app\utils\logging_config.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\scripts\validate_env.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\scripts\validate_env.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\setup.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\setup.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\__init__.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\__init__.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\__init__.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\__init__.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\config\__init__.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\config\__init__.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\config\test_redis_client.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\config\test_redis_client.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\config\test_settings.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\config\test_settings.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\models\__init__.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\models\__init__.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\models\test_campaign.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\models\test_campaign.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\routers\__init__.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\routers\__init__.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\routers\test_campaign_router.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\routers\test_campaign_router.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\services\__init__.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\services\__init__.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\services\test_ai_conversation_service.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\services\test_ai_conversation_service.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\services\test_call_service.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\services\test_campaign_scheduler.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\services\test_campaign_scheduler.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\services\test_campaign_service.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\services\test_campaign_service.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\services\test_elevenlabs_service.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\services\test_elevenlabs_service.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\app\utils\__init__.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\app\utils\__init__.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\conftest.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\conftest.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\integration\test_elevenlabs_integration.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\integration\test_elevenlabs_integration.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\test_rollback_utils.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: backend-call-automation\tests\test_services\test_call_service.py
+--------------------------------------------------------------------------------
+Line 1: Missing module docstring in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción del módulo."""
+
+
+
+File: call_service
+--------------------------------------------------------------------------------
+Line 18: Missing docstring for FunctionDef 'call_service' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_supabase: Descripción del parámetro
+
+    """
+
+
+File: call_status_webhook
+--------------------------------------------------------------------------------
+Line 201: Function 'call_status_webhook' in backend-call-automation\app\routers\twilio_webhook_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        request: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: campaign_scheduler
+--------------------------------------------------------------------------------
+Line 30: Missing docstring for FunctionDef 'campaign_scheduler' in backend-call-automation\tests\app\services\test_campaign_scheduler.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_campaign_service: Descripción del parámetro
+        mock_call_service: Descripción del parámetro
+        mock_contact_service: Descripción del parámetro
+
+    """
+
+
+File: cancel_call
+--------------------------------------------------------------------------------
+Line 155: Function 'cancel_call' in backend-call-automation\app\routers\call_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        call_id: Descripción del parámetro
+        reason: Descripción del parámetro
+        call_service: Descripción del parámetro
+        twilio_service: Descripción del parámetro
+
+
+
+File: check_quality_thresholds
+--------------------------------------------------------------------------------
+Line 107: Function 'check_quality_thresholds' in backend-call-automation\app\services\alert_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: clear_cache
+--------------------------------------------------------------------------------
+Line 31: Function 'clear_cache' in backend-call-automation\app\routers\cache_router.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: close_conversation
+--------------------------------------------------------------------------------
+Line 527: Function 'close_conversation' in backend-call-automation\app\services\elevenlabs_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: create_call
+--------------------------------------------------------------------------------
+Line 17: Function 'create_call' in backend-call-automation\app\routers\call_router.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        call: Descripción del parámetro
+        supabase_client: Descripción del parámetro
+        twilio_service: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: create_campaign
+--------------------------------------------------------------------------------
+Line 16: Function 'create_campaign' in backend-call-automation\app\routers\campaign_router.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        campaign: Descripción del parámetro
+        supabase_client: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: create_campaign_endpoint
+--------------------------------------------------------------------------------
+Line 23: Missing docstring for AsyncFunctionDef 'create_campaign_endpoint' in backend-call-automation\app\api\campaigns.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign: Descripción del parámetro
+        db: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+
+File: decorator
+--------------------------------------------------------------------------------
+Line 20: Missing docstring for FunctionDef 'decorator' in backend-call-automation\app\utils\decorators.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        func: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+Line 213: Missing docstring for FunctionDef 'decorator' in backend-call-automation\app\utils\logging.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        func: Descripción del parámetro
+
+    """
+
+
+File: delete_campaign
+--------------------------------------------------------------------------------
+Line 98: Function 'delete_campaign' in backend-call-automation\app\routers\campaign_router.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        campaign_id: Descripción del parámetro
+        supabase_client: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: delete_campaign_endpoint
+--------------------------------------------------------------------------------
+Line 59: Missing docstring for AsyncFunctionDef 'delete_campaign_endpoint' in backend-call-automation\app\api\campaigns.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_id: Descripción del parámetro
+        db: Descripción del parámetro
+
+    """
+
+
+File: elevenlabs_service
+--------------------------------------------------------------------------------
+Line 10: Missing docstring for AsyncFunctionDef 'elevenlabs_service' in backend-call-automation\tests\app\services\test_elevenlabs_service.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: end_must_be_after_start
+--------------------------------------------------------------------------------
+Line 77: Missing docstring for FunctionDef 'end_must_be_after_start' in backend-call-automation\app\models\campaign.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        v: Descripción del parámetro
+        info: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+
+File: eq
+--------------------------------------------------------------------------------
+Line 102: Missing docstring for FunctionDef 'eq' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        column: Descripción del parámetro
+        value: Descripción del parámetro
+
+    """
+
+
+File: execute
+--------------------------------------------------------------------------------
+Line 114: Missing docstring for AsyncFunctionDef 'execute' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+
+    """
+
+
+File: expand_cache_size
+--------------------------------------------------------------------------------
+Line 136: Function 'expand_cache_size' in backend-call-automation\app\services\cache_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: export_call_history
+--------------------------------------------------------------------------------
+Line 205: Function 'export_call_history' in backend-call-automation\app\routers\report_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        campaign_id: Descripción del parámetro
+        start_date: Descripción del parámetro
+        end_date: Descripción del parámetro
+        format: Descripción del parámetro
+        call_service: Descripción del parámetro
+        campaign_service: Descripción del parámetro
+        contact_service: Descripción del parámetro
+
+
+
+File: force_sync
+--------------------------------------------------------------------------------
+Line 22: Function 'force_sync' in backend-call-automation\app\routers\cache_router.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        table_name: Descripción del parámetro
+        key_prefix: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: from_
+--------------------------------------------------------------------------------
+Line 77: Missing docstring for FunctionDef 'from_' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        table: Descripción del parámetro
+
+    """
+
+
+File: gauge
+--------------------------------------------------------------------------------
+Line 49: Function 'gauge' in backend-call-automation\app\services\monitoring_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: generate_conversation_cache_key
+--------------------------------------------------------------------------------
+Line 14: Function 'generate_conversation_cache_key' in backend-call-automation\app\config\redis_client.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: get_cache_metrics
+--------------------------------------------------------------------------------
+Line 16: Function 'get_cache_metrics' in backend-call-automation\app\routers\cache_router.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: get_call
+--------------------------------------------------------------------------------
+Line 51: Function 'get_call' in backend-call-automation\app\routers\call_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        call_id: Descripción del parámetro
+        include_recordings: Descripción del parámetro
+        include_transcripts: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: get_call_history
+--------------------------------------------------------------------------------
+Line 153: Function 'get_call_history' in backend-call-automation\app\routers\report_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        campaign_id: Descripción del parámetro
+        contact_id: Descripción del parámetro
+        start_date: Descripción del parámetro
+        end_date: Descripción del parámetro
+        page: Descripción del parámetro
+        page_size: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: get_call_metrics
+--------------------------------------------------------------------------------
+Line 212: Function 'get_call_metrics' in backend-call-automation\app\routers\call_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        campaign_id: Descripción del parámetro
+        start_date: Descripción del parámetro
+        end_date: Descripción del parámetro
+        group_by: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: get_call_service
+--------------------------------------------------------------------------------
+Line 44: Function 'get_call_service' in backend-call-automation\app\config\dependencies.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        supabase: Descripción del parámetro
+        twilio: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: get_campaign
+--------------------------------------------------------------------------------
+Line 40: Function 'get_campaign' in backend-call-automation\app\routers\campaign_router.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        campaign_id: Descripción del parámetro
+        supabase_client: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: get_campaign_endpoint
+--------------------------------------------------------------------------------
+Line 30: Missing docstring for AsyncFunctionDef 'get_campaign_endpoint' in backend-call-automation\app\api\campaigns.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_id: Descripción del parámetro
+        db: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+
+File: get_campaign_scheduler
+--------------------------------------------------------------------------------
+Line 62: Function 'get_campaign_scheduler' in backend-call-automation\app\config\dependencies.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        campaign_service: Descripción del parámetro
+        call_service: Descripción del parámetro
+        contact_service: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: get_campaign_service
+--------------------------------------------------------------------------------
+Line 36: Function 'get_campaign_service' in backend-call-automation\app\config\dependencies.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: get_campaign_summary
+--------------------------------------------------------------------------------
+Line 28: Function 'get_campaign_summary' in backend-call-automation\app\routers\report_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        campaign_id: Descripción del parámetro
+        campaign_service: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: get_campaigns_performance
+--------------------------------------------------------------------------------
+Line 88: Function 'get_campaigns_performance' in backend-call-automation\app\routers\report_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        start_date: Descripción del parámetro
+        end_date: Descripción del parámetro
+        limit: Descripción del parámetro
+        campaign_service: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: get_from_cache
+--------------------------------------------------------------------------------
+Line 184: Function 'get_from_cache' in backend-call-automation\app\services\ai_conversation_service.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        key: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: get_performance_metrics
+--------------------------------------------------------------------------------
+Line 284: Function 'get_performance_metrics' in backend-call-automation\app\routers\report_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        start_date: Descripción del parámetro
+        end_date: Descripción del parámetro
+        campaign_id: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: get_settings
+--------------------------------------------------------------------------------
+Line 97: Function 'get_settings' in backend-call-automation\app\config\settings.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: get_supabase_client
+--------------------------------------------------------------------------------
+Line 20: Function 'get_supabase_client' in backend-call-automation\app\config\dependencies.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: get_twilio_service
+--------------------------------------------------------------------------------
+Line 28: Function 'get_twilio_service' in backend-call-automation\app\config\dependencies.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: handle_call_end
+--------------------------------------------------------------------------------
+Line 115: Function 'handle_call_end' in backend-call-automation\app\services\call_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: handle_call_response
+--------------------------------------------------------------------------------
+Line 329: Function 'handle_call_response' in backend-call-automation\app\routers\call_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        call_id: Descripción del parámetro
+        message: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: handle_call_webhook
+--------------------------------------------------------------------------------
+Line 22: Function 'handle_call_webhook' in backend-call-automation\app\routers\call_webhook.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        request: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: handle_failure
+--------------------------------------------------------------------------------
+Line 60: Function 'handle_failure' in backend-call-automation\app\services\fallback_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: handle_streaming_error
+--------------------------------------------------------------------------------
+Line 224: Function 'handle_streaming_error' in backend-call-automation\app\services\call_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: histogram
+--------------------------------------------------------------------------------
+Line 33: Function 'histogram' in backend-call-automation\app\services\monitoring_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: inc
+--------------------------------------------------------------------------------
+Line 76: Function 'inc' in backend-call-automation\app\services\monitoring_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: initiate_outbound_call
+--------------------------------------------------------------------------------
+Line 54: Function 'initiate_outbound_call' in backend-call-automation\app\services\call_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: insert
+--------------------------------------------------------------------------------
+Line 90: Missing docstring for FunctionDef 'insert' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        data: Descripción del parámetro
+
+    """
+
+
+File: lifespan
+--------------------------------------------------------------------------------
+Line 37: Missing docstring for AsyncFunctionDef 'lifespan' in backend-call-automation\app\main.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        app: Descripción del parámetro
+
+    """
+
+
+File: list_calls
+--------------------------------------------------------------------------------
+Line 75: Function 'list_calls' in backend-call-automation\app\routers\call_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        campaign_id: Descripción del parámetro
+        status: Descripción del parámetro
+        contact_id: Descripción del parámetro
+        start_date: Descripción del parámetro
+        end_date: Descripción del parámetro
+        page: Descripción del parámetro
+        page_size: Descripción del parámetro
+        sort_by: Descripción del parámetro
+        sort_order: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+Line 682: Function 'list_calls' in backend-call-automation\app\services\call_service.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        campaign_id: Descripción del parámetro
+        status: Descripción del parámetro
+        skip: Descripción del parámetro
+        limit: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: list_campaigns
+--------------------------------------------------------------------------------
+Line 40: Missing docstring for AsyncFunctionDef 'list_campaigns' in backend-call-automation\app\api\campaigns.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        skip: Descripción del parámetro
+        limit: Descripción del parámetro
+        db: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+Line 49: Function 'list_campaigns' in backend-call-automation\app\routers\campaign_router.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        page: Descripción del parámetro
+        page_size: Descripción del parámetro
+        status: Descripción del parámetro
+        start_date: Descripción del parámetro
+        end_date: Descripción del parámetro
+        supabase_client: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: log_api_call
+--------------------------------------------------------------------------------
+Line 43: Function 'log_api_call' in backend-call-automation\app\utils\logging_config.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        method: Descripción del parámetro
+        params: Descripción del parámetro
+        duration: Descripción del parámetro
+        success: Descripción del parámetro
+        response_info: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: log_error
+--------------------------------------------------------------------------------
+Line 87: Function 'log_error' in backend-call-automation\app\utils\logging_config.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        method: Descripción del parámetro
+        error: Descripción del parámetro
+        context: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: log_info
+--------------------------------------------------------------------------------
+Line 103: Function 'log_info' in backend-call-automation\app\utils\logging_config.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        method: Descripción del parámetro
+        message: Descripción del parámetro
+        context: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: log_warning
+--------------------------------------------------------------------------------
+Line 108: Function 'log_warning' in backend-call-automation\app\utils\logging_config.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        method: Descripción del parámetro
+        message: Descripción del parámetro
+        context: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: make_call
+--------------------------------------------------------------------------------
+Line 13: Missing docstring for AsyncFunctionDef 'make_call' in backend-call-automation\api\routes.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        data: Descripción del parámetro
+
+    """
+
+
+File: mock_call_service
+--------------------------------------------------------------------------------
+Line 20: Missing docstring for FunctionDef 'mock_call_service' in backend-call-automation\tests\app\services\test_campaign_scheduler.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: mock_campaign_service
+--------------------------------------------------------------------------------
+Line 15: Missing docstring for FunctionDef 'mock_campaign_service' in backend-call-automation\tests\app\services\test_campaign_scheduler.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: mock_contact_service
+--------------------------------------------------------------------------------
+Line 25: Missing docstring for FunctionDef 'mock_contact_service' in backend-call-automation\tests\app\services\test_campaign_scheduler.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: mock_llm
+--------------------------------------------------------------------------------
+Line 9: Missing docstring for AsyncFunctionDef 'mock_llm' in backend-call-automation\tests\app\services\test_ai_conversation_service.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: mock_redis
+--------------------------------------------------------------------------------
+Line 16: Missing docstring for AsyncFunctionDef 'mock_redis' in backend-call-automation\tests\app\services\test_ai_conversation_service.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: mock_scan_iter_impl
+--------------------------------------------------------------------------------
+Line 55: Missing docstring for AsyncFunctionDef 'mock_scan_iter_impl' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+Line 146: Missing docstring for AsyncFunctionDef 'mock_scan_iter_impl' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: mock_supabase
+--------------------------------------------------------------------------------
+Line 13: Missing docstring for FunctionDef 'mock_supabase' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: mock_supabase_client
+--------------------------------------------------------------------------------
+Line 56: Missing docstring for FunctionDef 'mock_supabase_client' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: mock_twilio_client
+--------------------------------------------------------------------------------
+Line 45: Missing docstring for FunctionDef 'mock_twilio_client' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: monitor_error_rates
+--------------------------------------------------------------------------------
+Line 163: Function 'monitor_error_rates' in backend-call-automation\app\services\alert_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: normalize_cache_settings
+--------------------------------------------------------------------------------
+Line 146: Function 'normalize_cache_settings' in backend-call-automation\app\services\cache_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: optimize_cache_usage
+--------------------------------------------------------------------------------
+Line 122: Function 'optimize_cache_usage' in backend-call-automation\app\services\cache_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: preload_conversation
+--------------------------------------------------------------------------------
+Line 40: Function 'preload_conversation' in backend-call-automation\app\routers\cache_router.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: process_message
+--------------------------------------------------------------------------------
+Line 44: Function 'process_message' in backend-call-automation\app\services\ai_conversation_service.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        message: Descripción del parámetro
+        conversation_id: Descripción del parámetro
+        context: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: record_call_metrics
+--------------------------------------------------------------------------------
+Line 145: Function 'record_call_metrics' in backend-call-automation\app\services\monitoring_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: record_conversation_metrics
+--------------------------------------------------------------------------------
+Line 101: Function 'record_conversation_metrics' in backend-call-automation\app\services\metrics_service.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        conversation_id: Descripción del parámetro
+        metrics: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: record_metrics
+--------------------------------------------------------------------------------
+Line 42: Function 'record_metrics' in backend-call-automation\app\services\metrics_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: record_success
+--------------------------------------------------------------------------------
+Line 137: Function 'record_success' in backend-call-automation\app\services\fallback_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: reduce_ttl
+--------------------------------------------------------------------------------
+Line 141: Function 'reduce_ttl' in backend-call-automation\app\services\cache_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: release
+--------------------------------------------------------------------------------
+Line 37: Function 'release' in backend-call-automation\app\utils\connection_pool.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: reschedule_call
+--------------------------------------------------------------------------------
+Line 186: Function 'reschedule_call' in backend-call-automation\app\routers\call_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        call_id: Descripción del parámetro
+        scheduled_time: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: retry_func
+--------------------------------------------------------------------------------
+Line 33: Missing docstring for AsyncFunctionDef 'retry_func' in backend-call-automation\app\utils\decorators.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: root
+--------------------------------------------------------------------------------
+Line 99: Missing docstring for AsyncFunctionDef 'root' in backend-call-automation\app\main.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: sample_campaign_data
+--------------------------------------------------------------------------------
+Line 17: Missing docstring for FunctionDef 'sample_campaign_data' in backend-call-automation\tests\app\models\test_campaign.py
+Suggested template:
+    """Descripción de la función.
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+
+File: save_conversation_metrics
+--------------------------------------------------------------------------------
+Line 129: Function 'save_conversation_metrics' in backend-call-automation\app\services\ai_conversation_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: save_metrics_to_db
+--------------------------------------------------------------------------------
+Line 160: Function 'save_metrics_to_db' in backend-call-automation\app\services\ai_conversation_service.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        interaction_data: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: select
+--------------------------------------------------------------------------------
+Line 85: Missing docstring for FunctionDef 'select' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+
+    """
+
+
+File: send_alert
+--------------------------------------------------------------------------------
+Line 29: Function 'send_alert' in backend-call-automation\app\services\alert_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: set_attribute
+--------------------------------------------------------------------------------
+Line 120: Function 'set_attribute' in backend-call-automation\app\services\monitoring_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: set_in_cache
+--------------------------------------------------------------------------------
+Line 190: Function 'set_in_cache' in backend-call-automation\app\services\ai_conversation_service.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        key: Descripción del parámetro
+        value: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: set_responses
+--------------------------------------------------------------------------------
+Line 67: Missing docstring for FunctionDef 'set_responses' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+
+    """
+
+
+File: setup_app_logging
+--------------------------------------------------------------------------------
+Line 346: Function 'setup_app_logging' in backend-call-automation\app\utils\logging.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: setup_auth_middleware
+--------------------------------------------------------------------------------
+Line 155: Function 'setup_auth_middleware' in backend-call-automation\app\middleware\auth_middleware.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: setup_error_handling
+--------------------------------------------------------------------------------
+Line 180: Function 'setup_error_handling' in backend-call-automation\app\middleware\error_handler.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: shutdown_event
+--------------------------------------------------------------------------------
+Line 374: Missing docstring for AsyncFunctionDef 'shutdown_event' in backend-call-automation\app\utils\logging.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: single
+--------------------------------------------------------------------------------
+Line 109: Missing docstring for FunctionDef 'single' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+
+    """
+
+
+File: start_call
+--------------------------------------------------------------------------------
+Line 139: Function 'start_call' in backend-call-automation\app\services\call_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: start_sync_task
+--------------------------------------------------------------------------------
+Line 39: Function 'start_sync_task' in backend-call-automation\app\services\cache_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: startup_event
+--------------------------------------------------------------------------------
+Line 364: Missing docstring for AsyncFunctionDef 'startup_event' in backend-call-automation\app\utils\logging.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: stop_sync_task
+--------------------------------------------------------------------------------
+Line 48: Function 'stop_sync_task' in backend-call-automation\app\services\cache_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: sync_wrapper
+--------------------------------------------------------------------------------
+Line 277: Missing docstring for FunctionDef 'sync_wrapper' in backend-call-automation\app\utils\logging.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: test_apply_default_config
+--------------------------------------------------------------------------------
+Line 276: Missing docstring for AsyncFunctionDef 'test_apply_default_config' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_settings_object: Descripción del parámetro
+
+    """
+
+
+File: test_audio_generation_flow
+--------------------------------------------------------------------------------
+Line 77: Function 'test_audio_generation_flow' in backend-call-automation\tests\integration\test_elevenlabs_integration.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mocked_elevenlabs_service: Descripción del parámetro
+        metrics_text: Descripción del parámetro
+
+
+
+File: test_campaign
+--------------------------------------------------------------------------------
+Line 24: Missing docstring for FunctionDef 'test_campaign' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+Line 97: Missing docstring for FunctionDef 'test_campaign' in backend-call-automation\tests\app\models\test_campaign.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        sample_campaign_data: Descripción del parámetro
+
+    """
+
+
+File: test_campaign_base
+--------------------------------------------------------------------------------
+Line 42: Missing docstring for FunctionDef 'test_campaign_base' in backend-call-automation\tests\app\models\test_campaign.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        sample_campaign_data: Descripción del parámetro
+
+    """
+
+
+File: test_campaign_create
+--------------------------------------------------------------------------------
+Line 67: Missing docstring for FunctionDef 'test_campaign_create' in backend-call-automation\tests\app\models\test_campaign.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        sample_campaign_data: Descripción del parámetro
+
+    """
+
+
+File: test_campaign_stats_update
+--------------------------------------------------------------------------------
+Line 555: Missing docstring for AsyncFunctionDef 'test_campaign_stats_update' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_supabase_client: Descripción del parámetro
+
+    """
+
+
+File: test_campaign_update
+--------------------------------------------------------------------------------
+Line 89: Missing docstring for FunctionDef 'test_campaign_update' in backend-call-automation\tests\app\models\test_campaign.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        sample_campaign_data: Descripción del parámetro
+
+    """
+
+
+File: test_campaign_validation
+--------------------------------------------------------------------------------
+Line 879: Function 'test_campaign_validation' in backend-call-automation\tests\app\services\test_call_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+        test_campaign: Descripción del parámetro
+
+
+
+File: test_clear_redis_cache_async_found
+--------------------------------------------------------------------------------
+Line 145: Missing docstring for AsyncFunctionDef 'test_clear_redis_cache_async_found' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_redis_async: Descripción del parámetro
+
+    """
+
+
+File: test_clear_redis_cache_async_not_found
+--------------------------------------------------------------------------------
+Line 162: Missing docstring for AsyncFunctionDef 'test_clear_redis_cache_async_not_found' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_redis_async: Descripción del parámetro
+
+    """
+
+
+File: test_clear_redis_cache_sync_found
+--------------------------------------------------------------------------------
+Line 125: Missing docstring for AsyncFunctionDef 'test_clear_redis_cache_sync_found' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_redis_sync: Descripción del parámetro
+
+    """
+
+
+File: test_clear_redis_cache_sync_not_found
+--------------------------------------------------------------------------------
+Line 136: Missing docstring for AsyncFunctionDef 'test_clear_redis_cache_sync_not_found' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_redis_sync: Descripción del parámetro
+
+    """
+
+
+File: test_close_all_connections_uses_close_all
+--------------------------------------------------------------------------------
+Line 195: Missing docstring for AsyncFunctionDef 'test_close_all_connections_uses_close_all' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_connection_pool: Descripción del parámetro
+
+    """
+
+
+File: test_close_all_connections_uses_fallback
+--------------------------------------------------------------------------------
+Line 204: Missing docstring for AsyncFunctionDef 'test_close_all_connections_uses_fallback' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_connection_pool: Descripción del parámetro
+
+    """
+
+
+File: test_complete_call_flow
+--------------------------------------------------------------------------------
+Line 594: Function 'test_complete_call_flow' in backend-call-automation\tests\app\services\test_call_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+
+
+
+File: test_concurrent_requests
+--------------------------------------------------------------------------------
+Line 134: Function 'test_concurrent_requests' in backend-call-automation\tests\integration\test_elevenlabs_integration.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mocked_elevenlabs_service: Descripción del parámetro
+
+
+
+File: test_context_handling
+--------------------------------------------------------------------------------
+Line 83: Function 'test_context_handling' in backend-call-automation\tests\app\services\test_ai_conversation_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        ai_service: Descripción del parámetro
+
+
+
+File: test_conversation_caching
+--------------------------------------------------------------------------------
+Line 71: Function 'test_conversation_caching' in backend-call-automation\tests\app\services\test_ai_conversation_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        ai_service: Descripción del parámetro
+        mock_redis: Descripción del parámetro
+
+
+
+File: test_create_call
+--------------------------------------------------------------------------------
+Line 220: Missing docstring for AsyncFunctionDef 'test_create_call' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+Line 223: Function 'test_create_call' in backend-call-automation\tests\app\services\test_call_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+        test_campaign: Descripción del parámetro
+
+
+
+File: test_create_campaign
+--------------------------------------------------------------------------------
+Line 14: Missing docstring for AsyncFunctionDef 'test_create_campaign' in backend-call-automation\tests\app\services\test_campaign_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_service: Descripción del parámetro
+        mock_campaign_data: Descripción del parámetro
+
+    """
+
+
+File: test_delete_call_not_found
+--------------------------------------------------------------------------------
+Line 392: Missing docstring for AsyncFunctionDef 'test_delete_call_not_found' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_delete_call_success
+--------------------------------------------------------------------------------
+Line 361: Missing docstring for AsyncFunctionDef 'test_delete_call_success' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_delete_campaign
+--------------------------------------------------------------------------------
+Line 75: Missing docstring for AsyncFunctionDef 'test_delete_campaign' in backend-call-automation\tests\app\services\test_campaign_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_service: Descripción del parámetro
+        mock_campaign_data: Descripción del parámetro
+
+    """
+
+
+File: test_error_handling
+--------------------------------------------------------------------------------
+Line 61: Function 'test_error_handling' in backend-call-automation\tests\app\services\test_ai_conversation_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        ai_service: Descripción del parámetro
+        mock_llm: Descripción del parámetro
+
+
+
+File: test_error_scenarios
+--------------------------------------------------------------------------------
+Line 750: Function 'test_error_scenarios' in backend-call-automation\tests\app\services\test_call_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+        test_campaign: Descripción del parámetro
+
+
+
+File: test_filter_by_date_range
+--------------------------------------------------------------------------------
+Line 55: Missing docstring for FunctionDef 'test_filter_by_date_range' in backend-call-automation\tests\app\routers\test_campaign_router.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        test_client: Descripción del parámetro
+
+    """
+
+
+File: test_filter_by_status
+--------------------------------------------------------------------------------
+Line 31: Missing docstring for FunctionDef 'test_filter_by_status' in backend-call-automation\tests\app\routers\test_campaign_router.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        test_client: Descripción del parámetro
+
+    """
+
+
+File: test_generate_audio_failure
+--------------------------------------------------------------------------------
+Line 86: Function 'test_generate_audio_failure' in backend-call-automation\tests\app\services\test_elevenlabs_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        elevenlabs_service: Descripción del parámetro
+
+
+
+File: test_generate_audio_success
+--------------------------------------------------------------------------------
+Line 74: Function 'test_generate_audio_success' in backend-call-automation\tests\app\services\test_elevenlabs_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        elevenlabs_service: Descripción del parámetro
+
+
+
+File: test_generate_response_integration
+--------------------------------------------------------------------------------
+Line 191: Function 'test_generate_response_integration' in backend-call-automation\tests\integration\test_elevenlabs_integration.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mocked_elevenlabs_service: Descripción del parámetro
+
+
+
+File: test_get_call
+--------------------------------------------------------------------------------
+Line 265: Missing docstring for AsyncFunctionDef 'test_get_call' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+        test_campaign: Descripción del parámetro
+
+    """
+
+
+File: test_get_call_by_twilio_sid_not_found
+--------------------------------------------------------------------------------
+Line 427: Missing docstring for AsyncFunctionDef 'test_get_call_by_twilio_sid_not_found' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_get_call_by_twilio_sid_success
+--------------------------------------------------------------------------------
+Line 407: Missing docstring for AsyncFunctionDef 'test_get_call_by_twilio_sid_success' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_get_call_metrics
+--------------------------------------------------------------------------------
+Line 409: Missing docstring for AsyncFunctionDef 'test_get_call_metrics' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+        test_campaign: Descripción del parámetro
+
+    """
+
+Line 464: Missing docstring for AsyncFunctionDef 'test_get_call_metrics' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_supabase_client: Descripción del parámetro
+
+    """
+
+Line 851: Function 'test_get_call_metrics' in backend-call-automation\tests\app\services\test_call_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+        test_campaign: Descripción del parámetro
+
+
+
+File: test_get_call_not_found
+--------------------------------------------------------------------------------
+Line 293: Missing docstring for AsyncFunctionDef 'test_get_call_not_found' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_get_call_success
+--------------------------------------------------------------------------------
+Line 267: Missing docstring for AsyncFunctionDef 'test_get_call_success' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_get_campaign
+--------------------------------------------------------------------------------
+Line 31: Missing docstring for AsyncFunctionDef 'test_get_campaign' in backend-call-automation\tests\app\services\test_campaign_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_service: Descripción del parámetro
+        mock_campaign_data: Descripción del parámetro
+
+    """
+
+
+File: test_get_nonexistent_campaign
+--------------------------------------------------------------------------------
+Line 39: Missing docstring for AsyncFunctionDef 'test_get_nonexistent_campaign' in backend-call-automation\tests\app\services\test_campaign_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_service: Descripción del parámetro
+
+    """
+
+
+File: test_get_voice_for_call
+--------------------------------------------------------------------------------
+Line 112: Missing docstring for AsyncFunctionDef 'test_get_voice_for_call' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_get_voice_for_call_fallback_to_default
+--------------------------------------------------------------------------------
+Line 127: Missing docstring for AsyncFunctionDef 'test_get_voice_for_call_fallback_to_default' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+        monkeypatch: Descripción del parámetro
+
+    """
+
+
+File: test_handle_audio_stream_success
+--------------------------------------------------------------------------------
+Line 163: Missing docstring for AsyncFunctionDef 'test_handle_audio_stream_success' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_handle_call_end_success
+--------------------------------------------------------------------------------
+Line 98: Missing docstring for AsyncFunctionDef 'test_handle_call_end_success' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_handle_call_response_audio_version_success
+--------------------------------------------------------------------------------
+Line 445: Missing docstring for AsyncFunctionDef 'test_handle_call_response_audio_version_success' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_handle_call_response_success
+--------------------------------------------------------------------------------
+Line 56: Missing docstring for AsyncFunctionDef 'test_handle_call_response_success' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_handle_call_response_with_error
+--------------------------------------------------------------------------------
+Line 80: Missing docstring for AsyncFunctionDef 'test_handle_call_response_with_error' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_handle_webhook_error
+--------------------------------------------------------------------------------
+Line 788: Function 'test_handle_webhook_error' in backend-call-automation\tests\app\services\test_call_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+
+
+
+File: test_handle_webhook_not_found
+--------------------------------------------------------------------------------
+Line 804: Function 'test_handle_webhook_not_found' in backend-call-automation\tests\app\services\test_call_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+
+
+
+File: test_handle_webhooks
+--------------------------------------------------------------------------------
+Line 172: Function 'test_handle_webhooks' in backend-call-automation\tests\app\services\test_call_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+        test_campaign: Descripción del parámetro
+
+
+
+File: test_initiate_outbound_call_error
+--------------------------------------------------------------------------------
+Line 45: Function 'test_initiate_outbound_call_error' in backend-call-automation\tests\app\services\test_elevenlabs_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        elevenlabs_service: Descripción del parámetro
+
+
+
+File: test_initiate_outbound_call_failure
+--------------------------------------------------------------------------------
+Line 42: Missing docstring for AsyncFunctionDef 'test_initiate_outbound_call_failure' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_initiate_outbound_call_success
+--------------------------------------------------------------------------------
+Line 18: Function 'test_initiate_outbound_call_success' in backend-call-automation\tests\app\services\test_elevenlabs_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        elevenlabs_service: Descripción del parámetro
+
+
+Line 28: Missing docstring for AsyncFunctionDef 'test_initiate_outbound_call_success' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_initiate_outbound_call_with_prompt
+--------------------------------------------------------------------------------
+Line 59: Function 'test_initiate_outbound_call_with_prompt' in backend-call-automation\tests\app\services\test_elevenlabs_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        elevenlabs_service: Descripción del parámetro
+
+
+
+File: test_invalid_calling_hours
+--------------------------------------------------------------------------------
+Line 140: Missing docstring for FunctionDef 'test_invalid_calling_hours' in backend-call-automation\tests\app\models\test_campaign.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: test_invalid_campaign_stats
+--------------------------------------------------------------------------------
+Line 96: Missing docstring for AsyncFunctionDef 'test_invalid_campaign_stats' in backend-call-automation\tests\app\services\test_campaign_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_service: Descripción del parámetro
+        mock_campaign_data: Descripción del parámetro
+
+    """
+
+
+File: test_invalid_campaign_status
+--------------------------------------------------------------------------------
+Line 108: Missing docstring for FunctionDef 'test_invalid_campaign_status' in backend-call-automation\tests\app\models\test_campaign.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: test_invalid_dates
+--------------------------------------------------------------------------------
+Line 124: Missing docstring for FunctionDef 'test_invalid_dates' in backend-call-automation\tests\app\models\test_campaign.py
+Suggested template:
+    """Descripción de la función.
+
+    """
+
+
+File: test_list_calls
+--------------------------------------------------------------------------------
+Line 300: Function 'test_list_calls' in backend-call-automation\tests\app\services\test_call_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+        test_campaign: Descripción del parámetro
+
+
+
+File: test_list_campaigns_with_filters
+--------------------------------------------------------------------------------
+Line 56: Missing docstring for AsyncFunctionDef 'test_list_campaigns_with_filters' in backend-call-automation\tests\app\services\test_campaign_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_service: Descripción del parámetro
+        mock_campaign_data: Descripción del parámetro
+
+    """
+
+
+File: test_list_campaigns_with_pagination
+--------------------------------------------------------------------------------
+Line 46: Missing docstring for AsyncFunctionDef 'test_list_campaigns_with_pagination' in backend-call-automation\tests\app\services\test_campaign_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_service: Descripción del parámetro
+        mock_campaign_data: Descripción del parámetro
+
+    """
+
+
+File: test_metrics_on_error
+--------------------------------------------------------------------------------
+Line 111: Function 'test_metrics_on_error' in backend-call-automation\tests\integration\test_elevenlabs_integration.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mocked_elevenlabs_service: Descripción del parámetro
+        metrics_text: Descripción del parámetro
+
+
+
+File: test_pagination
+--------------------------------------------------------------------------------
+Line 8: Missing docstring for FunctionDef 'test_pagination' in backend-call-automation\tests\app\routers\test_campaign_router.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        test_client: Descripción del parámetro
+
+    """
+
+
+File: test_process_active_campaigns
+--------------------------------------------------------------------------------
+Line 48: Missing docstring for AsyncFunctionDef 'test_process_active_campaigns' in backend-call-automation\tests\app\services\test_campaign_scheduler.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_scheduler: Descripción del parámetro
+        mock_campaign_service: Descripción del parámetro
+        mock_contact_service: Descripción del parámetro
+
+    """
+
+
+File: test_process_message_basic
+--------------------------------------------------------------------------------
+Line 32: Function 'test_process_message_basic' in backend-call-automation\tests\app\services\test_ai_conversation_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        ai_service: Descripción del parámetro
+
+
+
+File: test_reset_prometheus_metrics_specific_and_missing
+--------------------------------------------------------------------------------
+Line 186: Missing docstring for AsyncFunctionDef 'test_reset_prometheus_metrics_specific_and_missing' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_prometheus_registry: Descripción del parámetro
+
+    """
+
+
+File: test_reset_prometheus_metrics_unregisters
+--------------------------------------------------------------------------------
+Line 169: Missing docstring for AsyncFunctionDef 'test_reset_prometheus_metrics_unregisters' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_prometheus_registry: Descripción del parámetro
+
+    """
+
+
+File: test_restore_config_from_snapshot
+--------------------------------------------------------------------------------
+Line 218: Missing docstring for AsyncFunctionDef 'test_restore_config_from_snapshot' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_settings_object: Descripción del parámetro
+        manage_snapshot_file: Descripción del parámetro
+
+    """
+
+
+File: test_restore_config_to_defaults_no_snapshot
+--------------------------------------------------------------------------------
+Line 242: Missing docstring for AsyncFunctionDef 'test_restore_config_to_defaults_no_snapshot' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_settings_object: Descripción del parámetro
+        manage_snapshot_file: Descripción del parámetro
+
+    """
+
+
+File: test_restore_config_to_defaults_snapshot_error
+--------------------------------------------------------------------------------
+Line 263: Missing docstring for AsyncFunctionDef 'test_restore_config_to_defaults_snapshot_error' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_settings_object: Descripción del parámetro
+        manage_snapshot_file: Descripción del parámetro
+
+    """
+
+
+File: test_retry_failed_calls
+--------------------------------------------------------------------------------
+Line 77: Missing docstring for AsyncFunctionDef 'test_retry_failed_calls' in backend-call-automation\tests\app\services\test_campaign_scheduler.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_scheduler: Descripción del parámetro
+        mock_call_service: Descripción del parámetro
+        mock_campaign_service: Descripción del parámetro
+
+    """
+
+
+File: test_retry_mechanism
+--------------------------------------------------------------------------------
+Line 514: Missing docstring for AsyncFunctionDef 'test_retry_mechanism' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+
+    """
+
+Line 702: Function 'test_retry_mechanism' in backend-call-automation\tests\app\services\test_call_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+        test_campaign: Descripción del parámetro
+
+
+
+File: test_retry_mechanism_integration
+--------------------------------------------------------------------------------
+Line 159: Function 'test_retry_mechanism_integration' in backend-call-automation\tests\integration\test_elevenlabs_integration.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mocked_elevenlabs_service: Descripción del parámetro
+
+
+
+File: test_sentiment_analysis
+--------------------------------------------------------------------------------
+Line 45: Function 'test_sentiment_analysis' in backend-call-automation\tests\app\services\test_ai_conversation_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        ai_service: Descripción del parámetro
+
+
+
+File: test_start_call
+--------------------------------------------------------------------------------
+Line 147: Missing docstring for AsyncFunctionDef 'test_start_call' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_start_stop
+--------------------------------------------------------------------------------
+Line 40: Missing docstring for AsyncFunctionDef 'test_start_stop' in backend-call-automation\tests\app\services\test_campaign_scheduler.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_scheduler: Descripción del parámetro
+
+    """
+
+
+File: test_take_config_snapshot_success
+--------------------------------------------------------------------------------
+Line 104: Missing docstring for AsyncFunctionDef 'test_take_config_snapshot_success' in backend-call-automation\tests\test_rollback_utils.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_settings_object: Descripción del parámetro
+        manage_snapshot_file: Descripción del parámetro
+
+    """
+
+
+File: test_update_call_history
+--------------------------------------------------------------------------------
+Line 193: Missing docstring for AsyncFunctionDef 'test_update_call_history' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_update_call_not_found
+--------------------------------------------------------------------------------
+Line 345: Missing docstring for AsyncFunctionDef 'test_update_call_not_found' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_update_call_status
+--------------------------------------------------------------------------------
+Line 368: Missing docstring for AsyncFunctionDef 'test_update_call_status' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+        test_campaign: Descripción del parámetro
+
+    """
+
+Line 820: Function 'test_update_call_status' in backend-call-automation\tests\app\services\test_call_service.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        mock_twilio_client: Descripción del parámetro
+        mock_supabase_client: Descripción del parámetro
+        test_campaign: Descripción del parámetro
+
+
+
+File: test_update_call_success
+--------------------------------------------------------------------------------
+Line 308: Missing docstring for AsyncFunctionDef 'test_update_call_success' in backend-call-automation\tests\test_services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        call_service: Descripción del parámetro
+
+    """
+
+
+File: test_update_campaign
+--------------------------------------------------------------------------------
+Line 66: Missing docstring for AsyncFunctionDef 'test_update_campaign' in backend-call-automation\tests\app\services\test_campaign_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_service: Descripción del parámetro
+        mock_campaign_data: Descripción del parámetro
+
+    """
+
+
+File: test_update_campaign_stats
+--------------------------------------------------------------------------------
+Line 85: Missing docstring for AsyncFunctionDef 'test_update_campaign_stats' in backend-call-automation\tests\app\services\test_campaign_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_service: Descripción del parámetro
+        mock_campaign_data: Descripción del parámetro
+
+    """
+
+Line 118: Missing docstring for AsyncFunctionDef 'test_update_campaign_stats' in backend-call-automation\tests\app\services\test_campaign_scheduler.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_scheduler: Descripción del parámetro
+        mock_call_service: Descripción del parámetro
+        mock_campaign_service: Descripción del parámetro
+
+    """
+
+
+File: trace_call_flow
+--------------------------------------------------------------------------------
+Line 167: Function 'trace_call_flow' in backend-call-automation\app\services\monitoring_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: twilio_callback
+--------------------------------------------------------------------------------
+Line 244: Function 'twilio_callback' in backend-call-automation\app\routers\call_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        twilio_data: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: twilio_gather_webhook
+--------------------------------------------------------------------------------
+Line 132: Function 'twilio_gather_webhook' in backend-call-automation\app\routers\twilio_webhook_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        request: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: twilio_webhook
+--------------------------------------------------------------------------------
+Line 64: Function 'twilio_webhook' in backend-call-automation\app\routers\twilio_webhook_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        request: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: update
+--------------------------------------------------------------------------------
+Line 96: Missing docstring for FunctionDef 'update' in backend-call-automation\tests\app\services\test_call_service.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        data: Descripción del parámetro
+
+    """
+
+
+File: update_call_history
+--------------------------------------------------------------------------------
+Line 358: Function 'update_call_history' in backend-call-automation\app\services\call_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: update_call_history_with_text
+--------------------------------------------------------------------------------
+Line 878: Function 'update_call_history_with_text' in backend-call-automation\app\services\call_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: update_call_status
+--------------------------------------------------------------------------------
+Line 125: Function 'update_call_status' in backend-call-automation\app\routers\call_router.py is missing sections: Args
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        call_id: Descripción del parámetro
+        status: Descripción del parámetro
+        duration: Descripción del parámetro
+        recording_url: Descripción del parámetro
+        error_message: Descripción del parámetro
+        call_service: Descripción del parámetro
+
+
+
+File: update_campaign
+--------------------------------------------------------------------------------
+Line 74: Function 'update_campaign' in backend-call-automation\app\routers\campaign_router.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        campaign_id: Descripción del parámetro
+        campaign_update: Descripción del parámetro
+        supabase_client: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: update_campaign_endpoint
+--------------------------------------------------------------------------------
+Line 49: Missing docstring for AsyncFunctionDef 'update_campaign_endpoint' in backend-call-automation\app\api\campaigns.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        campaign_id: Descripción del parámetro
+        campaign_update: Descripción del parámetro
+        db: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+
+File: update_campaign_stats
+--------------------------------------------------------------------------------
+Line 107: Function 'update_campaign_stats' in backend-call-automation\app\routers\campaign_router.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        campaign_id: Descripción del parámetro
+        total_calls: Descripción del parámetro
+        successful_calls: Descripción del parámetro
+        failed_calls: Descripción del parámetro
+        pending_calls: Descripción del parámetro
+        supabase_client: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+Line 629: Function 'update_campaign_stats' in backend-call-automation\app\services\call_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: update_campaign_stats_for_call
+--------------------------------------------------------------------------------
+Line 774: Function 'update_campaign_stats_for_call' in backend-call-automation\app\services\call_service.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: validate_call_counts
+--------------------------------------------------------------------------------
+Line 127: Missing docstring for FunctionDef 'validate_call_counts' in backend-call-automation\app\models\campaign.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        v: Descripción del parámetro
+        info: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+
+File: validate_calling_hours
+--------------------------------------------------------------------------------
+Line 37: Missing docstring for FunctionDef 'validate_calling_hours' in backend-call-automation\app\schemas\campaign.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        v: Descripción del parámetro
+        values: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+Line 83: Missing docstring for FunctionDef 'validate_calling_hours' in backend-call-automation\app\models\campaign.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        v: Descripción del parámetro
+        info: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+
+File: validate_schedule_end
+--------------------------------------------------------------------------------
+Line 31: Missing docstring for FunctionDef 'validate_schedule_end' in backend-call-automation\app\schemas\campaign.py
+Suggested template:
+    """Descripción de la función.
+
+    Args:
+        v: Descripción del parámetro
+        values: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+
+File: validate_settings
+--------------------------------------------------------------------------------
+Line 7: Missing docstring for FunctionDef 'validate_settings' in backend-call-automation\scripts\validate_env.py
+Suggested template:
+    """Descripción de la función.
+
+    Returns:
+        Descripción del valor de retorno
+    """
+
+
+File: websocket_endpoint
+--------------------------------------------------------------------------------
+Line 13: Function 'websocket_endpoint' in backend-call-automation\app\api\endpoints\calls.py is missing sections: Returns
+Suggested template:
+    Secciones faltantes:
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: with_retry
+--------------------------------------------------------------------------------
+Line 12: Function 'with_retry' in backend-call-automation\app\utils\decorators.py is missing sections: Args, Returns
+Suggested template:
+    Secciones faltantes:
+
+    Args:
+        max_attempts: Descripción del parámetro
+        base_wait: Descripción del parámetro
+        max_wait: Descripción del parámetro
+        exceptions: Descripción del parámetro
+
+    Returns:
+        Descripción del valor de retorno
+
+
+
+File: wrapper
+--------------------------------------------------------------------------------
+Line 22: Missing docstring for AsyncFunctionDef 'wrapper' in backend-call-automation\app\utils\decorators.py
+Suggested template:
+    """Descripción de la función.
+
+    Returns:
+        Descripción del valor de retorno
+    """

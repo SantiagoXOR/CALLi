@@ -29,7 +29,7 @@ interface ContactDetailProps {
 
 export function ContactDetail({ contactId, onEdit, onBack }: ContactDetailProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  
+
   const { data: contact, isLoading, error } = useGetContact(contactId);
   const deleteMutation = useDeleteContact();
 

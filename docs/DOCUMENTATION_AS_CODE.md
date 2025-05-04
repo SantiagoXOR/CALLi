@@ -43,7 +43,7 @@ Example TypeScript JSDoc:
 ```typescript
 /**
  * Short description of function
- * 
+ *
  * @param {string} param1 - Description of param1
  * @param {number} param2 - Description of param2
  * @returns {boolean} Description of return value

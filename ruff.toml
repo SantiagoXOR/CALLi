@@ -1,0 +1,60 @@
+# Configuración de Ruff para el proyecto CALLi
+
+# Configuración general
+line-length = 100
+target-version = "py310"
+
+# Directorios y archivos a excluir
+extend-exclude = [
+    "migrations",
+    "tests/fixtures",
+    "venv",
+    ".venv",
+    "node_modules",
+    ".git",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".ruff_cache",
+    "dist",
+    "build"
+]
+
+[lint]
+# Reglas a aplicar
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "B",    # flake8-bugbear
+    "I",    # isort
+    "S",    # flake8-bandit
+    "W",    # pycodestyle warnings
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "ANN",  # flake8-annotations
+    "C4",   # flake8-comprehensions
+    "DTZ",  # flake8-datetimez
+    "T10",  # flake8-debugger
+    "PIE",  # flake8-pie
+    "PT",   # flake8-pytest-style
+    "RET",  # flake8-return
+    "SIM",  # flake8-simplify
+    "ARG",  # flake8-unused-arguments
+    "ERA",  # eradicate
+    "PL",   # pylint
+    "TRY",  # tryceratops
+    "RUF"   # ruff-specific rules
+]
+
+# Reglas a ignorar
+ignore = [
+    "B008",   # Do not perform function calls in argument defaults
+]
+
+# Configuración específica por archivo
+[lint.per-file-ignores]
+"tests/*" = ["S101", "S105", "S106"]  # Permitir assert y contraseñas en pruebas
+"app/models/__init__.py" = ["F401"]   # Permitir importaciones no utilizadas en __init__.py
+
+[lint.mccabe]
+max-complexity = 10

@@ -52,11 +52,11 @@ class ContactService:
     Dependencies:
         - supabase_client: Cliente de Supabase para operaciones de base de datos
     """
-    
+
     def __init__(self, supabase_client=None):
         """
         Inicializa el servicio de contactos.
-        
+
         Args:
             supabase_client: Cliente de Supabase para operaciones de base de datos
         """
@@ -71,25 +71,25 @@ class ContactService:
 async def create_contact(self, contact: ContactCreate) -> Contact:
     """
     Crea un nuevo contacto.
-    
+
     Args:
         contact: Datos del contacto a crear
-        
+
     Returns:
         Contact: El contacto creado
-        
+
     Raises:
         HTTPException: Si hay un error al crear el contacto
     """
     try:
         result = self.supabase.table('contacts').insert(contact.model_dump()).execute()
-        
+
         if not result.data:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Error al crear el contacto"
             )
-            
+
         return Contact(**result.data[0])
     except Exception as e:
         raise HTTPException(
@@ -100,25 +100,25 @@ async def create_contact(self, contact: ContactCreate) -> Contact:
 async def get_contact(self, contact_id: str) -> Contact:
     """
     Obtiene un contacto por su ID.
-    
+
     Args:
         contact_id: ID del contacto
-        
+
     Returns:
         Contact: El contacto encontrado
-        
+
     Raises:
         HTTPException: Si el contacto no existe o hay un error
     """
     try:
         result = self.supabase.table('contacts').select('*').eq('id', contact_id).execute()
-        
+
         if not result.data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Contacto no encontrado"
             )
-            
+
         return Contact(**result.data[0])
     except HTTPException:
         raise
@@ -131,29 +131,29 @@ async def get_contact(self, contact_id: str) -> Contact:
 async def update_contact(self, contact_id: str, contact: ContactUpdate) -> Contact:
     """
     Actualiza un contacto existente.
-    
+
     Args:
         contact_id: ID del contacto a actualizar
         contact: Datos a actualizar
-        
+
     Returns:
         Contact: El contacto actualizado
-        
+
     Raises:
         HTTPException: Si el contacto no existe o hay un error
     """
     try:
         # Filtrar campos None para no sobrescribir con valores nulos
         update_data = {k: v for k, v in contact.model_dump().items() if v is not None}
-        
+
         result = self.supabase.table('contacts').update(update_data).eq('id', contact_id).execute()
-        
+
         if not result.data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Contacto no encontrado"
             )
-            
+
         return Contact(**result.data[0])
     except HTTPException:
         raise
@@ -166,25 +166,25 @@ async def update_contact(self, contact_id: str, contact: ContactUpdate) -> Conta
 async def delete_contact(self, contact_id: str) -> bool:
     """
     Elimina un contacto.
-    
+
     Args:
         contact_id: ID del contacto a eliminar
-        
+
     Returns:
         bool: True si se eliminó correctamente
-        
+
     Raises:
         HTTPException: Si el contacto no existe o hay un error
     """
     try:
         result = self.supabase.table('contacts').delete().eq('id', contact_id).execute()
-        
+
         if not result.data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Contacto no encontrado"
             )
-            
+
         return True
     except HTTPException:
         raise
@@ -201,15 +201,15 @@ async def delete_contact(self, contact_id: str) -> bool:
 async def list_contacts(self, skip: int = 0, limit: int = 100, list_id: Optional[str] = None) -> List[Contact]:
     """
     Lista contactos con paginación y filtros opcionales.
-    
+
     Args:
         skip: Número de registros a omitir (paginación)
         limit: Número máximo de registros a devolver
         list_id: ID de lista de contactos para filtrar (opcional)
-        
+
     Returns:
         List[Contact]: Lista de contactos
-        
+
     Raises:
         Exception: Si hay un error al listar los contactos
     """
@@ -232,14 +232,14 @@ async def list_contacts(self, skip: int = 0, limit: int = 100, list_id: Optional
 async def search_contacts(self, search_term: str, limit: int = 10) -> List[Contact]:
     """
     Busca contactos por nombre, email o número de teléfono.
-    
+
     Args:
         search_term: Término de búsqueda
         limit: Número máximo de resultados
-        
+
     Returns:
         List[Contact]: Lista de contactos que coinciden con la búsqueda
-        
+
     Raises:
         HTTPException: Si hay un error en la búsqueda
     """
@@ -247,19 +247,19 @@ async def search_contacts(self, search_term: str, limit: int = 10) -> List[Conta
         # Buscar en nombre
         name_query = self.supabase.table('contacts').select('*').ilike('name', f'%{search_term}%').limit(limit)
         name_result = name_query.execute()
-        
+
         # Si no hay suficientes resultados, buscar también en email y teléfono
         if not name_result.data or len(name_result.data) < limit:
             remaining = limit - (len(name_result.data) if name_result.data else 0)
-            
+
             # Buscar en email
             email_query = self.supabase.table('contacts').select('*').ilike('email', f'%{search_term}%').limit(remaining)
             email_result = email_query.execute()
-            
+
             # Buscar en teléfono
             phone_query = self.supabase.table('contacts').select('*').ilike('phone_number', f'%{search_term}%').limit(remaining)
             phone_result = phone_query.execute()
-            
+
             # Combinar resultados
             all_results = []
             if name_result.data:
@@ -268,7 +268,7 @@ async def search_contacts(self, search_term: str, limit: int = 10) -> List[Conta
                 all_results.extend(email_result.data)
             if phone_result.data:
                 all_results.extend(phone_result.data)
-                
+
             # Eliminar duplicados
             seen_ids = set()
             unique_results = []
@@ -276,9 +276,9 @@ async def search_contacts(self, search_term: str, limit: int = 10) -> List[Conta
                 if item['id'] not in seen_ids:
                     seen_ids.add(item['id'])
                     unique_results.append(item)
-                    
+
             return [Contact(**item) for item in unique_results[:limit]]
-        
+
         return [Contact(**item) for item in name_result.data]
     except Exception as e:
         raise HTTPException(
@@ -293,25 +293,25 @@ async def search_contacts(self, search_term: str, limit: int = 10) -> List[Conta
 async def create_contact_list(self, contact_list: ContactListCreate) -> ContactList:
     """
     Crea una nueva lista de contactos.
-    
+
     Args:
         contact_list: Datos de la lista a crear
-        
+
     Returns:
         ContactList: La lista creada
-        
+
     Raises:
         HTTPException: Si hay un error al crear la lista
     """
     try:
         result = self.supabase.table('contact_lists').insert(contact_list.model_dump()).execute()
-        
+
         if not result.data:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Error al crear la lista de contactos"
             )
-            
+
         return ContactList(**result.data[0])
     except Exception as e:
         raise HTTPException(
@@ -322,25 +322,25 @@ async def create_contact_list(self, contact_list: ContactListCreate) -> ContactL
 async def get_contact_list(self, list_id: str) -> ContactList:
     """
     Obtiene una lista de contactos por su ID.
-    
+
     Args:
         list_id: ID de la lista
-        
+
     Returns:
         ContactList: La lista encontrada
-        
+
     Raises:
         HTTPException: Si la lista no existe o hay un error
     """
     try:
         result = self.supabase.table('contact_lists').select('*').eq('id', list_id).execute()
-        
+
         if not result.data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Lista de contactos no encontrada"
             )
-            
+
         return ContactList(**result.data[0])
     except HTTPException:
         raise
@@ -353,21 +353,21 @@ async def get_contact_list(self, list_id: str) -> ContactList:
 async def add_contacts_to_list(self, list_id: str, contact_ids: List[str]) -> int:
     """
     Añade contactos a una lista.
-    
+
     Args:
         list_id: ID de la lista
         contact_ids: Lista de IDs de contactos
-        
+
     Returns:
         int: Número de contactos añadidos
-        
+
     Raises:
         HTTPException: Si la lista no existe o hay un error
     """
     try:
         # Verificar que la lista existe
         await self.get_contact_list(list_id)
-        
+
         # Preparar datos para inserción
         now = datetime.now().isoformat()
         data = [
@@ -378,13 +378,13 @@ async def add_contacts_to_list(self, list_id: str, contact_ids: List[str]) -> in
             }
             for contact_id in contact_ids
         ]
-        
+
         # Insertar en tabla de relación
         result = self.supabase.table('contact_list_contacts').insert(data).execute()
-        
+
         if not result.data:
             return 0
-            
+
         return len(result.data)
     except HTTPException:
         raise
@@ -397,26 +397,26 @@ async def add_contacts_to_list(self, list_id: str, contact_ids: List[str]) -> in
 async def remove_contact_from_list(self, list_id: str, contact_id: str) -> bool:
     """
     Elimina un contacto de una lista.
-    
+
     Args:
         list_id: ID de la lista
         contact_id: ID del contacto
-        
+
     Returns:
         bool: True si se eliminó correctamente
-        
+
     Raises:
         HTTPException: Si la relación no existe o hay un error
     """
     try:
         result = self.supabase.table('contact_list_contacts').delete().eq('list_id', list_id).eq('contact_id', contact_id).execute()
-        
+
         if not result.data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Contacto no encontrado en la lista"
             )
-            
+
         return True
     except HTTPException:
         raise
@@ -433,45 +433,45 @@ async def remove_contact_from_list(self, list_id: str, contact_id: str) -> bool:
 async def import_contacts_from_csv(self, file: UploadFile) -> Dict[str, int]:
     """
     Importa contactos desde un archivo CSV.
-    
+
     Args:
         file: Archivo CSV a importar
-        
+
     Returns:
         Dict[str, int]: Estadísticas de importación
-        
+
     Raises:
         HTTPException: Si hay un error en la importación
     """
     try:
         # Leer contenido del archivo
         content = await file.read()
-        
+
         # Decodificar y procesar CSV
         text = content.decode('utf-8')
         reader = csv.DictReader(io.StringIO(text))
-        
+
         # Validar estructura del CSV
         required_fields = ['name', 'phone_number']
         csv_fields = reader.fieldnames
-        
+
         if not all(field in csv_fields for field in required_fields):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"El archivo CSV debe contener los campos: {', '.join(required_fields)}"
             )
-        
+
         # Procesar filas
         success_count = 0
         error_count = 0
-        
+
         for row in reader:
             try:
                 # Validar datos
                 if not row['name'] or not row['phone_number']:
                     error_count += 1
                     continue
-                
+
                 # Crear contacto
                 contact_data = {
                     'name': row['name'],
@@ -480,12 +480,12 @@ async def import_contacts_from_csv(self, file: UploadFile) -> Dict[str, int]:
                     'notes': row.get('notes', None),
                     'tags': row.get('tags', '').split(',') if row.get('tags') else []
                 }
-                
+
                 await self.create_contact(ContactCreate(**contact_data))
                 success_count += 1
             except Exception:
                 error_count += 1
-        
+
         return {
             'total': success_count + error_count,
             'success': success_count,
@@ -502,30 +502,30 @@ async def import_contacts_from_csv(self, file: UploadFile) -> Dict[str, int]:
 async def export_contacts_to_csv(self, list_id: Optional[str] = None) -> str:
     """
     Exporta contactos a formato CSV.
-    
+
     Args:
         list_id: ID de lista para filtrar (opcional)
-        
+
     Returns:
         str: Contenido del CSV
-        
+
     Raises:
         HTTPException: Si hay un error en la exportación
     """
     try:
         # Obtener contactos
         contacts = await self.list_contacts(limit=10000, list_id=list_id)
-        
+
         if not contacts:
             return "name,phone_number,email,notes,tags\n"
-        
+
         # Crear CSV en memoria
         output = io.StringIO()
         writer = csv.writer(output)
-        
+
         # Escribir encabezados
         writer.writerow(['name', 'phone_number', 'email', 'notes', 'tags'])
-        
+
         # Escribir datos
         for contact in contacts:
             writer.writerow([
@@ -535,7 +535,7 @@ async def export_contacts_to_csv(self, list_id: Optional[str] = None) -> str:
                 contact.notes or '',
                 ','.join(contact.tags) if contact.tags else ''
             ])
-        
+
         return output.getvalue()
     except Exception as e:
         raise HTTPException(

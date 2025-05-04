@@ -7,13 +7,13 @@ import * as z from 'zod';
 import { Contact, ContactCreate, ContactUpdate } from '../types/contact';
 import { useCreateContact, useUpdateContact } from '../services/contactService';
 import { toast } from 'sonner';
-import { 
-  Form, 
-  FormControl, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
 } from './ui/form';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
@@ -38,18 +38,18 @@ interface ContactFormProps {
   onSuccess: () => void;
 }
 
-export const ContactForm: React.FC<ContactFormProps> = ({ 
-  contact, 
+export const ContactForm: React.FC<ContactFormProps> = ({
+  contact,
   onCancel,
   onSuccess
 }) => {
   const isEditing = !!contact;
   const createContact = useCreateContact();
   const updateContact = useUpdateContact(contact?.id || '');
-  
+
   // Estado para manejar las etiquetas como strings
   const [tagInput, setTagInput] = React.useState('');
-  
+
   // Configurar el formulario
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,7 +61,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       tags: [],
     },
   });
-  
+
   // Cargar datos del contacto si estamos editando
   useEffect(() => {
     if (contact) {
@@ -74,7 +74,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       });
     }
   }, [contact, form]);
-  
+
   // Manejar envío del formulario
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -93,7 +93,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       toast.error(`Error al ${isEditing ? 'actualizar' : 'crear'} el contacto`);
     }
   };
-  
+
   // Manejar adición de etiquetas
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && tagInput.trim()) {
@@ -105,7 +105,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       setTagInput('');
     }
   };
-  
+
   // Eliminar etiqueta
   const handleRemoveTag = (tagToRemove: string) => {
     const currentTags = form.getValues('tags') || [];
@@ -114,7 +114,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       currentTags.filter(tag => tag !== tagToRemove)
     );
   };
-  
+
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
@@ -136,7 +136,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="phone_number"
@@ -144,16 +144,16 @@ export const ContactForm: React.FC<ContactFormProps> = ({
                 <FormItem>
                   <FormLabel>Número de Teléfono</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="+123456789" 
-                      {...field} 
+                    <Input
+                      placeholder="+123456789"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="email"
@@ -161,17 +161,17 @@ export const ContactForm: React.FC<ContactFormProps> = ({
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="email@ejemplo.com" 
+                    <Input
+                      placeholder="email@ejemplo.com"
                       type="email"
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="notes"
@@ -179,21 +179,21 @@ export const ContactForm: React.FC<ContactFormProps> = ({
                 <FormItem>
                   <FormLabel>Notas</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Notas adicionales sobre el contacto" 
-                      {...field} 
+                    <Textarea
+                      placeholder="Notas adicionales sobre el contacto"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <div className="space-y-2">
               <FormLabel>Etiquetas</FormLabel>
               <div className="flex flex-wrap gap-2 mb-2">
                 {form.watch('tags')?.map((tag, index) => (
-                  <div 
+                  <div
                     key={index}
                     className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm flex items-center"
                   >
@@ -217,16 +217,16 @@ export const ContactForm: React.FC<ContactFormProps> = ({
                 onKeyDown={handleAddTag}
               />
             </div>
-            
+
             <CardFooter className="flex justify-end space-x-2 px-0 pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={onCancel}
               >
                 Cancelar
               </Button>
-              <Button 
+              <Button
                 type="submit"
                 disabled={createContact.isPending || updateContact.isPending}
               >

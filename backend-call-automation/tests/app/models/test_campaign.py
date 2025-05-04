@@ -1,14 +1,17 @@
-import pytest
 from datetime import datetime
 from uuid import UUID, uuid4
+
+import pytest
 from pydantic import ValidationError
+
 from app.models.campaign import (
+    Campaign,
     CampaignBase,
     CampaignCreate,
-    CampaignUpdate, 
-    Campaign,
-    CampaignStatus
+    CampaignStatus,
+    CampaignUpdate,
 )
+
 
 @pytest.fixture
 def sample_campaign_data() -> dict:
@@ -32,15 +35,26 @@ def sample_campaign_data() -> dict:
         "failed_calls": 15,
         "pending_calls": 10,
         "created_at": datetime(2025, 1, 24, 20, 52, 51),
-        "updated_at": datetime(2025, 1, 24, 20, 52, 51)
+        "updated_at": datetime(2025, 1, 24, 20, 52, 51),
     }
 
+
 def test_campaign_base(sample_campaign_data):
-    data = {k:v for k,v in sample_campaign_data.items() 
-            if k not in ["id", "total_calls", "successful_calls", 
-                        "failed_calls", "pending_calls", "created_at", 
-                        "updated_at"]}
-    
+    data = {
+        k: v
+        for k, v in sample_campaign_data.items()
+        if k
+        not in [
+            "id",
+            "total_calls",
+            "successful_calls",
+            "failed_calls",
+            "pending_calls",
+            "created_at",
+            "updated_at",
+        ]
+    }
+
     campaign = CampaignBase(**data)
     assert campaign.name == "Campaña de Ventas Q1"
     assert campaign.status == CampaignStatus.ACTIVE
@@ -49,27 +63,36 @@ def test_campaign_base(sample_campaign_data):
     assert campaign.calling_hours_start == "09:00"
     assert campaign.calling_hours_end == "18:00"
 
+
 def test_campaign_create(sample_campaign_data):
-    data = {k:v for k,v in sample_campaign_data.items() 
-            if k not in ["id", "total_calls", "successful_calls", 
-                        "failed_calls", "pending_calls", "created_at", 
-                        "updated_at"]}
-    
+    data = {
+        k: v
+        for k, v in sample_campaign_data.items()
+        if k
+        not in [
+            "id",
+            "total_calls",
+            "successful_calls",
+            "failed_calls",
+            "pending_calls",
+            "created_at",
+            "updated_at",
+        ]
+    }
+
     campaign = CampaignCreate(**data)
     assert campaign.name == "Campaña de Ventas Q1"
     assert campaign.status == CampaignStatus.ACTIVE
     assert isinstance(campaign.contact_list_ids[0], UUID)
 
+
 def test_campaign_update(sample_campaign_data):
-    data = {
-        "name": "Campaña Actualizada",
-        "status": CampaignStatus.PAUSED,
-        "max_retries": 2
-    }
+    data = {"name": "Campaña Actualizada", "status": CampaignStatus.PAUSED, "max_retries": 2}
     campaign = CampaignUpdate(**data)
     assert campaign.name == "Campaña Actualizada"
     assert campaign.status == CampaignStatus.PAUSED
     assert campaign.max_retries == 2
+
 
 def test_campaign(sample_campaign_data):
     campaign = Campaign(**sample_campaign_data)
@@ -80,6 +103,7 @@ def test_campaign(sample_campaign_data):
     assert campaign.successful_calls == 75
     assert campaign.failed_calls == 15
     assert campaign.pending_calls == 10
+
 
 def test_invalid_campaign_status():
     with pytest.raises(ValidationError):
@@ -96,6 +120,7 @@ def test_invalid_campaign_status():
             calling_hours_end="18:00",
         )
 
+
 def test_invalid_dates():
     with pytest.raises(ValidationError):
         CampaignBase(
@@ -110,6 +135,7 @@ def test_invalid_dates():
             calling_hours_start="09:00",
             calling_hours_end="18:00",
         )
+
 
 def test_invalid_calling_hours():
     with pytest.raises(ValidationError):

@@ -6,13 +6,13 @@ This module provides [detailed description of module functionality and purpose].
 Example:
     ```python
     from module_name import SomeClass
-    
+
     instance = SomeClass(param1="value")
     result = instance.some_method()
     ```
 """
 
-from typing import Dict, List, Optional, Union, Any
+from typing import Any
 
 
 class SampleClass:
@@ -26,7 +26,7 @@ class SampleClass:
         attr2 (type): Description of attr2
     """
 
-    def __init__(self, param1: str, param2: Optional[int] = None):
+    def __init__(self, param1: str, param2: int | None = None):
         """Initialize the class.
 
         Args:
@@ -36,7 +36,7 @@ class SampleClass:
         self.attr1 = param1
         self.attr2 = param2
 
-    def method_name(self, param1: str, param2: int) -> Dict[str, Any]:
+    def method_name(self, param1: str, param2: int) -> dict[str, Any]:
         """Short description of method.
 
         Longer description with more details about what this method does,
@@ -56,10 +56,9 @@ class SampleClass:
             TypeError: When param2 is negative
         """
         # Method implementation
-        pass
 
 
-def function_name(param1: str, param2: List[int]) -> bool:
+def function_name(param1: str, param2: list[int]) -> bool:
     """Short description of function.
 
     Longer description with more details about what this function does,
@@ -76,4 +75,3 @@ def function_name(param1: str, param2: List[int]) -> bool:
         ValueError: When param1 is empty
     """
     # Function implementation
-    pass

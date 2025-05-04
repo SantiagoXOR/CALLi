@@ -1,14 +1,16 @@
-import pytest
-from unittest.mock import Mock, AsyncMock, patch, MagicMock
+import asyncio
 import sys
 from pathlib import Path
-import asyncio
+from unittest.mock import AsyncMock, patch
+
+import pytest
 from fastapi import HTTPException
 
 # Configurar el path para importar los módulos necesarios
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 sys.path.insert(0, str(project_root / "backend-call-automation"))
+
 
 # Crear clase mock de AIConversationService
 class MockAIConversationService:
@@ -33,22 +35,21 @@ class MockAIConversationService:
 
             # Simulate sentiment analysis call which might timeout
             try:
-                await self.analyze_sentiment(message) # Call it to potentially raise TimeoutError
+                await self.analyze_sentiment(message)  # Call it to potentially raise TimeoutError
             except asyncio.TimeoutError:
-                 # Simulate the behavior of the real service raising HTTPException on timeout
-                 raise HTTPException(status_code=503, detail="AI service timeout")
-            except ValueError as e: # Propagate validation errors from analyze_sentiment
-                 raise e
+                # Simulate the behavior of the real service raising HTTPException on timeout
+                raise HTTPException(status_code=503, detail="AI service timeout")
+            except ValueError as e:  # Propagate validation errors from analyze_sentiment
+                raise e
 
             # Simular interacción con Redis si existe un cliente configurado
-            if hasattr(self, 'redis_client'):
+            if hasattr(self, "redis_client"):
                 cache_key = f"conv:{conversation_id}" if conversation_id else None
                 if cache_key and self.redis_client:
                     await self.redis_client.get(cache_key)
-                    await self.redis_client.setex(cache_key, 3600, {
-                        "message": message,
-                        "context": context
-                    })
+                    await self.redis_client.setex(
+                        cache_key, 3600, {"message": message, "context": context}
+                    )
 
             # Return statement should be inside the try block
             return {
@@ -60,8 +61,8 @@ class MockAIConversationService:
                 "metadata": {
                     "model": self.model_name,
                     "tokens_used": 50,
-                    "processing_time": 0.5
-                }
+                    "processing_time": 0.5,
+                },
             }
         finally:
             # Ensure semaphore is released even if errors occur
@@ -72,14 +73,17 @@ class MockAIConversationService:
             raise ValueError("Text cannot be empty")
         return {"primary_emotion": "neutral", "score": 0.5}
 
+
 # Mock de redis_client
 def mock_generate_conversation_cache_key(conversation_id):
     if not conversation_id:
         raise ValueError("Conversation ID cannot be empty")
     return f"conv:{conversation_id}"
 
+
 AIConversationService = MockAIConversationService
 generate_conversation_cache_key = mock_generate_conversation_cache_key
+
 
 # Pruebas para AIConversationService
 class TestAIConversationServiceIsolated:
@@ -96,9 +100,7 @@ class TestAIConversationServiceIsolated:
         service = AIConversationService()
         context = {"user_id": "123", "language": "es"}
         response = await service.process_message(
-            "Test message",
-            conversation_id="test-conv-123",
-            context=context
+            "Test message", conversation_id="test-conv-123", context=context
         )
         assert response["context"] == context
         assert response["conversation_id"] == "test-conv-123"
@@ -110,6 +112,7 @@ class TestAIConversationServiceIsolated:
         assert "primary_emotion" in sentiment
         assert "score" in sentiment
         assert 0 <= sentiment["score"] <= 1
+
 
 # Pruebas para RedisClient
 class TestRedisClientIsolated:
@@ -143,6 +146,7 @@ class TestRedisClientIsolated:
         unicode_id = "test🔥123"
         key = generate_conversation_cache_key(unicode_id)
         assert "conv:" in key
+
 
 class TestAIConversationServiceAdvanced:
     @pytest.mark.asyncio
@@ -202,9 +206,10 @@ class TestAIConversationServiceAdvanced:
         service = AIConversationService()
 
         # Simular timeout en llamada a IA
-        with patch.object(service, 'analyze_sentiment',
-                         side_effect=asyncio.TimeoutError):
-            with pytest.raises(HTTPException): # Assuming process_message wraps this in HTTPException
+        with patch.object(service, "analyze_sentiment", side_effect=asyncio.TimeoutError):
+            with pytest.raises(
+                HTTPException
+            ):  # Assuming process_message wraps this in HTTPException
                 await service.process_message("test")
 
     @pytest.mark.asyncio
@@ -217,20 +222,16 @@ class TestAIConversationServiceAdvanced:
         messages = ["msg1", "msg2", "msg3"] * 100  # 300 mensajes
 
         for msg in messages:
-            response = await service.process_message(
-                message=msg,
-                conversation_id=conv_id
-            )
+            response = await service.process_message(message=msg, conversation_id=conv_id)
             assert response is not None
 
         # Verificar que la memoria no excede límites
-        if hasattr(service, 'redis_client'):
-            cached_data = await service.redis_client.get(
-                generate_conversation_cache_key(conv_id)
-            )
+        if hasattr(service, "redis_client"):
+            cached_data = await service.redis_client.get(generate_conversation_cache_key(conv_id))
             # Note: This check is very basic and depends on mock implementation
             # A real test might need a more sophisticated way to check memory usage
             assert sys.getsizeof(str(cached_data)) < 1024 * 1024  # Max 1MB
+
 
 if __name__ == "__main__":
     pytest.main(["-v", __file__])

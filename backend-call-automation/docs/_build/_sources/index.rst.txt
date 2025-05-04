@@ -24,7 +24,7 @@ El sistema está construido con:
    modules/getting_started
    modules/architecture
    modules/services
-   modules/models  
+   modules/models
    modules/config
    modules/getting_started
    modules/architecture

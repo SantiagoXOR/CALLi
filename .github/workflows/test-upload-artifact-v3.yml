@@ -1,0 +1,23 @@
+name: "Test Upload Artifact v3"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-upload-v3:
+    name: Test Upload Artifact v3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create test file
+        run: |
+          mkdir -p test
+          echo "Test content" > test/test-file.txt
+
+      - name: Upload test file with v3
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-artifact-v3
+          path: test/test-file.txt

@@ -9,23 +9,23 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 export const getCallMetrics = async (filters: any = {}) => {
   // Build query parameters
   const params = new URLSearchParams();
-  
+
   if (filters.campaign_id) {
     params.append("campaign_id", filters.campaign_id);
   }
-  
+
   if (filters.start_date) {
     params.append("start_date", filters.start_date.toISOString());
   }
-  
+
   if (filters.end_date) {
     params.append("end_date", filters.end_date.toISOString());
   }
-  
+
   if (filters.group_by) {
     params.append("group_by", filters.group_by);
   }
-  
+
   const response = await fetch(`${API_URL}/api/reports/performance_metrics?${params.toString()}`, {
     headers: {
       Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
@@ -43,15 +43,15 @@ export const getCallMetrics = async (filters: any = {}) => {
 export const getCampaignPerformance = async (filters: any = {}) => {
   // Build query parameters
   const params = new URLSearchParams();
-  
+
   if (filters.start_date) {
     params.append("start_date", filters.start_date.toISOString());
   }
-  
+
   if (filters.end_date) {
     params.append("end_date", filters.end_date.toISOString());
   }
-  
+
   const response = await fetch(`${API_URL}/api/reports/campaigns/performance?${params.toString()}`, {
     headers: {
       Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
@@ -76,23 +76,23 @@ export const getCallHistory = async (
     page: page.toString(),
     page_size: pageSize.toString(),
   });
-  
+
   if (filters.campaign_id) {
     params.append("campaign_id", filters.campaign_id);
   }
-  
+
   if (filters.contact_id) {
     params.append("contact_id", filters.contact_id);
   }
-  
+
   if (filters.start_date) {
     params.append("start_date", filters.start_date.toISOString());
   }
-  
+
   if (filters.end_date) {
     params.append("end_date", filters.end_date.toISOString());
   }
-  
+
   const response = await fetch(`${API_URL}/api/reports/call_history?${params.toString()}`, {
     headers: {
       Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,

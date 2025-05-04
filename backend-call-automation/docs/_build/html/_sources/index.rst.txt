@@ -7,7 +7,7 @@ Características Principales
 -------------------------
 
 * Gestión de campañas de llamadas
-* Integración con servicios de IA  
+* Integración con servicios de IA
 * Análisis y seguimiento de resultados
 * Automatización de flujos de llamada
 
@@ -16,7 +16,7 @@ Características Principales
    :caption: Contenido:
 
    modules/services
-   modules/models  
+   modules/models
    modules/config
    modules/diagrams
 
@@ -34,7 +34,7 @@ Diagramas del Sistema
 -------------------
 
 * :ref:`diagrams-database` - Estructura de la base de datos
-* :ref:`diagrams-calls` - Flujo de llamadas  
+* :ref:`diagrams-calls` - Flujo de llamadas
 * :ref:`diagrams-architecture` - Arquitectura del sistema
 * :ref:`diagrams-ai` - Integración con IA
 

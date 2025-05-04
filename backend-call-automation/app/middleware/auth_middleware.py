@@ -6,16 +6,19 @@ tokens JWT de Supabase en las solicitudes HTTP.
 """
 
 import time
-from typing import Dict, List, Optional, Callable, Awaitable
+from collections.abc import Awaitable, Callable
+
 import jwt  # PyJWT en lugar de python-jose
-from fastapi import Request, HTTPException, status
-from fastapi.responses import JSONResponse
+from fastapi import Request, status
+from fastapi.responses import JSONResponse, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp
+
 from app.config.settings import get_settings
 from app.utils.logging import app_logger as logger
 
 settings = get_settings()
+
 
 class AuthMiddleware(BaseHTTPMiddleware):
     """
@@ -28,11 +31,11 @@ class AuthMiddleware(BaseHTTPMiddleware):
     def __init__(
         self,
         app: ASGIApp,
-        public_routes: List[str] = None,
-        public_route_prefixes: List[str] = None,
-        jwt_secret: str = None,
-        jwt_algorithms: List[str] = None,
-    ):
+        public_routes: list[str] | None = None,
+        public_route_prefixes: list[str] | None = None,
+        jwt_secret: str | None = None,
+        jwt_algorithms: list[str] | None = None,
+    ) -> None:
         """
         Inicializa el middleware de autenticación.
 
@@ -50,10 +53,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
         self.jwt_algorithms = jwt_algorithms or ["HS256"]
 
     async def dispatch(
-        self,
-        request: Request,
-        call_next: Callable[[Request], Awaitable]
-    ):
+        self, request: Request, call_next: Callable[[Request], Awaitable]
+    ) -> Response:
         """
         Procesa una solicitud HTTP y verifica la autenticación.
 
@@ -81,7 +82,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
         if not auth_header:
             return JSONResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                content={"detail": "No se proporcionó token de autenticación"}
+                content={"detail": "No se proporcionó token de autenticación"},
             )
 
         try:
@@ -90,7 +91,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
             if token_type.lower() != "bearer":
                 return JSONResponse(
                     status_code=status.HTTP_401_UNAUTHORIZED,
-                    content={"detail": "Tipo de token no válido"}
+                    content={"detail": "Tipo de token no válido"},
                 )
 
             # Verificar token
@@ -106,22 +107,23 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
         except jwt.ExpiredSignatureError:
             return JSONResponse(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                content={"detail": "Token expirado"}
+                status_code=status.HTTP_401_UNAUTHORIZED, content={"detail": "Token expirado"}
             )
-        except jwt.InvalidTokenError as e:
+        except jwt.InvalidTokenError:
+            # No exponer detalles específicos del error para evitar fugas de información
+            logger.warning("Token inválido recibido en la solicitud")
             return JSONResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                content={"detail": f"Token inválido: {str(e)}"}
+                content={"detail": "Token inválido"},
             )
         except Exception as e:
-            logger.error(f"Error en middleware de autenticación: {str(e)}")
+            logger.error(f"Error en middleware de autenticación: {e!s}")
             return JSONResponse(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                content={"detail": "Error interno de autenticación"}
+                content={"detail": "Error interno de autenticación"},
             )
 
-    def _verify_token(self, token: str) -> Dict:
+    def _verify_token(self, token: str) -> dict:
         """
         Verifica un token JWT.
 
@@ -139,7 +141,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
             token,
             self.jwt_secret,
             algorithms=self.jwt_algorithms,
-            options={"verify_signature": True}
+            options={"verify_signature": True},
         )
 
         # Verificar expiración
@@ -152,8 +154,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
 def setup_auth_middleware(
     app: ASGIApp,
-    public_routes: Optional[List[str]] = None,
-    public_route_prefixes: Optional[List[str]] = None
+    public_routes: list[str] | None = None,
+    public_route_prefixes: list[str] | None = None,
 ) -> None:
     """
     Configura el middleware de autenticación para una aplicación.
@@ -186,7 +188,5 @@ def setup_auth_middleware(
 
     # Añadir middleware
     app.add_middleware(
-        AuthMiddleware,
-        public_routes=all_public_routes,
-        public_route_prefixes=all_public_prefixes
+        AuthMiddleware, public_routes=all_public_routes, public_route_prefixes=all_public_prefixes
     )

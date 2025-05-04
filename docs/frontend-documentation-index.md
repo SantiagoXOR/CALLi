@@ -8,24 +8,24 @@ Bienvenido a la documentación frontend del Sistema de Automatización de Llamad
 
 ### Guías Principales
 
-1. [**Guía de Desarrollo Frontend**](./frontend-development-guide.md)  
+1. [**Guía de Desarrollo Frontend**](./frontend-development-guide.md)
    Guía completa que cubre todos los aspectos del desarrollo frontend, desde la arquitectura hasta las mejores prácticas.
 
-2. [**Guía de Configuración del Entorno**](./frontend-setup-guide.md)  
+2. [**Guía de Configuración del Entorno**](./frontend-setup-guide.md)
    Instrucciones detalladas para configurar el entorno de desarrollo frontend.
 
-3. [**Guía de Estilo y Mejores Prácticas**](./frontend-style-guide.md)  
+3. [**Guía de Estilo y Mejores Prácticas**](./frontend-style-guide.md)
    Estándares de código, convenciones y mejores prácticas para el desarrollo frontend.
 
-4. [**Referencia de Componentes**](./frontend-components-reference.md)  
+4. [**Referencia de Componentes**](./frontend-components-reference.md)
    Documentación detallada de los componentes principales utilizados en el frontend.
 
 ### Documentación Adicional
 
-5. [**Plan de Desarrollo Frontend**](./frontend-development-plan.md)  
+5. [**Plan de Desarrollo Frontend**](./frontend-development-plan.md)
    Plan detallado para el desarrollo del frontend, incluyendo funcionalidades implementadas y planeadas.
 
-6. [**Arquitectura de Componentes**](../architecture/component-architecture.md)  
+6. [**Arquitectura de Componentes**](../architecture/component-architecture.md)
    Descripción de la arquitectura general de componentes del sistema.
 
 ## Tecnologías Principales

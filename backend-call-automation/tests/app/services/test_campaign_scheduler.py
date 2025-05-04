@@ -1,25 +1,30 @@
-import pytest
-from unittest.mock import AsyncMock, patch
-from app.services.campaign_scheduler import CampaignScheduler
-from app.models.campaign import Campaign, CampaignStatus
-from app.models.call import Call, CallStatus, CallCreate
-from app.services.campaign_service import CampaignService
-from app.services.call_service import CallService
-from app.services.contact_service import ContactService
-from app.models.contact import Contact, ContactCreate, ContactUpdate
 from datetime import datetime, timedelta
+from unittest.mock import AsyncMock
+
+import pytest
+
+from app.models.call import Call, CallStatus
+from app.models.campaign import Campaign, CampaignStatus
+from app.services.call_service import CallService
+from app.services.campaign_scheduler import CampaignScheduler
+from app.services.campaign_service import CampaignService
+from app.services.contact_service import ContactService
+
 
 @pytest.fixture
 def mock_campaign_service():
     return AsyncMock(spec=CampaignService)
 
+
 @pytest.fixture
 def mock_call_service():
     return AsyncMock(spec=CallService)
 
+
 @pytest.fixture
 def mock_contact_service():
     return AsyncMock(spec=ContactService)
+
 
 @pytest.fixture
 def campaign_scheduler(mock_campaign_service, mock_call_service, mock_contact_service):
@@ -27,8 +32,9 @@ def campaign_scheduler(mock_campaign_service, mock_call_service, mock_contact_se
         campaign_service=mock_campaign_service,
         call_service=mock_call_service,
         contact_service=mock_contact_service,
-        check_interval=1
+        check_interval=1,
     )
+
 
 @pytest.mark.asyncio
 async def test_start_stop(campaign_scheduler):
@@ -37,8 +43,11 @@ async def test_start_stop(campaign_scheduler):
     await campaign_scheduler.stop()
     assert not campaign_scheduler.is_running
 
+
 @pytest.mark.asyncio
-async def test_process_active_campaigns(campaign_scheduler, mock_campaign_service, mock_contact_service):
+async def test_process_active_campaigns(
+    campaign_scheduler, mock_campaign_service, mock_contact_service
+):
     now = datetime.now()
     campaign = Campaign(
         id=1,
@@ -51,7 +60,7 @@ async def test_process_active_campaigns(campaign_scheduler, mock_campaign_servic
         script_template="Test script",
         max_retries=3,
         retry_delay_minutes=15,
-        pending_calls=3
+        pending_calls=3,
     )
     mock_campaign_service.list_campaigns.return_value = [campaign]
     mock_contact_service.get_campaign_contacts.return_value = []
@@ -59,11 +68,10 @@ async def test_process_active_campaigns(campaign_scheduler, mock_campaign_servic
     await campaign_scheduler._process_active_campaigns()
 
     mock_campaign_service.list_campaigns.assert_called_once_with(
-        status=CampaignStatus.ACTIVE,
-        start_date=now,
-        end_date=now
+        status=CampaignStatus.ACTIVE, start_date=now, end_date=now
     )
     mock_contact_service.get_campaign_contacts.assert_called_once_with(campaign.id)
+
 
 @pytest.mark.asyncio
 async def test_retry_failed_calls(campaign_scheduler, mock_call_service, mock_campaign_service):
@@ -79,7 +87,7 @@ async def test_retry_failed_calls(campaign_scheduler, mock_call_service, mock_ca
         retry_attempts=0,
         max_retries=3,
         created_at=now - timedelta(hours=1),
-        updated_at=now - timedelta(hours=1)
+        updated_at=now - timedelta(hours=1),
     )
     campaign = Campaign(
         id=1,
@@ -92,7 +100,7 @@ async def test_retry_failed_calls(campaign_scheduler, mock_call_service, mock_ca
         script_template="Test script",
         max_retries=3,
         retry_delay_minutes=15,
-        pending_calls=3
+        pending_calls=3,
     )
     mock_call_service.list_calls.return_value = [call]
     mock_call_service.is_retry_allowed.return_value = True
@@ -105,15 +113,11 @@ async def test_retry_failed_calls(campaign_scheduler, mock_call_service, mock_ca
     mock_campaign_service.get_campaign.assert_called_once_with(call.campaign_id)
     mock_call_service.retry_call.assert_called_once_with(call.id)
 
+
 @pytest.mark.asyncio
 async def test_update_campaign_stats(campaign_scheduler, mock_call_service, mock_campaign_service):
     campaign_id = 1
-    metrics = {
-        "total_calls": 10,
-        "completed_calls": 8,
-        "failed_calls": 2,
-        "pending_calls": 0
-    }
+    metrics = {"total_calls": 10, "completed_calls": 8, "failed_calls": 2, "pending_calls": 0}
     mock_call_service.get_call_metrics.return_value = metrics
 
     await campaign_scheduler.update_campaign_stats(campaign_id)
@@ -121,10 +125,5 @@ async def test_update_campaign_stats(campaign_scheduler, mock_call_service, mock
     mock_call_service.get_call_metrics.assert_called_once_with(campaign_id)
     mock_campaign_service.update_campaign_stats.assert_called_once_with(
         campaign_id,
-        {
-            "total_calls": 10,
-            "successful_calls": 8,
-            "failed_calls": 2,
-            "pending_calls": 0
-        }
+        {"total_calls": 10, "successful_calls": 8, "failed_calls": 2, "pending_calls": 0},
     )

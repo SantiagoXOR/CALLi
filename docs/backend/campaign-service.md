@@ -41,16 +41,16 @@ El `CampaignService` es un componente fundamental del sistema de automatización
 ```python
 class CampaignService:
     """Servicio para gestionar campañas de llamadas automatizadas.
-    
+
     Este servicio proporciona métodos para crear, consultar, actualizar y eliminar campañas,
     así como para gestionar sus estadísticas y estado.
-    
+
     Attributes:
         supabase: Cliente de Supabase para la persistencia de datos
     """
     def __init__(self, supabase_client):
         """Inicializa el servicio de campañas.
-        
+
         Args:
             supabase_client: Cliente de Supabase para la persistencia de datos
         """
@@ -65,13 +65,13 @@ class CampaignService:
 ```python
 async def create_campaign(self, campaign: CampaignCreate) -> Campaign:
     """Crea una nueva campaña de llamadas.
-    
+
     Args:
         campaign: Datos de la campaña a crear
-        
+
     Returns:
         Campaign: La campaña creada con su ID asignado
-        
+
     Raises:
         HTTPException: Si hay un error al crear la campaña
     """
@@ -91,13 +91,13 @@ async def create_campaign(self, campaign: CampaignCreate) -> Campaign:
 
 async def get_campaign(self, campaign_id: str) -> Campaign:
     """Obtiene una campaña por su ID.
-    
+
     Args:
         campaign_id: ID de la campaña
-        
+
     Returns:
         Campaign: La campaña encontrada
-        
+
     Raises:
         HTTPException: Si la campaña no existe o hay un error
     """
@@ -119,21 +119,21 @@ async def get_campaign(self, campaign_id: str) -> Campaign:
 
 async def update_campaign(self, campaign_id: str, campaign: CampaignUpdate) -> Campaign:
     """Actualiza una campaña existente.
-    
+
     Args:
         campaign_id: ID de la campaña a actualizar
         campaign: Datos a actualizar
-        
+
     Returns:
         Campaign: La campaña actualizada
-        
+
     Raises:
         HTTPException: Si la campaña no existe o hay un error
     """
     try:
         # Filtrar campos None para no sobrescribir con valores nulos
         update_data = {k: v for k, v in campaign.model_dump().items() if v is not None}
-        
+
         result = self.supabase.from_table(self.table_name).update(update_data).eq("id", campaign_id).execute()
         if not result or not result["data"]:
             raise HTTPException(
@@ -151,13 +151,13 @@ async def update_campaign(self, campaign_id: str, campaign: CampaignUpdate) -> C
 
 async def delete_campaign(self, campaign_id: str) -> bool:
     """Elimina una campaña.
-    
+
     Args:
         campaign_id: ID de la campaña a eliminar
-        
+
     Returns:
         bool: True si se eliminó correctamente
-        
+
     Raises:
         HTTPException: Si la campaña no existe o hay un error
     """
@@ -182,37 +182,37 @@ async def delete_campaign(self, campaign_id: str) -> bool:
 
 ```python
 async def list_campaigns(
-    self, 
+    self,
     status: Optional[CampaignStatus] = None,
     skip: int = 0,
     limit: int = 100
 ) -> List[Campaign]:
     """Lista campañas con filtros opcionales.
-    
+
     Args:
         status: Filtrar por estado (opcional)
         skip: Número de registros a omitir (paginación)
         limit: Número máximo de registros a devolver
-        
+
     Returns:
         List[Campaign]: Lista de campañas
-        
+
     Raises:
         HTTPException: Si hay un error al listar las campañas
     """
     try:
         query = self.supabase.from_table(self.table_name).select("*")
-        
+
         if status:
             query = query.eq("status", status.value)
-        
+
         query = query.range(skip, skip + limit - 1)
-        
+
         result = query.execute()
-        
+
         if not result:
             return []
-        
+
         return [Campaign(**item) for item in result["data"]]
     except Exception as e:
         raise HTTPException(
@@ -222,14 +222,14 @@ async def list_campaigns(
 
 async def search_campaigns(self, search_term: str, limit: int = 10) -> List[Campaign]:
     """Busca campañas por nombre o descripción.
-    
+
     Args:
         search_term: Término de búsqueda
         limit: Número máximo de resultados
-        
+
     Returns:
         List[Campaign]: Lista de campañas que coinciden con la búsqueda
-        
+
     Raises:
         HTTPException: Si hay un error en la búsqueda
     """
@@ -237,20 +237,20 @@ async def search_campaigns(self, search_term: str, limit: int = 10) -> List[Camp
         # Búsqueda en nombre (más relevante)
         name_query = self.supabase.from_table(self.table_name).select("*").ilike("name", f"%{search_term}%").limit(limit)
         name_result = name_query.execute()
-        
+
         # Si no hay suficientes resultados, buscar también en descripción
         if not name_result or len(name_result["data"]) < limit:
             remaining = limit - (len(name_result["data"]) if name_result and name_result["data"] else 0)
             desc_query = self.supabase.from_table(self.table_name).select("*").ilike("description", f"%{search_term}%").limit(remaining)
             desc_result = desc_query.execute()
-            
+
             # Combinar resultados
             all_results = []
             if name_result and name_result["data"]:
                 all_results.extend(name_result["data"])
             if desc_result and desc_result["data"]:
                 all_results.extend(desc_result["data"])
-                
+
             # Eliminar duplicados
             seen_ids = set()
             unique_results = []
@@ -258,9 +258,9 @@ async def search_campaigns(self, search_term: str, limit: int = 10) -> List[Camp
                 if item["id"] not in seen_ids:
                     seen_ids.add(item["id"])
                     unique_results.append(item)
-                    
+
             return [Campaign(**item) for item in unique_results]
-        
+
         return [Campaign(**item) for item in name_result["data"]]
     except Exception as e:
         raise HTTPException(
@@ -274,14 +274,14 @@ async def search_campaigns(self, search_term: str, limit: int = 10) -> List[Camp
 ```python
 async def update_campaign_status(self, campaign_id: str, status: CampaignStatus) -> Campaign:
     """Actualiza el estado de una campaña.
-    
+
     Args:
         campaign_id: ID de la campaña
         status: Nuevo estado
-        
+
     Returns:
         Campaign: La campaña actualizada
-        
+
     Raises:
         HTTPException: Si la campaña no existe o hay un error
     """
@@ -289,24 +289,24 @@ async def update_campaign_status(self, campaign_id: str, status: CampaignStatus)
 
 async def increment_successful_calls(self, campaign_id: str) -> Campaign:
     """Incrementa el contador de llamadas exitosas de una campaña.
-    
+
     Args:
         campaign_id: ID de la campaña
-        
+
     Returns:
         Campaign: La campaña actualizada
-        
+
     Raises:
         HTTPException: Si la campaña no existe o hay un error
     """
     try:
         # Obtener campaña actual
         campaign = await self.get_campaign(campaign_id)
-        
+
         # Incrementar contador y decrementar pendientes
         successful_calls = campaign.successful_calls + 1
         pending_calls = max(0, campaign.pending_calls - 1)
-        
+
         # Actualizar campaña
         return await self.update_campaign(
             campaign_id,
@@ -325,24 +325,24 @@ async def increment_successful_calls(self, campaign_id: str) -> Campaign:
 
 async def increment_failed_calls(self, campaign_id: str) -> Campaign:
     """Incrementa el contador de llamadas fallidas de una campaña.
-    
+
     Args:
         campaign_id: ID de la campaña
-        
+
     Returns:
         Campaign: La campaña actualizada
-        
+
     Raises:
         HTTPException: Si la campaña no existe o hay un error
     """
     try:
         # Obtener campaña actual
         campaign = await self.get_campaign(campaign_id)
-        
+
         # Incrementar contador y decrementar pendientes
         failed_calls = campaign.failed_calls + 1
         pending_calls = max(0, campaign.pending_calls - 1)
-        
+
         # Actualizar campaña
         return await self.update_campaign(
             campaign_id,
@@ -361,24 +361,24 @@ async def increment_failed_calls(self, campaign_id: str) -> Campaign:
 
 async def increment_pending_calls(self, campaign_id: str) -> Campaign:
     """Incrementa el contador de llamadas pendientes de una campaña.
-    
+
     Args:
         campaign_id: ID de la campaña
-        
+
     Returns:
         Campaign: La campaña actualizada
-        
+
     Raises:
         HTTPException: Si la campaña no existe o hay un error
     """
     try:
         # Obtener campaña actual
         campaign = await self.get_campaign(campaign_id)
-        
+
         # Incrementar contador
         pending_calls = campaign.pending_calls + 1
         total_calls = campaign.total_calls + 1
-        
+
         # Actualizar campaña
         return await self.update_campaign(
             campaign_id,
@@ -401,21 +401,21 @@ async def increment_pending_calls(self, campaign_id: str) -> Campaign:
 ```python
 async def add_contacts_to_campaign(self, campaign_id: str, contact_ids: List[str]) -> int:
     """Añade contactos a una campaña.
-    
+
     Args:
         campaign_id: ID de la campaña
         contact_ids: Lista de IDs de contactos
-        
+
     Returns:
         int: Número de contactos añadidos
-        
+
     Raises:
         HTTPException: Si la campaña no existe o hay un error
     """
     try:
         # Verificar que la campaña existe
         await self.get_campaign(campaign_id)
-        
+
         # Preparar datos para inserción
         now = datetime.now().isoformat()
         data = [
@@ -429,13 +429,13 @@ async def add_contacts_to_campaign(self, campaign_id: str, contact_ids: List[str
             }
             for contact_id in contact_ids
         ]
-        
+
         # Insertar en tabla de relación
         result = self.supabase.from_table("campaign_contacts").insert(data).execute()
-        
+
         if not result or not result["data"]:
             return 0
-            
+
         # Actualizar contador de llamadas pendientes
         await self.update_campaign(
             campaign_id,
@@ -444,7 +444,7 @@ async def add_contacts_to_campaign(self, campaign_id: str, contact_ids: List[str
                 total_calls=len(contact_ids)
             )
         )
-        
+
         return len(result["data"])
     except HTTPException:
         raise
@@ -456,26 +456,26 @@ async def add_contacts_to_campaign(self, campaign_id: str, contact_ids: List[str
 
 async def remove_contact_from_campaign(self, campaign_id: str, contact_id: str) -> bool:
     """Elimina un contacto de una campaña.
-    
+
     Args:
         campaign_id: ID de la campaña
         contact_id: ID del contacto
-        
+
     Returns:
         bool: True si se eliminó correctamente
-        
+
     Raises:
         HTTPException: Si la relación no existe o hay un error
     """
     try:
         result = self.supabase.from_table("campaign_contacts").delete().eq("campaign_id", campaign_id).eq("contact_id", contact_id).execute()
-        
+
         if not result or not result["data"]:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Contacto no encontrado en la campaña"
             )
-            
+
         return True
     except HTTPException:
         raise
@@ -487,29 +487,29 @@ async def remove_contact_from_campaign(self, campaign_id: str, contact_id: str) 
 
 async def get_campaign_contacts(self, campaign_id: str, skip: int = 0, limit: int = 100) -> List[Dict]:
     """Obtiene los contactos de una campaña.
-    
+
     Args:
         campaign_id: ID de la campaña
         skip: Número de registros a omitir (paginación)
         limit: Número máximo de registros a devolver
-        
+
     Returns:
         List[Dict]: Lista de contactos con su estado en la campaña
-        
+
     Raises:
         HTTPException: Si la campaña no existe o hay un error
     """
     try:
         # Verificar que la campaña existe
         await self.get_campaign(campaign_id)
-        
+
         # Consultar contactos de la campaña
         query = self.supabase.from_table("campaign_contacts").select("*, contacts(*)").eq("campaign_id", campaign_id).range(skip, skip + limit - 1)
         result = query.execute()
-        
+
         if not result or not result["data"]:
             return []
-            
+
         # Formatear resultados
         contacts = []
         for item in result["data"]:
@@ -518,7 +518,7 @@ async def get_campaign_contacts(self, campaign_id: str, skip: int = 0, limit: in
             contact_data["call_count"] = item["call_count"]
             contact_data["last_call_at"] = item["last_call_at"]
             contacts.append(contact_data)
-            
+
         return contacts
     except HTTPException:
         raise

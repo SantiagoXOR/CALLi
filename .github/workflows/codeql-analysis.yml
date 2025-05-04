@@ -2,11 +2,11 @@ name: "CodeQL Analysis"
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
   schedule:
-    - cron: '0 0 * * 0'  # Ejecutar cada domingo a medianoche
+    - cron: "0 0 * * 0" # Ejecutar cada domingo a medianoche
 
 jobs:
   analyze:
@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'javascript', 'python', 'cpp' ]
+        language: ["javascript", "python", "cpp"]
         # Excluir cpp si no hay código C/C++ en el proyecto
         exclude:
           - language: cpp
@@ -29,28 +29,28 @@ jobs:
             condition: true
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: ${{ matrix.language }}
-        config-file: ./.github/codeql/codeql-config.yml
-        queries: security-and-quality
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          config-file: ./.github/codeql/codeql-config.yml
+          queries: security-and-quality
 
-    # Para C/C++, necesitamos un paso de compilación
-    - name: Build C/C++ (if needed)
-      if: matrix.language == 'cpp'
-      run: |
-        echo "No hay código C/C++ que compilar, pero este paso es necesario para CodeQL"
-        # En un proyecto real con código C/C++, aquí iría el comando de compilación
+      # Para C/C++, necesitamos un paso de compilación
+      - name: Build C/C++ (if needed)
+        if: matrix.language == 'cpp'
+        run: |
+          echo "No hay código C/C++ que compilar, pero este paso es necesario para CodeQL"
+          # En un proyecto real con código C/C++, aquí iría el comando de compilación
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
-      if: matrix.language != 'cpp'
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+        if: matrix.language != 'cpp'
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-      with:
-        category: "/language:${{matrix.language}}"
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"

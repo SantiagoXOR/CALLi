@@ -23,13 +23,13 @@ sequenceDiagram
     participant Supabase Auth
     participant Backend API
     participant Database
-    
+
     User->>Frontend: Enter credentials
     Frontend->>Supabase Auth: Submit credentials
     Supabase Auth->>Supabase Auth: Validate credentials
     Supabase Auth->>Frontend: Return JWT token
     Frontend->>Frontend: Store JWT in secure cookie
-    
+
     User->>Frontend: Request protected resource
     Frontend->>Backend API: Request with JWT
     Backend API->>Backend API: Validate JWT
@@ -56,7 +56,7 @@ async function setupMFA(userId: string, mfaType: 'totp' | 'sms' | 'email') {
       userId,
       mfaType
     });
-    
+
     if (mfaType === 'totp') {
       // Show QR code for TOTP setup
       const { qrCodeUrl, secret } = response.data;
@@ -91,24 +91,24 @@ async def setup_mfa(
     # Verify user has permission to setup MFA
     if current_user.id != request.user_id and not current_user.is_admin:
         raise HTTPException(status_code=403, detail="Not authorized")
-    
+
     if request.mfa_type == "totp":
         # Generate TOTP secret and QR code
         secret, qr_code_url = auth_service.generate_totp_secret(request.user_id)
         return {"qrCodeUrl": qr_code_url, "secret": secret}
-    
+
     elif request.mfa_type == "sms":
         # Send SMS verification code
         phone_number = await auth_service.get_user_phone(request.user_id)
         message_status = await auth_service.send_sms_verification(phone_number)
         return {"phoneNumber": mask_phone_number(phone_number), "messageStatus": message_status}
-    
+
     elif request.mfa_type == "email":
         # Send email verification code
         email = await auth_service.get_user_email(request.user_id)
         message_status = await auth_service.send_email_verification(email)
         return {"email": mask_email(email), "messageStatus": message_status}
-    
+
     else:
         raise HTTPException(status_code=400, detail="Invalid MFA type")
 ```
@@ -133,16 +133,16 @@ graph TD
     B -->|Manages| D[Agent]
     B -->|Manages| E[Viewer]
     B -->|Manages| F[API Client]
-    
+
     C -->|Creates/Manages| G[Campaigns]
     C -->|Views| H[Reports]
-    
+
     D -->|Executes| G
     D -->|Views Assigned| H
-    
+
     E -->|Views| G
     E -->|Views Limited| H
-    
+
     F -->|API Access| G
     F -->|API Access| H
 ```
@@ -262,18 +262,18 @@ The frontend implements RBAC by conditionally rendering UI elements and restrict
 // Role-based UI rendering
 function CampaignActions({ campaign }) {
   const { user } = useAuth();
-  
+
   // Check if user has edit permission
   const canEdit = useMemo(() => {
     return ['system_admin', 'org_admin', 'campaign_manager'].includes(user.role) ||
       (campaign.managers || []).includes(user.id);
   }, [user, campaign]);
-  
+
   // Check if user has delete permission
   const canDelete = useMemo(() => {
     return ['system_admin', 'org_admin'].includes(user.role);
   }, [user]);
-  
+
   return (
     <div className="campaign-actions">
       {canEdit && (
@@ -281,13 +281,13 @@ function CampaignActions({ campaign }) {
           Edit
         </Button>
       )}
-      
+
       {canDelete && (
         <Button variant="destructive" onClick={() => handleDeleteCampaign(campaign.id)}>
           Delete
         </Button>
       )}
-      
+
       {/* All users with access can view */}
       <Button variant="default" onClick={() => navigate(`/campaigns/${campaign.id}`)}>
         View
@@ -325,18 +325,18 @@ async def get_call_recording(
 ):
     # Check if user has permission to access this recording
     call = await call_service.get_call(call_id)
-    
+
     # Get campaign to check permissions
     campaign = await call_service.get_campaign(call.campaign_id)
-    
+
     # Check if user has access to this campaign
     if not await call_service.user_has_campaign_access(current_user.id, campaign.id):
         raise HTTPException(status_code=403, detail="Not authorized to access this recording")
-    
+
     # Check if user has permission to access recordings
     if current_user.role not in ["system_admin", "org_admin"] and not campaign.managers.includes(current_user.id):
         raise HTTPException(status_code=403, detail="Not authorized to access recordings")
-    
+
     # Log access to restricted data
     await audit_service.log_data_access(
         user_id=current_user.id,
@@ -345,10 +345,10 @@ async def get_call_recording(
         action="read",
         reason="User requested call recording"
     )
-    
+
     # Get the recording with decryption
     recording = await call_service.get_call_recording(call_id)
-    
+
     return recording
 ```
 
@@ -368,15 +368,15 @@ async def api_key_auth(request: Request, api_key_service: ApiKeyService = Depend
     api_key = request.headers.get("X-API-Key")
     if not api_key:
         raise HTTPException(status_code=401, detail="API key is required")
-    
+
     # Validate API key
     client = await api_key_service.validate_api_key(api_key)
     if not client:
         raise HTTPException(status_code=401, detail="Invalid API key")
-    
+
     # Set client in request state
     request.state.client = client
-    
+
     return client
 ```
 
@@ -391,37 +391,37 @@ class RateLimiter:
         self.redis = redis_client
         self.limit = limit  # Number of requests
         self.window = window  # Time window in seconds
-    
+
     async def __call__(self, request: Request):
         # Get client identifier (IP or user ID)
         client_id = self._get_client_identifier(request)
-        
+
         # Get current count
         current = await self.redis.get(f"ratelimit:{client_id}")
         current = int(current) if current else 0
-        
+
         # Check if limit exceeded
         if current >= self.limit:
             raise HTTPException(
                 status_code=429,
                 detail="Too many requests. Please try again later."
             )
-        
+
         # Increment counter
         pipe = self.redis.pipeline()
         pipe.incr(f"ratelimit:{client_id}")
         pipe.expire(f"ratelimit:{client_id}", self.window)
         await pipe.execute()
-    
+
     def _get_client_identifier(self, request: Request):
         # Use user ID if authenticated
         if hasattr(request.state, "user") and request.state.user:
             return f"user:{request.state.user.id}"
-        
+
         # Use API client ID if using API key
         if hasattr(request.state, "client") and request.state.client:
             return f"client:{request.state.client.id}"
-        
+
         # Fall back to IP address
         return f"ip:{request.client.host}"
 ```
@@ -440,26 +440,26 @@ class RateLimiter:
 const SessionProvider = ({ children }) => {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   // Initialize session
   useEffect(() => {
     const initSession = async () => {
       try {
         // Check for existing session
         const { data, error } = await supabase.auth.getSession();
-        
+
         if (error) throw error;
-        
+
         if (data?.session) {
           setSession(data.session);
-          
+
           // Setup session renewal
           const { data: { subscription } } = supabase.auth.onAuthStateChange(
             (_event, session) => {
               setSession(session);
             }
           );
-          
+
           return () => subscription.unsubscribe();
         }
       } catch (error) {
@@ -468,10 +468,10 @@ const SessionProvider = ({ children }) => {
         setLoading(false);
       }
     };
-    
+
     initSession();
   }, []);
-  
+
   // Session context value
   const value = {
     session,
@@ -486,7 +486,7 @@ const SessionProvider = ({ children }) => {
     },
     // Other auth methods...
   };
-  
+
   return (
     <SessionContext.Provider value={value}>
       {children}
@@ -520,7 +520,7 @@ class AuditService:
     def __init__(self, db_session, logger):
         self.db = db_session
         self.logger = logger
-    
+
     async def log_authentication(self, user_id, success, ip_address, user_agent, error=None):
         log_entry = AuthenticationLog(
             user_id=user_id,
@@ -530,16 +530,16 @@ class AuditService:
             user_agent=user_agent,
             error=error
         )
-        
+
         self.db.add(log_entry)
         await self.db.commit()
-        
+
         # Also log to application logs
         if success:
             self.logger.info(f"User {user_id} authenticated successfully from {ip_address}")
         else:
             self.logger.warning(f"Failed authentication attempt for user {user_id} from {ip_address}: {error}")
-    
+
     async def log_authorization(self, user_id, resource_type, resource_id, action, success, error=None):
         log_entry = AuthorizationLog(
             user_id=user_id,
@@ -550,16 +550,16 @@ class AuditService:
             success=success,
             error=error
         )
-        
+
         self.db.add(log_entry)
         await self.db.commit()
-        
+
         # Also log to application logs
         if not success:
             self.logger.warning(
                 f"Authorization denied for user {user_id} to {action} {resource_type}:{resource_id}: {error}"
             )
-    
+
     async def log_data_access(self, user_id, resource_type, resource_id, action, reason=None):
         log_entry = DataAccessLog(
             user_id=user_id,
@@ -569,10 +569,10 @@ class AuditService:
             action=action,
             reason=reason
         )
-        
+
         self.db.add(log_entry)
         await self.db.commit()
-        
+
         # Log access to sensitive data
         self.logger.info(
             f"User {user_id} accessed {resource_type}:{resource_id} with action {action}"
@@ -594,45 +594,45 @@ class AuditService:
 async def test_campaign_access_control():
     # Setup test database with users and campaigns
     db = get_test_db()
-    
+
     # Create test users with different roles
     admin_user = await create_test_user(db, role="system_admin")
     manager_user = await create_test_user(db, role="campaign_manager")
     agent_user = await create_test_user(db, role="agent")
     viewer_user = await create_test_user(db, role="viewer")
-    
+
     # Create test campaign
     campaign = await create_test_campaign(db)
-    
+
     # Assign manager to campaign
     await assign_campaign_manager(db, campaign.id, manager_user.id)
-    
+
     # Assign agent to campaign
     await assign_campaign_agent(db, campaign.id, agent_user.id)
-    
+
     # Assign viewer to campaign
     await assign_campaign_viewer(db, campaign.id, viewer_user.id)
-    
+
     # Test admin access (should have full access)
     assert await user_can_view_campaign(db, admin_user.id, campaign.id) == True
     assert await user_can_edit_campaign(db, admin_user.id, campaign.id) == True
     assert await user_can_delete_campaign(db, admin_user.id, campaign.id) == True
-    
+
     # Test manager access
     assert await user_can_view_campaign(db, manager_user.id, campaign.id) == True
     assert await user_can_edit_campaign(db, manager_user.id, campaign.id) == True
     assert await user_can_delete_campaign(db, manager_user.id, campaign.id) == False
-    
+
     # Test agent access
     assert await user_can_view_campaign(db, agent_user.id, campaign.id) == True
     assert await user_can_edit_campaign(db, agent_user.id, campaign.id) == False
     assert await user_can_delete_campaign(db, agent_user.id, campaign.id) == False
-    
+
     # Test viewer access
     assert await user_can_view_campaign(db, viewer_user.id, campaign.id) == True
     assert await user_can_edit_campaign(db, viewer_user.id, campaign.id) == False
     assert await user_can_delete_campaign(db, viewer_user.id, campaign.id) == False
-    
+
     # Test unauthorized user
     unrelated_user = await create_test_user(db, role="viewer")
     assert await user_can_view_campaign(db, unrelated_user.id, campaign.id) == False

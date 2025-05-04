@@ -1,18 +1,21 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import { render } from "../../__tests__/utils";
 import { ContactImport } from "../ContactImport";
 
-// Mock para toast
-const mockToast = {
-  error: jest.fn(),
-  success: jest.fn(),
-};
-
 // Mock de sonner
-jest.mock("sonner", () => ({
-  toast: mockToast,
-}));
+jest.mock("sonner", () => {
+  return {
+    toast: {
+      error: jest.fn(),
+      success: jest.fn(),
+    },
+  };
+});
+
+// Mock para toast - definido inmediatamente después del jest.mock
+const mockToast = jest.requireMock("sonner").toast;
 
 // Mock de las funciones de callback
 const mockOnCancel = jest.fn();

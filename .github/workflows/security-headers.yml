@@ -2,19 +2,19 @@ name: "Verificación de Encabezados de Seguridad"
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
     paths:
-      - 'frontend-call-automation/**'
-      - 'backend-call-automation/**'
-      - 'nginx/conf.d/**'
+      - "frontend-call-automation/**"
+      - "backend-call-automation/**"
+      - "nginx/conf.d/**"
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
     paths:
-      - 'frontend-call-automation/**'
-      - 'backend-call-automation/**'
-      - 'nginx/conf.d/**'
+      - "frontend-call-automation/**"
+      - "backend-call-automation/**"
+      - "nginx/conf.d/**"
   schedule:
-    - cron: '0 0 * * 4'  # Ejecutar cada jueves a medianoche
+    - cron: "0 0 * * 4" # Ejecutar cada jueves a medianoche
 
 jobs:
   check-security-headers:
@@ -27,7 +27,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Install dependencies
         run: |
@@ -36,7 +36,7 @@ jobs:
 
       - name: Create security headers check script
         run: |
-          cat > check_security_headers.py << 'EOF'
+          cat > check_security_headers.py << EOF
           import requests
           import sys
           import json
@@ -96,41 +96,41 @@ jobs:
                   }
 
           def generate_markdown_report(results):
-              md = "# Informe de Encabezados de Seguridad\n\n"
-              md += f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
+              md = "# Informe de Encabezados de Seguridad\\n\\n"
+              md += f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\\n\\n"
 
               for url_result in results:
-                  md += f"## URL: {url_result['url']}\n\n"
+                  md += f"## URL: {url_result['url']}\\n\\n"
 
                   if 'error' in url_result:
-                      md += f"**Error:** {url_result['error']}\n\n"
+                      md += f"**Error:** {url_result['error']}\\n\\n"
                       continue
 
-                  md += f"**Código de estado:** {url_result['status_code']}\n\n"
+                  md += f"**Código de estado:** {url_result['status_code']}\\n\\n"
 
-                  md += "### Encabezados Presentes\n\n"
+                  md += "### Encabezados Presentes\\n\\n"
                   if url_result['headers_present']:
-                      md += "| Encabezado | Valor | Descripción |\n"
-                      md += "|------------|-------|-------------|\n"
+                      md += "| Encabezado | Valor | Descripción |\\n"
+                      md += "|------------|-------|-------------|\\n"
                       for header, info in url_result['headers_present'].items():
-                          md += f"| {header} | `{info['value']}` | {info['description']} |\n"
+                          md += f"| {header} | `{info['value']}` | {info['description']} |\\n"
                   else:
-                      md += "*No se encontraron encabezados de seguridad.*\n\n"
+                      md += "*No se encontraron encabezados de seguridad.*\\n\\n"
 
-                  md += "\n### Encabezados Faltantes\n\n"
+                  md += "\\n### Encabezados Faltantes\\n\\n"
                   if url_result['headers_missing']:
-                      md += "| Encabezado | Descripción |\n"
-                      md += "|------------|-------------|\n"
+                      md += "| Encabezado | Descripción |\\n"
+                      md += "|------------|-------------|\\n"
                       for header, info in url_result['headers_missing'].items():
-                          md += f"| {header} | {info['description']} |\n"
+                          md += f"| {header} | {info['description']} |\\n"
                   else:
-                      md += "*Todos los encabezados de seguridad están presentes. ¡Excelente!*\n\n"
+                      md += "*Todos los encabezados de seguridad están presentes. ¡Excelente!*\\n\\n"
 
-                  md += "\n---\n\n"
+                  md += "\\n---\\n\\n"
 
-              md += "## Recomendaciones\n\n"
+              md += "## Recomendaciones\\n\\n"
               md += "Para mejorar la seguridad de la aplicación, considere implementar los encabezados faltantes. "
-              md += "Consulte [OWASP Secure Headers Project](https://owasp.org/www-project-secure-headers/) para más información.\n\n"
+              md += "Consulte [OWASP Secure Headers Project](https://owasp.org/www-project-secure-headers/) para más información.\\n\\n"
 
               return md
 
@@ -160,7 +160,7 @@ jobs:
                   f.write(markdown_report)
 
               print("Verificación completada. Resultados guardados en security_headers_results.json y security_headers_report.md")
-          EOF
+EOF
 
       - name: Run security headers check
         run: |
@@ -170,35 +170,23 @@ jobs:
           # Crear archivo de configuración por defecto si no existe
           if [ ! -f "nginx/conf.d/default.conf" ]; then
             echo "Creando archivo de configuración Nginx con encabezados de seguridad..."
-            echo 'server {
+            cp nginx-template/default.conf nginx/conf.d/default.conf || {
+              # Si no existe el archivo de plantilla, crear uno básico
+              cat > nginx/conf.d/default.conf << EOF
+server {
     listen 80;
     server_name localhost;
 
-    # Encabezados de seguridad
+    # Configuración de encabezados de seguridad
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-XSS-Protection "1; mode=block" always;
-    add_header Content-Security-Policy "default-src '"'"'self'"'"'; script-src '"'"'self'"'"' '"'"'unsafe-inline'"'"'; style-src '"'"'self'"'"' '"'"'unsafe-inline'"'"'; img-src '"'"'self'"'"' data:; font-src '"'"'self'"'"' data:;" always;
-    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
-    add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=()" always;
-
-    location / {
-        proxy_pass http://frontend:3000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    location /api {
-        proxy_pass http://backend:8000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}' > nginx/conf.d/default.conf
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header Content-Security-Policy "default-src 'self'" always;
+}
+EOF
+            }
           fi
 
           # Verificar si estamos en un entorno de CI o en una ejecución local
@@ -268,7 +256,7 @@ jobs:
           CHECK_URLS: "https://example.com,https://securityheaders.com"
 
       - name: Upload security headers report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: security-headers-report
           path: |

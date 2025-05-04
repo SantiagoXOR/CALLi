@@ -1,0 +1,82 @@
+[1mdiff --git a/.github/workflows/codeql-analysis.yml b/.github/workflows/codeql-analysis.yml[m
+[1mindex a03d6ad..7692883 100644[m
+[1m--- a/.github/workflows/codeql-analysis.yml[m
+[1m+++ b/.github/workflows/codeql-analysis.yml[m
+[36m@@ -2,11 +2,11 @@[m [mname: "CodeQL Analysis"[m
+ [m
+ on:[m
+   push:[m
+[31m-    branches: [ "master" ][m
+[32m+[m[32m    branches: ["master"][m
+   pull_request:[m
+[31m-    branches: [ "master" ][m
+[32m+[m[32m    branches: ["master"][m
+   schedule:[m
+[31m-    - cron: '0 0 * * 0'  # Ejecutar cada domingo a medianoche[m
+[32m+[m[32m    - cron: "0 0 * * 0" # Ejecutar cada domingo a medianoche[m
+ [m
+ jobs:[m
+   analyze:[m
+[36m@@ -20,7 +20,7 @@[m [mjobs:[m
+     strategy:[m
+       fail-fast: false[m
+       matrix:[m
+[31m-        language: [ 'javascript', 'python', 'cpp' ][m
+[32m+[m[32m        language: ["javascript", "python", "cpp"][m
+         # Excluir cpp si no hay código C/C++ en el proyecto[m
+         exclude:[m
+           - language: cpp[m
+[36m@@ -29,28 +29,28 @@[m [mjobs:[m
+             condition: true[m
+ [m
+     steps:[m
+[31m-    - name: Checkout repository[m
+[31m-      uses: actions/checkout@v3[m
+[31m-[m
+[31m-    - name: Initialize CodeQL[m
+[31m-      uses: github/codeql-action/init@v2[m
+[31m-      with:[m
+[31m-        languages: ${{ matrix.language }}[m
+[31m-        config-file: ./.github/codeql/codeql-config.yml[m
+[31m-        queries: security-and-quality[m
+[31m-[m
+[31m-    # Para C/C++, necesitamos un paso de compilación[m
+[31m-    - name: Build C/C++ (if needed)[m
+[31m-      if: matrix.language == 'cpp'[m
+[31m-      run: |[m
+[31m-        echo "No hay código C/C++ que compilar, pero este paso es necesario para CodeQL"[m
+[31m-        # En un proyecto real con código C/C++, aquí iría el comando de compilación[m
+[31m-[m
+[31m-    - name: Autobuild[m
+[31m-      uses: github/codeql-action/autobuild@v2[m
+[31m-      if: matrix.language != 'cpp'[m
+[31m-[m
+[31m-    - name: Perform CodeQL Analysis[m
+[31m-      uses: github/codeql-action/analyze@v2[m
+[31m-      with:[m
+[31m-        category: "/language:${{matrix.language}}"[m
+[32m+[m[32m      - name: Checkout repository[m
+[32m+[m[32m        uses: actions/checkout@v3[m
+[32m+[m
+[32m+[m[32m      - name: Initialize CodeQL[m
+[32m+[m[32m        uses: github/codeql-action/init@v3[m
+[32m+[m[32m        with:[m
+[32m+[m[32m          languages: ${{ matrix.language }}[m
+[32m+[m[32m          config-file: ./.github/codeql/codeql-config.yml[m
+[32m+[m[32m          queries: security-and-quality[m
+[32m+[m
+[32m+[m[32m      # Para C/C++, necesitamos un paso de compilación[m
+[32m+[m[32m      - name: Build C/C++ (if needed)[m
+[32m+[m[32m        if: matrix.language == 'cpp'[m
+[32m+[m[32m        run: |[m
+[32m+[m[32m          echo "No hay código C/C++ que compilar, pero este paso es necesario para CodeQL"[m
+[32m+[m[32m          # En un proyecto real con código C/C++, aquí iría el comando de compilación[m
+[32m+[m
+[32m+[m[32m      - name: Autobuild[m
+[32m+[m[32m        uses: github/codeql-action/autobuild@v3[m
+[32m+[m[32m        if: matrix.language != 'cpp'[m
+[32m+[m
+[32m+[m[32m      - name: Perform CodeQL Analysis[m
+[32m+[m[32m        uses: github/codeql-action/analyze@v3[m
+[32m+[m[32m        with:[m
+[32m+[m[32m          category: "/language:${{matrix.language}}"[m

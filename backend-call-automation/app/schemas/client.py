@@ -1,22 +1,26 @@
 from datetime import datetime
-from typing import Optional
 from uuid import UUID
-from pydantic import BaseModel, Field, EmailStr
+
+from pydantic import BaseModel, EmailStr, Field
+
 
 class ClientBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=255)
     phone: str = Field(..., min_length=10, max_length=50)
-    email: Optional[EmailStr] = None
-    notes: Optional[str] = None
+    email: EmailStr | None = None
+    notes: str | None = None
+
 
 class ClientCreate(ClientBase):
     pass
 
+
 class ClientUpdate(BaseModel):
-    name: Optional[str] = Field(None, min_length=1, max_length=255)
-    phone: Optional[str] = Field(None, min_length=10, max_length=50)
-    email: Optional[EmailStr] = None
-    notes: Optional[str] = None
+    name: str | None = Field(None, min_length=1, max_length=255)
+    phone: str | None = Field(None, min_length=10, max_length=50)
+    email: EmailStr | None = None
+    notes: str | None = None
+
 
 class Client(ClientBase):
     id: UUID

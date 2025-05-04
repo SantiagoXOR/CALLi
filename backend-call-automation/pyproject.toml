@@ -1,21 +1,115 @@
+[tool.poetry]
+name = "call-automation"
+version = "0.1.0"
+description = "Sistema de automatización de llamadas telefónicas"
+authors = ["Santiago Martinez <santiago@xor.com.ar>"]
+readme = "README.md"
+packages = [{include = "app"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.89.1"
+uvicorn = {extras = ["standard"], version = "^0.20.0"}
+python-dotenv = "^1.0.0"
+pydantic = "^2.0"
+pydantic-settings = "^2.0"
+python-decouple = "^3.8"
+supabase = "^1.0.3"
+twilio = "^8.10.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+httpx = "^0.23.3"
+elevenlabs = "^0.2.27"
+langchain = "^0.0.300"
+langchain-google-genai = "^0.0.5"
+openai = "^0.28.0"
+librosa = "^0.9.0"
+numpy = "^1.21.0"
+redis = "^4.0.0"
+prometheus-client = "^0.14.0"
+tenacity = "^8.0.0"
+anyio = "^4.0.0"
+hvac = "^1.0.0"
+email-validator = "^2.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0.0"
+pytest-asyncio = "^0.21.0"
+pytest-cov = "^4.0.0"
+pytest-mock = "^3.0.0"
+pre-commit = "^2.15.0"
+ruff = "^0.1.0"
+black = "^23.1.0"
+isort = "^5.12.0"
+mypy = "^1.0.0"
+respx = "^0.20.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 88
+multi_line_output = 3
+
 [tool.ruff]
-# Añadiendo reglas adicionales específicas para el proyecto
-select = [
-    "E", "F", "B", "I", "S", "W", "N", "UP", "ANN", 
-    "C4", "DTZ", "T10", "PIE", "PT", "RET", "SIM", "ARG",
-    "ERA", "PL", "TRY", "RUF"  # Nuevas reglas
-]
-ignore = ["B008", "ANN101", "ANN102"]
 line-length = 100
 target-version = "py311"
 extend-exclude = ["migrations", "tests/fixtures"]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint]
+# Añadiendo reglas adicionales específicas para el proyecto
+select = [
+    "E", "F", "B", "I", "S", "W", "N", "UP", "ANN",
+    "C4", "DTZ", "T10", "PIE", "PT", "RET", "SIM", "ARG",
+    "ERA", "PL", "TRY", "RUF"  # Nuevas reglas
+]
+ignore = ["B008"]
+
+[tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101", "S105", "S106"]
 "app/models/__init__.py" = ["F401"]
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 10
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+# Configuración para resolver el problema de módulos duplicados
+namespace_packages = true
+explicit_package_bases = true
+# Configurar la ruta base para los módulos
+mypy_path = "backend-call-automation"
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "asyncio: mark a test as an asyncio coroutine",
+    "unit: marks tests as unit tests",
+]
 
 [tool.coverage.run]
 source = ["app"]

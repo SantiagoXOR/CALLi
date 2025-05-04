@@ -20,19 +20,19 @@ export function LoginForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
-  
+
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const success = await login({
         email: data.email,
         password: data.password
       });
-      
+
       if (success) {
         router.push("/dashboard");
       } else {
@@ -45,7 +45,7 @@ export function LoginForm() {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
@@ -75,7 +75,7 @@ export function LoginForm() {
               <p className="text-red-500 text-sm">{errors.email.message}</p>
             )}
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="password">Contraseña</Label>
             <Input
@@ -95,13 +95,13 @@ export function LoginForm() {
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}
           </div>
-          
+
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
               {error}
             </div>
           )}
-          
+
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
               <>

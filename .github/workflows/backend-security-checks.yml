@@ -1,0 +1,50 @@
+name: "Backend Security Checks"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  backend-security:
+    name: Backend Security Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: backend-call-automation/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          cd backend-call-automation
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install safety
+
+      - name: Run safety check
+        run: |
+          cd backend-call-automation
+          # Intentar ejecutar safety check con formato JSON
+          if python -m safety check --json > safety-report.json 2>safety-error.log; then
+            echo "Safety check completado exitosamente"
+          else
+            echo "::warning::Safety check encontró vulnerabilidades o tuvo un error"
+            # Si el archivo está vacío o no es válido, crear un JSON válido con mensaje de error
+            if [ ! -s safety-report.json ] || ! jq empty safety-report.json 2>/dev/null; then
+              echo "Creando un archivo JSON válido con información del error"
+              echo '{"report_meta":{"vulnerabilities_found":0,"error":true},"error_message":"Error al ejecutar safety check. Ver logs para más detalles"}' > safety-report.json
+              cat safety-error.log
+            fi
+          fi
+
+      - name: Upload safety results
+        uses: actions/upload-artifact@v4
+        with:
+          name: safety-report
+          path: |
+            backend-call-automation/safety-report.json
+            backend-call-automation/safety-error.log

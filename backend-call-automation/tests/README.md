@@ -153,7 +153,7 @@ Ejemplo de documentación de una función de prueba:
 def test_settings_loaded():
     """
     Verifica que la configuración básica de la aplicación se cargue correctamente.
-    
+
     Esta prueba asegura que los parámetros fundamentales de la aplicación como
     el nombre, el entorno y el modo de depuración tengan los valores esperados
     durante la ejecución de pruebas.

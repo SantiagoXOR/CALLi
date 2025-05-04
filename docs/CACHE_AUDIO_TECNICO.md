@@ -53,11 +53,11 @@ Para identificar de manera única cada archivo de audio, se utiliza un hash MD5 
 def _generate_cache_key(self, text: str, voice_id: str, language: str = "es") -> str:
     # Normalizar texto (eliminar espacios extra, convertir a minúsculas)
     normalized_text = " ".join(text.lower().split())
-    
+
     # Crear hash del texto + voz + idioma
     hash_input = f"{normalized_text}|{voice_id}|{language}"
     hash_value = hashlib.md5(hash_input.encode()).hexdigest()
-    
+
     return hash_value
 ```
 
@@ -112,10 +112,10 @@ async def generate_stream(self, text: str, voice_id: str = "default_voice", lang
     if cached_file_path:
         # Devolver desde caché
         # ...
-    
+
     # Si no está en caché, generar desde la API
     # ...
-    
+
     # Guardar en caché
     audio_data = b''.join(all_chunks)
     asyncio.create_task(

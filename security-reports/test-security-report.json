@@ -1,0 +1,23 @@
+[
+  {
+    "file_path": "backend-call-automation/app/config/secrets.py",
+    "line_number": 42,
+    "content": "def get_secret(secret_name: str) -> str:",
+    "type": "function",
+    "severity": "low"
+  },
+  {
+    "file_path": "backend-call-automation/app/config/settings.py",
+    "line_number": 62,
+    "content": "VAULT_TOKEN_FILE: str = \"/vault/token\"",
+    "type": "token_file",
+    "severity": "medium"
+  },
+  {
+    "file_path": "backend-call-automation/.env",
+    "line_number": 7,
+    "content": "SECRET_KEY=test_secret_key_for_development",
+    "type": "secret_key",
+    "severity": "high"
+  }
+]

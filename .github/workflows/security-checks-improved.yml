@@ -1,0 +1,319 @@
+name: Security Checks Improved
+
+# Definición de permisos mínimos necesarios
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Ejecutar cada domingo a medianoche
+  push:
+    branches: [ master ]
+    paths:
+      - 'frontend-call-automation/package.json'
+      - 'frontend-call-automation/package-lock.json'
+      - 'backend-call-automation/requirements.txt'
+      - 'backend-call-automation/pyproject.toml'
+      - '.github/workflows/security-checks-improved.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'frontend-call-automation/package.json'
+      - 'frontend-call-automation/package-lock.json'
+      - 'backend-call-automation/requirements.txt'
+      - 'backend-call-automation/pyproject.toml'
+  workflow_dispatch:  # Permitir ejecución manual
+
+jobs:
+  frontend-security:
+    name: Frontend Security Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'frontend-call-automation/package-lock.json'
+
+      - name: Install dependencies
+        run: |
+          cd frontend-call-automation
+          npm ci
+
+      - name: Run npm audit
+        run: |
+          cd frontend-call-automation
+          npm audit --json > ../npm-audit.json || echo "Vulnerabilidades encontradas"
+
+      - name: Analyze npm audit results
+        run: |
+          echo "## Frontend Security Scan Results" > security-report.md
+          echo "" >> security-report.md
+
+          # Contar vulnerabilidades por severidad
+          CRITICAL=$(grep -o '"severity":"critical"' npm-audit.json | wc -l)
+          HIGH=$(grep -o '"severity":"high"' npm-audit.json | wc -l)
+          MODERATE=$(grep -o '"severity":"moderate"' npm-audit.json | wc -l)
+          LOW=$(grep -o '"severity":"low"' npm-audit.json | wc -l)
+
+          echo "### Vulnerabilities Summary" >> security-report.md
+          echo "" >> security-report.md
+          echo "- Critical: $CRITICAL" >> security-report.md
+          echo "- High: $HIGH" >> security-report.md
+          echo "- Moderate: $MODERATE" >> security-report.md
+          echo "- Low: $LOW" >> security-report.md
+          echo "" >> security-report.md
+
+          if [ $CRITICAL -gt 0 ] || [ $HIGH -gt 0 ]; then
+            echo "⚠️ **Action Required**: Critical or high severity vulnerabilities found!" >> security-report.md
+          else
+            echo "✅ No critical or high severity vulnerabilities found." >> security-report.md
+          fi
+
+      - name: Upload npm audit results
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-security-report
+          path: |
+            npm-audit.json
+            security-report.md
+
+  backend-security:
+    name: Backend Security Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install safety bandit
+          if [ -f backend-call-automation/requirements.txt ]; then
+            pip install -r backend-call-automation/requirements.txt
+          fi
+
+      - name: Run safety check
+        run: |
+          safety check -r backend-call-automation/requirements.txt --json > safety-report.json || echo "Vulnerabilidades encontradas"
+
+      - name: Run bandit
+        run: |
+          bandit -r backend-call-automation -f json -o bandit-report.json || echo "Problemas de seguridad encontrados"
+
+      - name: Analyze security results
+        run: |
+          echo "## Backend Security Scan Results" > backend-security-report.md
+          echo "" >> backend-security-report.md
+
+          # Analizar resultados de safety
+          echo "### Python Dependencies (Safety)" >> backend-security-report.md
+          echo "" >> backend-security-report.md
+
+          VULN_COUNT=$(grep -o '"vulnerability_id"' safety-report.json | wc -l)
+
+          if [ $VULN_COUNT -gt 0 ]; then
+            echo "⚠️ **$VULN_COUNT vulnerabilities found in Python dependencies!**" >> backend-security-report.md
+          else
+            echo "✅ No vulnerabilities found in Python dependencies." >> backend-security-report.md
+          fi
+
+          echo "" >> backend-security-report.md
+
+          # Analizar resultados de bandit
+          echo "### Code Security Issues (Bandit)" >> backend-security-report.md
+          echo "" >> backend-security-report.md
+
+          HIGH_ISSUES=$(grep -o '"issue_severity": "HIGH"' bandit-report.json | wc -l)
+          MEDIUM_ISSUES=$(grep -o '"issue_severity": "MEDIUM"' bandit-report.json | wc -l)
+          LOW_ISSUES=$(grep -o '"issue_severity": "LOW"' bandit-report.json | wc -l)
+
+          echo "- High: $HIGH_ISSUES" >> backend-security-report.md
+          echo "- Medium: $MEDIUM_ISSUES" >> backend-security-report.md
+          echo "- Low: $LOW_ISSUES" >> backend-security-report.md
+          echo "" >> backend-security-report.md
+
+          if [ $HIGH_ISSUES -gt 0 ]; then
+            echo "⚠️ **Action Required**: High severity security issues found in code!" >> backend-security-report.md
+          elif [ $MEDIUM_ISSUES -gt 0 ]; then
+            echo "⚠️ **Review Recommended**: Medium severity security issues found in code." >> backend-security-report.md
+          else
+            echo "✅ No high or medium severity security issues found in code." >> backend-security-report.md
+          fi
+
+      - name: Upload backend security results
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-security-report
+          path: |
+            safety-report.json
+            bandit-report.json
+            backend-security-report.md
+
+  config-security:
+    name: Configuration Security Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install KICS
+        run: |
+          curl -sfL 'https://raw.githubusercontent.com/Checkmarx/kics/master/install.sh' | sh
+
+      - name: Run KICS scan
+        run: |
+          ./bin/kics scan -p . --config .kics.config -o kics-results --report-formats json,sarif || echo "Problemas de configuración encontrados"
+
+      - name: Analyze KICS results
+        run: |
+          echo "## Configuration Security Scan Results" > config-security-report.md
+          echo "" >> config-security-report.md
+
+          if [ -f "kics-results/results.json" ]; then
+            HIGH_ISSUES=$(grep -o '"severity": "HIGH"' kics-results/results.json | wc -l)
+            MEDIUM_ISSUES=$(grep -o '"severity": "MEDIUM"' kics-results/results.json | wc -l)
+            LOW_ISSUES=$(grep -o '"severity": "LOW"' kics-results/results.json | wc -l)
+
+            echo "### Issues by Severity" >> config-security-report.md
+            echo "" >> config-security-report.md
+            echo "- High: $HIGH_ISSUES" >> config-security-report.md
+            echo "- Medium: $MEDIUM_ISSUES" >> config-security-report.md
+            echo "- Low: $LOW_ISSUES" >> config-security-report.md
+            echo "" >> config-security-report.md
+
+            if [ $HIGH_ISSUES -gt 0 ]; then
+              echo "⚠️ **Action Required**: High severity configuration issues found!" >> config-security-report.md
+            elif [ $MEDIUM_ISSUES -gt 0 ]; then
+              echo "⚠️ **Review Recommended**: Medium severity configuration issues found." >> config-security-report.md
+            else
+              echo "✅ No high or medium severity configuration issues found." >> config-security-report.md
+            fi
+          else
+            echo "No configuration issues found or scan failed to produce results." >> config-security-report.md
+          fi
+
+      - name: Upload KICS results
+        uses: actions/upload-artifact@v4
+        with:
+          name: config-security-report
+          path: |
+            kics-results/
+            config-security-report.md
+
+  secret-scanning:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install gitleaks
+        run: |
+          wget -q https://github.com/zricethezav/gitleaks/releases/download/v8.16.3/gitleaks_8.16.3_linux_x64.tar.gz
+          tar -xzf gitleaks_8.16.3_linux_x64.tar.gz
+          chmod +x gitleaks
+          sudo mv gitleaks /usr/local/bin/
+
+      - name: Run gitleaks
+        run: |
+          gitleaks detect --source . --report-format json --report-path gitleaks-report.json || echo "Posibles secretos encontrados"
+
+      - name: Analyze gitleaks results
+        run: |
+          echo "## Secret Scanning Results" > secret-scan-report.md
+          echo "" >> secret-scan-report.md
+
+          if [ -f "gitleaks-report.json" ]; then
+            SECRET_COUNT=$(grep -o '"Description"' gitleaks-report.json | wc -l)
+
+            if [ $SECRET_COUNT -gt 0 ]; then
+              echo "⚠️ **Action Required**: $SECRET_COUNT potential secrets found in code!" >> secret-scan-report.md
+              echo "" >> secret-scan-report.md
+              echo "Please review the detailed report and remove or secure any exposed secrets." >> secret-scan-report.md
+            else
+              echo "✅ No secrets found in code." >> secret-scan-report.md
+            fi
+          else
+            echo "No secrets found or scan failed to produce results." >> secret-scan-report.md
+          fi
+
+      - name: Upload gitleaks results
+        uses: actions/upload-artifact@v4
+        with:
+          name: secret-scan-report
+          path: |
+            gitleaks-report.json
+            secret-scan-report.md
+
+  security-report:
+    name: Compile Security Report
+    needs: [frontend-security, backend-security, config-security, secret-scanning]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Compile comprehensive security report
+        run: |
+          echo "# Comprehensive Security Report" > comprehensive-security-report.md
+          echo "" >> comprehensive-security-report.md
+          echo "## Summary" >> comprehensive-security-report.md
+          echo "" >> comprehensive-security-report.md
+          echo "Security scan completed on $(date)" >> comprehensive-security-report.md
+          echo "" >> comprehensive-security-report.md
+
+          # Frontend
+          echo "## Frontend Security" >> comprehensive-security-report.md
+          cat frontend-security-report/security-report.md >> comprehensive-security-report.md
+          echo "" >> comprehensive-security-report.md
+
+          # Backend
+          echo "## Backend Security" >> comprehensive-security-report.md
+          cat backend-security-report/backend-security-report.md >> comprehensive-security-report.md
+          echo "" >> comprehensive-security-report.md
+
+          # Config
+          echo "## Configuration Security" >> comprehensive-security-report.md
+          cat config-security-report/config-security-report.md >> comprehensive-security-report.md
+          echo "" >> comprehensive-security-report.md
+
+          # Secrets
+          echo "## Secret Scanning" >> comprehensive-security-report.md
+          cat secret-scan-report/secret-scan-report.md >> comprehensive-security-report.md
+
+          # Determine overall status
+          if grep -q "⚠️ \*\*Action Required\*\*" comprehensive-security-report.md; then
+            echo "" >> comprehensive-security-report.md
+            echo "# ⚠️ Overall Status: Action Required" >> comprehensive-security-report.md
+            echo "" >> comprehensive-security-report.md
+            echo "Critical security issues were found that require immediate attention." >> comprehensive-security-report.md
+          elif grep -q "⚠️ \*\*Review Recommended\*\*" comprehensive-security-report.md; then
+            echo "" >> comprehensive-security-report.md
+            echo "# ⚠️ Overall Status: Review Recommended" >> comprehensive-security-report.md
+            echo "" >> comprehensive-security-report.md
+            echo "Medium severity issues were found that should be reviewed." >> comprehensive-security-report.md
+          else
+            echo "" >> comprehensive-security-report.md
+            echo "# ✅ Overall Status: Good" >> comprehensive-security-report.md
+            echo "" >> comprehensive-security-report.md
+            echo "No critical security issues were found." >> comprehensive-security-report.md
+          fi
+
+      - name: Upload comprehensive report
+        uses: actions/upload-artifact@v4
+        with:
+          name: comprehensive-security-report
+          path: comprehensive-security-report.md

@@ -48,29 +48,29 @@ export function ReportsView() {
     try {
       // Build query parameters
       const params = new URLSearchParams();
-      
+
       if (filters.campaign_id) {
         params.append("campaign_id", filters.campaign_id);
       }
-      
+
       if (filters.start_date) {
         params.append("start_date", filters.start_date.toISOString());
       }
-      
+
       if (filters.end_date) {
         params.append("end_date", filters.end_date.toISOString());
       }
-      
+
       // Format (csv or excel)
       params.append("format", "excel");
-      
+
       // Create URL
       const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
       const url = `${API_URL}/api/reports/export/calls?${params.toString()}`;
-      
+
       // Open in new tab
       window.open(url, "_blank");
-      
+
       toast.success("Exportación iniciada");
     } catch (error) {
       toast.error("Error al exportar los datos");
@@ -116,7 +116,7 @@ export function ReportsView() {
             isLoading={isLoadingMetrics}
             isError={isErrorMetrics}
           />
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -133,7 +133,7 @@ export function ReportsView() {
                 />
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader>
                 <CardTitle>Actividad reciente</CardTitle>

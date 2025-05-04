@@ -19,7 +19,7 @@ const Button = ({
   const variantClasses = `btn-${variant}`;
   const sizeClasses = `btn-${size}`;
   const disabledClasses = disabled ? 'btn-disabled' : '';
-  
+
   const combinedClasses = [
     baseClasses,
     variantClasses,

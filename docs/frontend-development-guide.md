@@ -58,7 +58,7 @@ El frontend permite a los usuarios:
    ```bash
    # Con npm
    npm install
-   
+
    # Con Bun (recomendado)
    bun install
    ```
@@ -71,7 +71,7 @@ El frontend permite a los usuarios:
    ```bash
    # Con npm
    npm run dev
-   
+
    # Con Bun
    bun dev
    ```
@@ -211,12 +211,12 @@ export const campaignApi = {
     const response = await axios.get(`${API_BASE_URL}/api/campaigns`);
     return response.data;
   },
-  
+
   async createCampaign(campaign: CampaignCreate): Promise<Campaign> {
     const response = await axios.post(`${API_BASE_URL}/api/campaigns`, campaign);
     return response.data;
   },
-  
+
   // Otros métodos...
 };
 ```
@@ -327,13 +327,13 @@ describe('CampaignListView', () => {
     render(<CampaignListView campaigns={[]} isLoading={false} />);
     expect(screen.getByText(/No hay campañas disponibles/i)).toBeInTheDocument();
   });
-  
+
   it('muestra lista de campañas cuando hay datos', () => {
     const mockCampaigns = [
       { id: '1', name: 'Campaña 1', status: 'active' },
       { id: '2', name: 'Campaña 2', status: 'draft' },
     ];
-    
+
     render(<CampaignListView campaigns={mockCampaigns} isLoading={false} />);
     expect(screen.getByText('Campaña 1')).toBeInTheDocument();
     expect(screen.getByText('Campaña 2')).toBeInTheDocument();

@@ -1,21 +1,40 @@
-import sys
 import os
+import sys
 from pathlib import Path
-import pytest
-from unittest.mock import AsyncMock, patch, MagicMock
+from unittest.mock import patch
 
-# Agregar el directorio raíz del proyecto al PYTHONPATH
-# Esto asegura que los módulos de la aplicación se puedan importar correctamente en las pruebas
-project_root = Path(__file__).parent.parent 
+import pytest
+
+# Configurar PYTHONPATH para asegurar que las importaciones funcionen correctamente
+# Esto es crucial para resolver problemas como "ModuleNotFoundError: No module named 'app.dependencies'"
+
+# 1. Agregar el directorio raíz del proyecto al PYTHONPATH
+project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
+
+# 2. Agregar el directorio padre del backend-call-automation al PYTHONPATH (si existe)
+parent_dir = project_root.parent
+if parent_dir.exists():
+    sys.path.insert(0, str(parent_dir))
+
+# 3. Agregar el directorio scripts al PYTHONPATH
+scripts_dir = project_root / "scripts"
+if scripts_dir.exists():
+    sys.path.insert(0, str(scripts_dir))
+
+# 3. Imprimir información de depuración sobre el PYTHONPATH
+print("PYTHONPATH configurado para tests:")
+print(f"- Directorio actual: {os.getcwd()}")
+print(f"- Directorio del proyecto: {project_root}")
+print(f"- sys.path: {sys.path[:5]}")  # Mostrar solo los primeros 5 elementos para brevedad
 
 # Establecer variables de entorno críticas para el entorno de prueba
 # Estas variables deben definirse ANTES de importar cualquier módulo de la aplicación que las utilice
 os.environ["TESTING"] = "1"
 os.environ["APP_ENV"] = "testing"
 # Usar claves de API de prueba o mocks; no usar claves reales en las pruebas
-os.environ["OPENAI_API_KEY"] = "test_openai_api_key" 
-os.environ["ELEVENLABS_API_KEY"] = "test_elevenlabs_api_key" 
+os.environ["OPENAI_API_KEY"] = "test_openai_api_key"
+os.environ["ELEVENLABS_API_KEY"] = "test_elevenlabs_api_key"
 # Configurar otras variables de entorno necesarias para las pruebas
 os.environ["DATABASE_URL"] = "test_database_url"
 os.environ["SUPABASE_URL"] = "test_supabase_url"
@@ -35,11 +54,12 @@ os.environ["PORT"] = "8000"
 os.environ["DEBUG"] = "True"
 os.environ["ENVIRONMENT"] = "testing"
 # Añadir variables de Vault si son necesarias para las pruebas, aunque secrets_manager debería ser mockeado
-os.environ["VAULT_ADDR"] = "http://mock-vault:8200" 
-os.environ["VAULT_TOKEN"] = "mock_vault_token" 
+os.environ["VAULT_ADDR"] = "http://mock-vault:8200"
+os.environ["VAULT_TOKEN"] = "mock_vault_token"
 
 # Importar configuraciones y servicios DESPUÉS de establecer las variables de entorno
 from app.config.settings import Settings
+
 
 @pytest.fixture(scope="session", autouse=True)
 def mock_settings():
@@ -49,7 +69,7 @@ def mock_settings():
     """
     # Usar patch para mockear la clase Settings completa o la función get_settings
     # Esto evita que Pydantic intente cargar y validar desde el entorno real durante las pruebas
-    with patch('app.config.settings.Settings', spec=Settings) as MockSettings:
+    with patch("app.config.settings.Settings", spec=Settings) as MockSettings:
         mock_instance = MockSettings.return_value
         # Configurar valores mock para los atributos de settings necesarios en las pruebas
         mock_instance.ELEVENLABS_MAX_CONNECTIONS = 10
@@ -74,7 +94,8 @@ def mock_settings():
         mock_instance.PORT = int(os.environ["PORT"])
         mock_instance.DEBUG = os.environ["DEBUG"] == "True"
         mock_instance.ENVIRONMENT = os.environ["ENVIRONMENT"]
-        yield mock_instance # Devolver la instancia mockeada para que esté disponible si se necesita explícitamente
+        yield mock_instance  # Devolver la instancia mockeada para que esté disponible si se necesita explícitamente
+
 
 # Nota: La fixture elevenlabs_service y las pruebas se movieron a test_elevenlabs_service.py
 # Este archivo conftest.py ahora se enfoca en la configuración global del entorno de prueba.

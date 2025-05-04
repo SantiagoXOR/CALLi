@@ -33,7 +33,7 @@ El sistema implementa una arquitectura de caché por niveles:
    database "L1\nMemoria" as l1
    database "L2\nRedis" as l2
    database "Supabase" as l3
-   
+
    app --> l1
    l1 --> l2
    l2 --> l3

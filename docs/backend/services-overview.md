@@ -161,25 +161,25 @@ graph TD
     CS --> FS[FallbackService]
     CS --> CAS[CampaignService]
     CS --> COS[ContactService]
-    
+
     CAS --> SB[(Supabase)]
     COS --> SB
-    
+
     AIS --> OAI[OpenAI API]
     AIS --> LC[LangChain]
-    
+
     ELS --> ELAPI[ElevenLabs API]
     TS --> TAPI[Twilio API]
-    
+
     CACS[CacheService] --> RD[(Redis)]
     CACS --> SB
-    
+
     MS --> PROM[Prometheus]
     MS --> OT[OpenTelemetry]
-    
+
     FS --> ELS
     FS --> PROM
-    
+
     ALS[AlertService] --> MS
     ALS --> NOTIF[Notification Services]
 ```
@@ -206,29 +206,29 @@ Ejemplo de configuración:
 class Settings(BaseSettings):
     # Database Configuration
     DATABASE_URL: str
-    
+
     # Supabase Configuration
     SUPABASE_URL: str
     SUPABASE_KEY: str
-    
+
     # Twilio Configuration
     TWILIO_ACCOUNT_SID: str
     TWILIO_AUTH_TOKEN: str
     TWILIO_PHONE_NUMBER: str
-    
+
     # ElevenLabs Configuration
     ELEVENLABS_API_KEY: str
     ELEVENLABS_DEFAULT_VOICE: str
-    
+
     # Cache Configuration
     REDIS_URL: str
     REDIS_PASSWORD: str
     REDIS_CACHE_TTL: int
-    
+
     # OpenAI Configuration
     OPENAI_API_KEY: str
     DEFAULT_MODEL: str
-    
+
     # Application Configuration
     APP_NAME: str
     APP_ENV: str
@@ -251,7 +251,7 @@ cache_service = CacheService()
 async def startup_event():
     # Iniciar sincronización de caché
     await cache_service.start_sync()
-    
+
     # Iniciar monitoreo
     monitoring_service = MonitoringService()
     await monitoring_service.start()

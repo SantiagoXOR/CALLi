@@ -13,14 +13,14 @@ jobs:
       - name: Create marker file
         run: |
           echo "This file indicates that all workflows are disabled" > .github/workflows/DISABLED
-          
+
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .github/workflows/DISABLED
           git commit -m "Disable all workflows temporarily" || echo "No changes to commit"
-          
+
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:

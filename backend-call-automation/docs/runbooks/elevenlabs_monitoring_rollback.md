@@ -8,7 +8,7 @@ Este documento detalla los procedimientos para monitorear, diagnosticar y ejecut
 ### Métricas Clave (Prometheus)
 ```
 elevenlabs_requests_total{calls}          # Total de requests a la API
-elevenlabs_errors_total{calls}            # Errores en requests  
+elevenlabs_errors_total{calls}            # Errores en requests
 elevenlabs_request_duration_seconds       # Latencia de requests
 elevenlabs_generation_duration_seconds    # Tiempo de generación de audio
 elevenlabs_pool_connections_active        # Conexiones activas
@@ -39,7 +39,7 @@ elevenlabs_audio_quality_score            # Calidad de audio (0-1)
 
 ### Herramientas
 ```
-# Consultar logs del servicio  
+# Consultar logs del servicio
 journalctl -u elevenlabs_integration -n 100 --no-pager
 
 # Probar conexión API directamente
@@ -52,7 +52,7 @@ curl -X POST https://api.elevenlabs.io/v1/text-to-speech \
 
 ### Criterios para Rollback
 - Error rate > 30% por más de 10 minutos
-- Latencia > 10s en percentil 95  
+- Latencia > 10s en percentil 95
 - Problemas críticos de calidad de audio
 
 ### Pasos:

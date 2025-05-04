@@ -15,41 +15,41 @@
         }
     </style>
 </head>
-    
+
 <body>
 <div class='wrapper'>
     <div class='pad1'>
         <h1><a href="../index.html">All files</a> / <a href="index.html">services</a> apiService.ts</h1>
         <div class='clearfix'>
-            
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>0/36</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
                 <span class='fraction'>0/12</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
                 <span class='fraction'>0/11</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
                 <span class='fraction'>0/35</span>
             </div>
-        
-            
+
+
         </div>
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
@@ -295,7 +295,7 @@ class ApiService {
 &nbsp;
 <span class="fstat-no" title="function not covered" >  constructor() {</span>
 <span class="cstat-no" title="statement not covered" >    this.baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';</span>
-    
+
 <span class="cstat-no" title="statement not covered" >    this.api = axios.create({</span>
       baseURL: this.baseURL,
       headers: {
@@ -328,7 +328,7 @@ class ApiService {
   // Método para manejar errores de API de forma centralizada
   private <span class="fstat-no" title="function not covered" >handleApiError(e</span>rror: AxiosError): void {
     const { response } = <span class="cstat-no" title="statement not covered" >error;</span>
-    
+
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (response?.status === 401) {</span>
       // Redirigir a login si hay error de autenticación
 <span class="cstat-no" title="statement not covered" >      toast.error('Sesión expirada. Por favor, inicia sesión nuevamente.');</span>
@@ -340,9 +340,9 @@ class ApiService {
     const errorMessage = <span class="cstat-no" title="statement not covered" >response?.data &amp;&amp; typeof response.data === 'object' &amp;&amp; 'message' in response.data</span>
       ? (response.data as any).message
       : 'Error en la solicitud. Por favor, intenta de nuevo.';
-    
+
 <span class="cstat-no" title="statement not covered" >    console.error('Error API:', errorMessage, response?.status);</span>
-    
+
     // No mostrar toast para errores 404 (recurso no encontrado)
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (response?.status !== 404) {</span>
 <span class="cstat-no" title="statement not covered" >      toast.error(errorMessage);</span>
@@ -397,4 +397,3 @@ export const <span class="cstat-no" title="statement not covered" >apiService = 
         <script src="../block-navigation.js"></script>
     </body>
 </html>
-    
