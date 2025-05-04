@@ -319,9 +319,11 @@ async def twilio_callback(
 
     except Exception as e:
         # Loguear el error pero devolver 200 para que Twilio no reintente
+        import logging
+        logging.error("Error procesando callback de Twilio", exc_info=True)
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content={"status": "error", "message": f"Error procesando callback: {e!s}"},
+            content={"status": "error", "message": "Error procesando callback."},
         )
 
 
