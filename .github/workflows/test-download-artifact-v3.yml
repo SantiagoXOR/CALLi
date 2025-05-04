@@ -1,0 +1,39 @@
+name: "Test Download Artifact v3"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-upload:
+    name: Test Upload Artifact
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create test file
+        run: |
+          mkdir -p test
+          echo "Test content" > test/test-file.txt
+
+      - name: Upload test file
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifact
+          path: test/test-file.txt
+
+  test-download:
+    name: Test Download Artifact
+    needs: test-upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact with v3
+        uses: actions/download-artifact@v3
+        with:
+          name: test-artifact
+          path: downloaded-test
+
+      - name: Display downloaded file
+        run: |
+          ls -la downloaded-test
+          cat downloaded-test/test-file.txt
